@@ -2,814 +2,145 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#542d1b">
 <title>REFAEI</title>
 
 <style>
 :root{
-  --bg:#f3efe7;
-  --brown:#542d1b;
-  --light-brown:#79543d;
-  --gold:#b6965b;
-  --green:#198754;
-  --red:#bd3d36;
-  --border:#e2d9cc;
-  --white:#fff;
-}
-
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-html{
-  scroll-behavior:smooth;
-}
-
-body{
-  background:var(--bg);
-  color:#362116;
-  font-family:Tahoma,Arial,sans-serif;
-  line-height:1.8;
-}
-
-button,input,textarea,select{
-  font:inherit;
-}
-
-button{
-  cursor:pointer;
-}
-
-.container{
-  width:min(1150px,92%);
-  margin:auto;
-}
-
-.hidden{
-  display:none!important;
-}
-
-.topbar{
-  background:var(--brown);
-  color:#fff;
-  text-align:center;
-  padding:7px 10px;
-  font-size:13px;
-}
-
-header{
-  position:sticky;
-  top:0;
-  z-index:20;
-  background:#f3efe7f8;
-  border-bottom:1px solid #542d1b22;
-  backdrop-filter:blur(8px);
-}
-
-.nav{
-  min-height:76px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-}
-
-.brand{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:var(--brown);
-  text-decoration:none;
-  white-space:nowrap;
-}
-
-.brand-mark{
-  width:40px;
-  height:40px;
-  border:1px solid var(--gold);
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  font-size:20px;
-}
-
-.brand-name{
-  font:bold 22px Georgia,serif;
-  letter-spacing:2px;
-}
-
-nav{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:22px;
-}
-
-nav a{
-  color:var(--brown);
-  text-decoration:none;
-  font-size:15px;
-  white-space:nowrap;
-}
-
-.nav-actions{
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-
-.admin-btn,
-.cart-btn{
-  border:0;
-  border-radius:25px;
-  color:#fff;
-  padding:8px 13px;
-  text-decoration:none;
-  font-size:13px;
-  white-space:nowrap;
-}
-
-.admin-btn{
-  background:var(--gold);
-}
-
-.cart-btn{
-  background:var(--brown);
-}
-
-.cart-count{
-  background:var(--gold);
-  border-radius:50%;
-  padding:1px 6px;
-  margin-right:3px;
-}
-
-.hero{
-  min-height:570px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:35px 0 60px;
-}
-
-.hero-content{
-  width:min(700px,94%);
-}
-
-.logo{
-  width:250px;
-  height:280px;
-  margin:0 auto 5px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.logo img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-}
-
-.hero h1{
-  color:var(--brown);
-  font:normal 38px Georgia,serif;
-}
-
-.hero p{
-  color:var(--light-brown);
-  margin:8px auto 18px;
-  font-size:16px;
-}
-
-.main-btn,
-.primary-btn{
-  border:0;
-  background:var(--brown);
-  color:#fff;
-  border-radius:5px;
-  padding:11px 25px;
-}
-
-.main-btn:hover,
-.primary-btn:hover{
-  background:var(--light-brown);
-}
-
-.categories-section,
-.products-section{
-  display:none;
-}
-
-.categories-section.visible,
-.products-section.visible{
-  display:block;
-}
-
-.section{
-  padding:55px 0;
-}
-
-.heading{
-  text-align:center;
-  margin-bottom:25px;
-}
-
-.heading small{
-  color:var(--gold);
-}
-
-.heading h2{
-  color:var(--brown);
-  font:normal 31px Georgia,serif;
-}
-
-.heading p{
-  color:#927c6a;
-  font-size:13px;
-}
-
-.categories{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:15px;
-}
-
-.category-card{
-  width:180px;
-  background:#fff;
-  border:1px solid var(--border);
-  padding:12px;
-  text-align:center;
-  transition:.2s;
-}
-
-.category-card:hover{
-  transform:translateY(-3px);
-  box-shadow:0 5px 15px #542d1b18;
-}
-
-.category-placeholder{
-  height:100px;
-  display:grid;
-  place-items:center;
-  background:#e6dbcc;
-  font-size:38px;
-}
-
-.category-card button{
-  border:0;
-  background:transparent;
-  color:var(--brown);
-  font-weight:bold;
-  font-size:16px;
-}
-
-.category-card small{
-  display:block;
-  color:#927c6a;
-  font-size:11px;
-}
-
-.center{
-  text-align:center;
-  margin-top:22px;
-}
-
-.all-btn{
-  border:1px solid var(--brown);
-  background:transparent;
-  color:var(--brown);
-  border-radius:4px;
-  padding:9px 15px;
-}
-
-.products{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:18px;
-}
-
-.product{
-  background:#fff;
-  border:1px solid var(--border);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
-}
-
-.product-img{
-  width:100%;
-  height:330px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:relative;
-  overflow:hidden;
-  background:linear-gradient(135deg,#d7c5af,#f0e7da);
-  font-size:55px;
-}
-
-.product-img img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-}
-
-.stock-badge{
-  position:absolute;
-  top:12px;
-  right:12px;
-  background:var(--green);
-  color:#fff;
-  padding:4px 8px;
-  border-radius:5px;
-  font-size:12px;
-}
-
-.stock-badge.out{
-  background:var(--red);
-}
-
-.product-info{
-  min-height:220px;
-  padding:15px;
-  background:#fff;
-  display:flex;
-  flex-direction:column;
-}
-
-.product-info small{
-  color:var(--gold);
-}
-
-.product-info h3{
-  color:var(--brown);
-  font-size:18px;
-}
-
-.product-info p{
-  color:#927c6a;
-  font-size:13px;
-  line-height:1.7;
-}
-
-.product-bottom{
-  display:flex;
-  align-items:end;
-  justify-content:space-between;
-  gap:8px;
-  margin-top:auto;
-  padding-top:12px;
-}
-
-.price{
-  color:var(--brown);
-  font-size:19px;
-  font-weight:bold;
-  white-space:nowrap;
-}
-
-.add-btn{
-  border:0;
-  background:var(--brown);
-  color:#fff;
-  padding:9px 12px;
-  border-radius:4px;
-  font-size:12px;
-}
-
-.add-btn:disabled{
-  background:#aaa;
-  cursor:not-allowed;
-}
-
-.about{
-  background:var(--brown);
-  color:#fff;
-  text-align:center;
-}
-
-.about h2{
-  font:normal 31px Georgia,serif;
-}
-
-.about p{
-  max-width:650px;
-  margin:10px auto;
-  color:#eaded0;
-}
-
-footer{
-  background:#382015;
-  color:#eaded0;
-  text-align:center;
-  padding:20px;
-  font-size:13px;
-}
-
-.overlay{
-  position:fixed;
-  inset:0;
-  z-index:40;
-  display:none;
-  background:#0008;
-}
-
-.overlay.show{
-  display:block;
-}
-
-.cart-panel{
-  position:fixed;
-  z-index:50;
-  top:0;
-  left:-430px;
-  width:min(430px,92%);
-  height:100vh;
-  overflow:auto;
-  background:var(--bg);
-  padding:20px;
-  transition:.3s;
-}
-
-.cart-panel.open{
-  left:0;
-}
-
-.cart-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid var(--border);
-  padding-bottom:10px;
-  margin-bottom:15px;
-}
-
-.cart-head h2{
-  color:var(--brown);
-}
-
-.close{
-  border:0;
-  background:transparent;
-  color:var(--brown);
-  font-size:25px;
-}
-
-.cart-item{
-  display:grid;
-  grid-template-columns:1fr auto;
-  gap:10px;
-  background:#fff;
-  border:1px solid var(--border);
-  padding:11px;
-  margin-bottom:10px;
-}
-
-.cart-item h4{
-  color:var(--brown);
-  font-size:14px;
-}
-
-.cart-item p{
-  color:#927c6a;
-  font-size:12px;
-}
-
-.qty{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-top:5px;
-}
-
-.qty button{
-  width:25px;
-  height:25px;
-  border:1px solid var(--brown);
-  border-radius:50%;
-  background:#fff;
-  color:var(--brown);
-}
-
-.remove{
-  border:0;
-  background:transparent;
-  color:var(--red);
-  font-size:11px;
-}
-
-.cart-total{
-  display:flex;
-  justify-content:space-between;
-  border-top:1px solid var(--border);
-  padding-top:13px;
-  margin-top:15px;
-  color:var(--brown);
-  font-weight:bold;
-  font-size:18px;
-}
-
-.whatsapp{
-  width:100%;
-  border:0;
-  background:var(--green);
-  color:#fff;
-  padding:13px;
-  border-radius:4px;
-  margin-top:15px;
-}
-
-.customer-form{
-  display:none;
-  margin-top:12px;
-}
-
-.customer-form.show{
-  display:block;
-}
-
-.customer-form input,
-.customer-form textarea{
-  width:100%;
-  border:1px solid var(--border);
-  padding:10px;
-  margin-bottom:9px;
-  border-radius:4px;
-  background:#fff;
-}
-
-.admin-page{
-  display:none;
-  min-height:700px;
-  padding:40px 0;
-}
-
-.admin-page.active{
-  display:block;
-}
-
-.admin-login,
-.admin-box{
-  max-width:900px;
-  margin:0 auto 22px;
-  background:#fff;
-  border:1px solid var(--border);
-  padding:22px;
-}
-
-.admin-login{
-  max-width:400px;
-  text-align:center;
-}
-
-.admin-login h2,
-.admin-box h2{
-  color:var(--brown);
-  margin-bottom:14px;
-}
-
-.admin-login input,
-.admin-form input,
-.admin-form textarea,
-.admin-form select{
-  width:100%;
-  border:1px solid var(--border);
-  padding:10px;
-  margin-bottom:10px;
-  border-radius:4px;
-  background:#fff;
-}
-
-.admin-form label{
-  display:block;
-  color:var(--brown);
-  font-size:13px;
-}
-
-.admin-form .primary-btn{
-  width:100%;
-}
-
-.admin-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-}
-
-.logout,
-.edit-btn,
-.delete-btn{
-  border:0;
-  color:#fff;
-  border-radius:4px;
-  padding:7px 10px;
-  font-size:12px;
-}
-
-.logout{
-  background:var(--brown);
-}
-
-.edit-btn{
-  background:var(--gold);
-}
-
-.delete-btn{
-  background:var(--red);
-}
-
-.admin-row{
-  display:grid;
-  grid-template-columns:90px 1fr auto;
-  gap:12px;
-  align-items:center;
-  border:1px solid var(--border);
-  padding:10px;
-  margin-bottom:10px;
-}
-
-.admin-placeholder{
-  width:90px;
-  height:90px;
-  display:grid;
-  place-items:center;
-  background:#e6dbcc;
-  font-size:30px;
-  overflow:hidden;
-}
-
-.admin-placeholder img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-}
-
-.admin-row h3{
-  color:var(--brown);
-  font-size:15px;
-}
-
-.admin-row p{
-  color:#927c6a;
-  font-size:12px;
-}
-
-.admin-actions{
-  display:flex;
-  gap:5px;
-}
-
-.product-image-preview{
-  display:none;
-  width:180px;
-  height:180px;
-  object-fit:contain;
-  margin:5px 0 15px;
-  border:1px solid var(--border);
-  background:#f4eee5;
-}
+  --bg:#f3efe7;--brown:#542d1b;--light:#79543d;
+  --gold:#b6965b;--green:#198754;--red:#bd3d36;
+  --border:#e2d9cc;--white:#fff
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:#362116;font-family:Tahoma,Arial,sans-serif;line-height:1.8}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.container{width:min(1150px,92%);margin:auto}
+.hidden{display:none!important}
+.topbar{background:var(--brown);color:#fff;text-align:center;padding:7px;font-size:13px}
+header{position:sticky;top:0;z-index:20;background:#f3efe7f8;border-bottom:1px solid #542d1b22;backdrop-filter:blur(8px)}
+.nav{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{display:flex;align-items:center;gap:8px;color:var(--brown);text-decoration:none;white-space:nowrap}
+.brand-mark{width:40px;height:40px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;font-size:20px}
+.brand-name{font:bold 22px Georgia,serif;letter-spacing:2px}
+nav{display:flex;align-items:center;justify-content:center;gap:22px}
+nav a{color:var(--brown);text-decoration:none;font-size:15px;white-space:nowrap}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.admin-btn,.cart-btn{border:0;border-radius:25px;color:#fff;padding:8px 13px;text-decoration:none;font-size:13px}
+.admin-btn{background:var(--gold)}.cart-btn{background:var(--brown)}
+.cart-count{background:var(--gold);border-radius:50%;padding:1px 6px;margin-right:3px}
+
+.hero{min-height:570px;display:flex;align-items:center;justify-content:center;text-align:center;padding:35px 0 60px}
+.hero-content{width:min(700px,94%)}
+.logo{width:250px;height:280px;margin:0 auto 5px;display:flex;align-items:center;justify-content:center}
+.logo img{width:100%;height:100%;object-fit:contain}
+.hero h1{color:var(--brown);font:normal 38px Georgia,serif}
+.hero p{color:var(--light);margin:8px auto 18px;font-size:16px}
+.main-btn,.primary-btn{border:0;background:var(--brown);color:#fff;border-radius:5px;padding:11px 25px}
+.main-btn:hover,.primary-btn:hover{background:var(--light)}
+
+.categories-section,.products-section{display:none}
+.categories-section.visible,.products-section.visible{display:block}
+.section{padding:55px 0}
+.heading{text-align:center;margin-bottom:25px}
+.heading small{color:var(--gold)}
+.heading h2{color:var(--brown);font:normal 31px Georgia,serif}
+.heading p{color:#927c6a;font-size:13px}
+.categories{display:flex;justify-content:center;flex-wrap:wrap;gap:15px}
+.category-card{width:180px;background:#fff;border:1px solid var(--border);padding:12px;text-align:center;transition:.2s}
+.category-card:hover{transform:translateY(-3px);box-shadow:0 5px 15px #542d1b18}
+.category-placeholder{height:100px;display:grid;place-items:center;background:#e6dbcc;font-size:38px}
+.category-card button{border:0;background:transparent;color:var(--brown);font-weight:bold;font-size:16px}
+.category-card small{display:block;color:#927c6a;font-size:11px}
+.center{text-align:center;margin-top:22px}
+.all-btn{border:1px solid var(--brown);background:transparent;color:var(--brown);border-radius:4px;padding:9px 15px}
+
+.products{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.product{background:#fff;border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column}
+.product-img{width:100%;height:330px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:linear-gradient(135deg,#d7c5af,#f0e7da);font-size:55px}
+.product-img img{width:100%;height:100%;object-fit:contain}
+.stock-badge{position:absolute;top:12px;right:12px;background:var(--green);color:#fff;padding:4px 8px;border-radius:5px;font-size:12px}
+.stock-badge.out{background:var(--red)}
+.product-info{min-height:220px;padding:15px;background:#fff;display:flex;flex-direction:column}
+.product-info small{color:var(--gold)}
+.product-info h3{color:var(--brown);font-size:18px}
+.product-info p{color:#927c6a;font-size:13px;line-height:1.7}
+.product-bottom{display:flex;align-items:end;justify-content:space-between;gap:8px;margin-top:auto;padding-top:12px}
+.price{color:var(--brown);font-size:19px;font-weight:bold;white-space:nowrap}
+.add-btn{border:0;background:var(--brown);color:#fff;padding:9px 12px;border-radius:4px;font-size:12px}
+.add-btn:disabled{background:#aaa;cursor:not-allowed}
+
+.about{background:var(--brown);color:#fff;text-align:center}
+.about h2{font:normal 31px Georgia,serif}
+.about p{max-width:650px;margin:10px auto;color:#eaded0}
+footer{background:#382015;color:#eaded0;text-align:center;padding:20px;font-size:13px}
+
+.overlay{position:fixed;inset:0;z-index:40;display:none;background:#0008}
+.overlay.show{display:block}
+.cart-panel{position:fixed;z-index:50;top:0;left:-430px;width:min(430px,92%);height:100vh;overflow:auto;background:var(--bg);padding:20px;transition:.3s}
+.cart-panel.open{left:0}
+.cart-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:15px}
+.cart-head h2{color:var(--brown)}
+.close{border:0;background:transparent;color:var(--brown);font-size:25px}
+.cart-item{display:grid;grid-template-columns:1fr auto;gap:10px;background:#fff;border:1px solid var(--border);padding:11px;margin-bottom:10px}
+.cart-item h4{color:var(--brown);font-size:14px}
+.cart-item p{color:#927c6a;font-size:12px}
+.qty{display:flex;align-items:center;gap:8px;margin-top:5px}
+.qty button{width:25px;height:25px;border:1px solid var(--brown);border-radius:50%;background:#fff;color:var(--brown)}
+.remove{border:0;background:transparent;color:var(--red);font-size:11px}
+.cart-total{display:flex;justify-content:space-between;border-top:1px solid var(--border);padding-top:13px;margin-top:15px;color:var(--brown);font-weight:bold;font-size:18px}
+.whatsapp{width:100%;border:0;background:var(--green);color:#fff;padding:13px;border-radius:4px;margin-top:15px}
+.customer-form{display:none;margin-top:12px}
+.customer-form.show{display:block}
+.customer-form input,.customer-form textarea{width:100%;border:1px solid var(--border);padding:10px;margin-bottom:9px;border-radius:4px;background:#fff}
+
+.admin-page{display:none;min-height:700px;padding:40px 0}
+.admin-page.active{display:block}
+.admin-login,.admin-box{max-width:900px;margin:0 auto 22px;background:#fff;border:1px solid var(--border);padding:22px}
+.admin-login{max-width:400px;text-align:center}
+.admin-login h2,.admin-box h2{color:var(--brown);margin-bottom:14px}
+.admin-login input,.admin-form input,.admin-form textarea,.admin-form select{width:100%;border:1px solid var(--border);padding:10px;margin-bottom:10px;border-radius:4px;background:#fff}
+.admin-form label{display:block;color:var(--brown);font-size:13px}
+.admin-form .primary-btn{width:100%}
+.admin-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.logout,.edit-btn,.delete-btn{border:0;color:#fff;border-radius:4px;padding:7px 10px;font-size:12px}
+.logout{background:var(--brown)}.edit-btn{background:var(--gold)}.delete-btn{background:var(--red)}
+.admin-row{display:grid;grid-template-columns:90px 1fr auto;gap:12px;align-items:center;border:1px solid var(--border);padding:10px;margin-bottom:10px}
+.admin-placeholder{width:90px;height:90px;display:grid;place-items:center;background:#e6dbcc;font-size:30px;overflow:hidden}
+.admin-placeholder img{width:100%;height:100%;object-fit:contain}
+.admin-row h3{color:var(--brown);font-size:15px}
+.admin-row p{color:#927c6a;font-size:12px}
+.admin-actions{display:flex;gap:5px}
+.product-image-preview{display:none;width:180px;height:180px;object-fit:contain;margin:5px 0 15px;border:1px solid var(--border);background:#f4eee5}
+
+.report-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}
+.report-stat{background:#f3efe7;border:1px solid var(--border);padding:12px;text-align:center}
+.report-stat strong{display:block;color:var(--brown)}
+.report-stat span{font-size:21px;color:var(--gold)}
+.report-table-wrap{overflow-x:auto}
+.report-table{width:100%;border-collapse:collapse;min-width:700px;text-align:right}
+.report-table th{background:var(--brown);color:#fff;padding:8px}
+.report-table td{border-bottom:1px solid var(--border);padding:8px;font-size:12px}
+.report-table tr:nth-child(even){background:#faf7f1}
 
 @media(max-width:600px){
-
-  header{
-    position:relative;
-  }
-
-  .nav{
-    min-height:auto;
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    padding:10px 0;
-    gap:9px;
-  }
-
-  .brand{
-    width:100%;
-    justify-content:center;
-    order:1;
-  }
-
-  .brand-mark{
-    width:36px;
-    height:36px;
-    font-size:18px;
-  }
-
-  .brand-name{
-    font-size:20px;
-  }
-
-  nav{
-    width:100%;
-    display:flex!important;
-    justify-content:center;
-    gap:13px;
-    order:2;
-    overflow-x:auto;
-    white-space:nowrap;
-    padding:2px 0;
-  }
-
-  nav a{
-    font-size:13px;
-  }
-
-  .nav-actions{
-    width:100%;
-    display:flex!important;
-    justify-content:center;
-    order:3;
-    gap:8px;
-  }
-
-  .admin-btn,
-  .cart-btn{
-    display:inline-block!important;
-    padding:7px 13px;
-    font-size:12px;
-  }
-
-  .hero{
-    min-height:510px;
-    padding:30px 0 50px;
-  }
-
-  .logo{
-    width:210px;
-    height:230px;
-  }
-
-  .hero h1{
-    font-size:30px;
-  }
-
-  .hero p{
-    font-size:13px;
-    padding:0 12px;
-  }
-
-  .products{
-    grid-template-columns:repeat(2,1fr);
-    gap:9px;
-  }
-
-  .product-img{
-    height:240px;
-  }
-
-  .product-info{
-    min-height:245px;
-    padding:10px;
-  }
-
-  .product-info h3{
-    font-size:15px;
-  }
-
-  .product-info p{
-    font-size:11px;
-  }
-
-  .product-bottom{
-    display:block;
-  }
-
-  .price{
-    display:block;
-    margin-bottom:8px;
-    font-size:16px;
-  }
-
-  .add-btn{
-    width:100%;
-    padding:9px 4px;
-  }
-
-  .admin-row{
-    grid-template-columns:65px 1fr;
-  }
-
-  .admin-placeholder{
-    width:65px;
-    height:65px;
-  }
-
-  .admin-actions{
-    grid-column:1/-1;
-  }
-
-  .admin-actions button{
-    flex:1;
-  }
+ header{position:relative}
+ .nav{min-height:auto;display:flex;flex-wrap:wrap;justify-content:center;padding:10px 0;gap:9px}
+ .brand{width:100%;justify-content:center;order:1}
+ nav{width:100%;justify-content:center;gap:13px;order:2;overflow-x:auto}
+ nav a{font-size:13px}.nav-actions{width:100%;justify-content:center;order:3}
+ .hero{min-height:510px;padding:30px 0 50px}.logo{width:210px;height:230px}
+ .hero h1{font-size:30px}.hero p{font-size:13px;padding:0 12px}
+ .products{grid-template-columns:repeat(2,1fr);gap:9px}
+ .product-img{height:240px}.product-info{min-height:245px;padding:10px}
+ .product-info h3{font-size:15px}.product-info p{font-size:11px}
+ .product-bottom{display:block}.price{display:block;margin-bottom:8px;font-size:16px}
+ .add-btn{width:100%;padding:9px 4px}
+ .admin-row{grid-template-columns:65px 1fr}.admin-placeholder{width:65px;height:65px}
+ .admin-actions{grid-column:1/-1}.admin-actions button{flex:1}
+ .report-stats{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -819,254 +150,159 @@ footer{
 <div class="topbar" id="topbarText"></div>
 
 <header>
-  <div class="container nav">
+<div class="container nav">
+<a href="#home" class="brand" onclick="showStore(event)">
+<span class="brand-mark">𓅃</span>
+<span class="brand-name" id="brandName"></span>
+</a>
 
-    <a href="#home" class="brand" onclick="showStore(event)">
-      <span class="brand-mark">𓅃</span>
-      <span class="brand-name" id="brandName"></span>
-    </a>
+<nav>
+<a href="#home" onclick="showStore(event)">الرئيسية</a>
+<a href="#categories" onclick="showCategoriesPage(event)">الأقسام</a>
+<a href="#products" onclick="showProductsPage(event)">المنتجات</a>
+<a href="#about" onclick="showAboutPage(event)">عن المتجر</a>
+</nav>
 
-    <nav>
-      <a href="#home" onclick="showStore(event)">الرئيسية</a>
-      <a href="#categories" onclick="showCategoriesPage(event)">الأقسام</a>
-      <a href="#products" onclick="showProductsPage(event)">المنتجات</a>
-      <a href="#about" onclick="showAboutPage(event)">عن المتجر</a>
-    </nav>
-
-    <div class="nav-actions">
-      <a href="#admin" class="admin-btn" onclick="showAdmin(event)">
-        الإدارة
-      </a>
-
-      <button class="cart-btn" onclick="openCart()">
-        السلة
-        <span id="cartCount" class="cart-count">0</span>
-      </button>
-    </div>
-
-  </div>
+<div class="nav-actions">
+<a href="#admin" class="admin-btn" onclick="showAdmin(event)">الإدارة</a>
+<button class="cart-btn" onclick="openCart()">السلة <span id="cartCount" class="cart-count">0</span></button>
+</div>
+</div>
 </header>
 
 <main id="storePage">
 
-  <section class="hero" id="home">
-    <div class="hero-content">
+<section class="hero" id="home">
+<div class="hero-content">
+<div class="logo"><img src="logo.png" alt="REFAEI" onerror="this.style.display='none'"></div>
+<h1 id="heroTitle"></h1>
+<p id="heroDescription"></p>
+<button class="main-btn" onclick="showShoppingContent()">تسوق الآن</button>
+</div>
+</section>
 
-      <div class="logo">
-        <img src="logo.png" alt="REFAEI"
-             onerror="this.style.display='none'">
-      </div>
+<section class="section categories-section" id="categories">
+<div class="container">
+<div class="heading">
+<small>اكتشف اختياراتنا</small>
+<h2>أقسام المتجر</h2>
+<p>اضغط على القسم لعرض منتجاته</p>
+</div>
+<div class="categories" id="categoriesList"></div>
+<div class="center"><button class="all-btn" onclick="showAllProducts()">عرض كل المنتجات</button></div>
+</div>
+</section>
 
-      <h1 id="heroTitle"></h1>
-      <p id="heroDescription"></p>
+<section class="section products-section" id="products">
+<div class="container">
+<div class="heading">
+<small>منتجات REFAEI</small>
+<h2 id="productsTitle">جميع المنتجات</h2>
+<p>اختر المنتج وأضفه إلى السلة</p>
+</div>
+<div class="products" id="productsGrid"></div>
+</div>
+</section>
 
-      <button class="main-btn" onclick="showShoppingContent()">
-        تسوق الآن
-      </button>
-
-    </div>
-  </section>
-
-  <section class="section categories-section" id="categories">
-    <div class="container">
-
-      <div class="heading">
-        <small>اكتشف اختياراتنا</small>
-        <h2>أقسام المتجر</h2>
-        <p>اضغط على القسم لعرض منتجاته</p>
-      </div>
-
-      <div class="categories" id="categoriesList"></div>
-
-      <div class="center">
-        <button class="all-btn" onclick="showAllProducts()">
-          عرض كل المنتجات
-        </button>
-      </div>
-
-    </div>
-  </section>
-
-  <section class="section products-section" id="products">
-    <div class="container">
-
-      <div class="heading">
-        <small>منتجات REFAEI</small>
-        <h2 id="productsTitle">جميع المنتجات</h2>
-        <p>اختر المنتج وأضفه إلى السلة</p>
-      </div>
-
-      <div class="products" id="productsGrid"></div>
-
-    </div>
-  </section>
-
-  <section class="section about" id="about">
-    <div class="container">
-      <h2 id="aboutTitle"></h2>
-      <p id="aboutText"></p>
-    </div>
-  </section>
-
-  <footer id="footerText"></footer>
-
+<section class="section about" id="about">
+<div class="container"><h2 id="aboutTitle"></h2><p id="aboutText"></p></div>
+</section>
+<footer id="footerText"></footer>
 </main>
 
 <section id="adminPage" class="admin-page">
-  <div class="container">
+<div class="container">
 
-    <div id="adminLogin" class="admin-login">
-      <h2>تسجيل دخول الإدارة</h2>
+<div id="adminLogin" class="admin-login">
+<h2>تسجيل دخول الإدارة</h2>
+<input type="password" id="adminPassword" placeholder="كلمة المرور">
+<button class="primary-btn" onclick="loginAdmin()">دخول</button>
+<p id="loginNotice" style="color:#bd3d36;margin-top:10px"></p>
+</div>
 
-      <input type="password" id="adminPassword"
-             placeholder="كلمة المرور">
+<div id="adminDashboard" class="hidden">
 
-      <button class="primary-btn" onclick="loginAdmin()">
-        دخول
-      </button>
+<div class="admin-top">
+<div>
+<h2>لوحة الإدارة</h2>
+<p style="color:#927c6a;font-size:13px">إدارة الأقسام والمنتجات والصور والكميات والتقارير</p>
+</div>
+<button class="logout" onclick="logoutAdmin()">تسجيل الخروج</button>
+</div>
 
-      <p id="loginNotice"
-         style="color:#bd3d36;margin-top:10px"></p>
-    </div>
+<div class="admin-box">
+<h2>التقارير</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:15px">
+<button class="primary-btn" onclick="renderReports()">تحديث التقارير</button>
+<button class="all-btn" onclick="exportReportsToExcel()">تصدير إلى Excel</button>
+<button class="delete-btn" onclick="clearReports()">مسح التقارير</button>
+</div>
+<div id="reportsSummary" class="report-stats"></div>
+<div class="report-table-wrap">
+<table class="report-table">
+<thead><tr>
+<th>التاريخ</th><th>العميل</th><th>الهاتف</th>
+<th>العنوان</th><th>المنتجات</th><th>الإجمالي</th>
+</tr></thead>
+<tbody id="reportsTableBody"></tbody>
+</table>
+</div>
+</div>
 
-    <div id="adminDashboard" class="hidden">
+<div class="admin-box">
+<h2>إضافة أو تعديل قسم</h2>
+<form class="admin-form" onsubmit="saveCategory(event)">
+<input type="hidden" id="editCategoryId">
+<label>اسم القسم</label>
+<input id="categoryName" required>
+<button class="primary-btn" id="categorySaveBtn">إضافة القسم</button>
+<button type="button" id="cancelCategoryBtn" class="all-btn hidden" onclick="cancelCategoryEdit()">إلغاء التعديل</button>
+</form>
+<br>
+<div id="adminCategoriesList"></div>
+</div>
 
-      <div class="admin-top">
-        <div>
-          <h2>لوحة الإدارة</h2>
-          <p style="color:#927c6a;font-size:13px">
-            إدارة الأقسام والمنتجات والصور والكميات
-          </p>
-        </div>
+<div class="admin-box">
+<h2>إضافة أو تعديل منتج</h2>
+<form class="admin-form" onsubmit="saveProduct(event)">
+<input type="hidden" id="editProductId">
+<label>اسم المنتج</label><input id="productName" required>
+<label>القسم</label><select id="productCategory" required></select>
+<label>السعر بالدينار الكويتي</label><input id="productPrice" type="number" min="0" step=".01" required>
+<label>الكمية المتوفرة</label><input id="productStock" type="number" min="0" required>
+<label>صورة المنتج</label><input id="productImage" type="file" accept="image/*">
+<img id="productImagePreview" class="product-image-preview" alt="معاينة الصورة">
+<label>تفاصيل المنتج</label><textarea id="productDescription" rows="3" required></textarea>
+<button class="primary-btn" id="productSaveBtn">إضافة المنتج</button>
+<button type="button" id="cancelProductBtn" class="all-btn hidden" onclick="cancelProductEdit()">إلغاء التعديل</button>
+</form>
+</div>
 
-        <button class="logout" onclick="logoutAdmin()">
-          تسجيل الخروج
-        </button>
-      </div>
+<div class="admin-box">
+<h2>المنتجات</h2>
+<div id="adminProductsList"></div>
+</div>
 
-      <div class="admin-box">
-        <h2>إضافة أو تعديل قسم</h2>
-
-        <form class="admin-form" onsubmit="saveCategory(event)">
-
-          <input type="hidden" id="editCategoryId">
-
-          <label>اسم القسم</label>
-          <input id="categoryName" required>
-
-          <button class="primary-btn" id="categorySaveBtn">
-            إضافة القسم
-          </button>
-
-          <button type="button"
-                  id="cancelCategoryBtn"
-                  class="all-btn hidden"
-                  onclick="cancelCategoryEdit()">
-            إلغاء التعديل
-          </button>
-
-        </form>
-
-        <br>
-        <div id="adminCategoriesList"></div>
-      </div>
-
-      <div class="admin-box">
-        <h2>إضافة أو تعديل منتج</h2>
-
-        <form class="admin-form" onsubmit="saveProduct(event)">
-
-          <input type="hidden" id="editProductId">
-
-          <label>اسم المنتج</label>
-          <input id="productName" required>
-
-          <label>القسم</label>
-          <select id="productCategory" required></select>
-
-          <label>السعر بالدينار الكويتي</label>
-          <input id="productPrice" type="number"
-                 min="0" step="0.01" required>
-
-          <label>الكمية المتوفرة</label>
-          <input id="productStock" type="number"
-                 min="0" required>
-
-          <label>صورة المنتج</label>
-          <input id="productImage" type="file" accept="image/*">
-
-          <img id="productImagePreview"
-               class="product-image-preview"
-               alt="معاينة الصورة">
-
-          <label>تفاصيل المنتج</label>
-          <textarea id="productDescription"
-                    rows="3" required></textarea>
-
-          <button class="primary-btn" id="productSaveBtn">
-            إضافة المنتج
-          </button>
-
-          <button type="button"
-                  id="cancelProductBtn"
-                  class="all-btn hidden"
-                  onclick="cancelProductEdit()">
-            إلغاء التعديل
-          </button>
-
-        </form>
-      </div>
-
-      <div class="admin-box">
-        <h2>المنتجات</h2>
-        <div id="adminProductsList"></div>
-      </div>
-
-    </div>
-  </div>
+</div>
+</div>
 </section>
 
 <div id="overlay" class="overlay" onclick="closeCart()"></div>
 
 <aside id="cartPanel" class="cart-panel">
-
-  <div class="cart-head">
-    <h2>سلة المشتريات</h2>
-    <button class="close" onclick="closeCart()">×</button>
-  </div>
-
-  <div id="cartItems"></div>
-
-  <div id="cartSummary" class="hidden">
-
-    <div class="cart-total">
-      <span>السعر النهائي</span>
-      <span id="cartTotal">0.00 د.ك</span>
-    </div>
-
-    <button class="whatsapp" onclick="showCustomerForm()">
-      إتمام الطلب عبر واتساب
-    </button>
-
-    <div id="customerForm" class="customer-form">
-
-      <input id="customerName" placeholder="الاسم الكامل">
-      <input id="customerPhone" placeholder="رقم الهاتف">
-      <input id="customerAddress" placeholder="العنوان">
-
-      <textarea id="customerNote"
-                rows="3"
-                placeholder="ملاحظات إضافية"></textarea>
-
-      <button class="primary-btn"
-              style="width:100%"
-              onclick="sendOrder()">
-        إرسال الطلب
-      </button>
-
-    </div>
-
-  </div>
+<div class="cart-head"><h2>سلة المشتريات</h2><button class="close" onclick="closeCart()">×</button></div>
+<div id="cartItems"></div>
+<div id="cartSummary" class="hidden">
+<div class="cart-total"><span>السعر النهائي</span><span id="cartTotal">0.00 د.ك</span></div>
+<button class="whatsapp" onclick="showCustomerForm()">إتمام الطلب عبر واتساب</button>
+<div id="customerForm" class="customer-form">
+<input id="customerName" placeholder="الاسم الكامل">
+<input id="customerPhone" placeholder="رقم الهاتف">
+<input id="customerAddress" placeholder="العنوان">
+<textarea id="customerNote" rows="3" placeholder="ملاحظات إضافية"></textarea>
+<button class="primary-btn" style="width:100%" onclick="sendOrder()">إرسال الطلب</button>
+</div>
+</div>
 </aside>
 
 <script>
@@ -1144,7 +380,10 @@ let cart =
   JSON.parse(localStorage.getItem("refaeiCart"))
   || [];
 
-/* حفظ البيانات */
+let orders =
+  JSON.parse(localStorage.getItem("refaeiOrders"))
+  || [];
+
 function saveAll(){
 
   localStorage.setItem(
@@ -1166,9 +405,13 @@ function saveAll(){
     "refaeiCart",
     JSON.stringify(cart)
   );
+
+  localStorage.setItem(
+    "refaeiOrders",
+    JSON.stringify(orders)
+  );
 }
 
-/* حماية النصوص */
 function safe(text){
 
   return String(text ?? "")
@@ -1179,7 +422,6 @@ function safe(text){
     .replace(/'/g,"&#039;");
 }
 
-/* توحيد أسماء الأقسام */
 function normalizeText(value){
 
   return String(value ?? "")
@@ -1190,7 +432,6 @@ function normalizeText(value){
     .replace(/ة/g,"ه");
 }
 
-/* مقارنة أسماء الأقسام القديمة والجديدة */
 function sameCategory(first,second){
 
   const a = normalizeText(first);
@@ -1208,7 +449,6 @@ function sameCategory(first,second){
   return (aliases[a] || a) === (aliases[b] || b);
 }
 
-/* إصلاح بيانات الأقسام القديمة */
 function repairOldProductCategories(){
 
   products.forEach(product => {
@@ -1229,7 +469,6 @@ function repairOldProductCategories(){
   saveAll();
 }
 
-/* رمز القسم */
 function getCategoryEmoji(name){
 
   const text = String(name || "").toLowerCase();
@@ -1272,7 +511,6 @@ function getCategoryEmoji(name){
   return "🛍️";
 }
 
-/* بيانات الموقع */
 function renderSettings(){
 
   document.getElementById("topbarText").textContent =
@@ -1297,7 +535,6 @@ function renderSettings(){
     settings.footer;
 }
 
-/* عرض الأقسام */
 function renderCategories(){
 
   const list =
@@ -1311,7 +548,6 @@ function renderCategories(){
 
     return `
       <div class="category-card">
-
         <div class="category-placeholder">
           ${getCategoryEmoji(category.name)}
         </div>
@@ -1323,14 +559,12 @@ function renderCategories(){
         </button>
 
         <small>${count} منتجات</small>
-
       </div>
     `;
 
   }).join("");
 }
 
-/* عرض المنتجات */
 function renderProducts(list = products){
 
   const grid =
@@ -1359,13 +593,11 @@ function renderProducts(list = products){
       <article class="product">
 
         <div class="product-img">
-
           ${image}
 
           <span class="stock-badge ${stock <= 0 ? "out" : ""}">
             ${stock <= 0 ? "نفد المخزون" : "متبقي " + stock}
           </span>
-
         </div>
 
         <div class="product-info">
@@ -1399,7 +631,6 @@ function renderProducts(list = products){
   }).join("");
 }
 
-/* عرض الأقسام والمنتجات */
 function showShoppingContent(){
 
   document.querySelector(".categories-section")
@@ -1418,7 +649,6 @@ function showShoppingContent(){
     .scrollIntoView({behavior:"smooth"});
 }
 
-/* الرئيسية */
 function showStore(event){
 
   if(event){
@@ -1443,7 +673,6 @@ function showStore(event){
   });
 }
 
-/* صفحة الأقسام */
 function showCategoriesPage(event){
 
   event.preventDefault();
@@ -1466,7 +695,6 @@ function showCategoriesPage(event){
     .scrollIntoView({behavior:"smooth"});
 }
 
-/* صفحة المنتجات */
 function showProductsPage(event){
 
   event.preventDefault();
@@ -1493,7 +721,6 @@ function showProductsPage(event){
     .scrollIntoView({behavior:"smooth"});
 }
 
-/* صفحة عن المتجر */
 function showAboutPage(event){
 
   event.preventDefault();
@@ -1508,7 +735,6 @@ function showAboutPage(event){
     .scrollIntoView({behavior:"smooth"});
 }
 
-/* عرض منتجات القسم */
 function filterProducts(category){
 
   const selectedCategory =
@@ -1533,7 +759,6 @@ function filterProducts(category){
     .scrollIntoView({behavior:"smooth"});
 }
 
-/* عرض كل المنتجات */
 function showAllProducts(){
 
   document.querySelector(".categories-section")
@@ -1552,9 +777,11 @@ function showAllProducts(){
 }
 
 /* السلة */
+
 function addToCart(id){
 
-  const product = products.find(item => item.id == id);
+  const product =
+    products.find(item => item.id == id);
 
   if(!product || Number(product.stock) <= 0){
 
@@ -1562,7 +789,8 @@ function addToCart(id){
     return;
   }
 
-  const item = cart.find(item => item.id == id);
+  const item =
+    cart.find(item => item.id == id);
 
   if(item){
 
@@ -1591,8 +819,11 @@ function addToCart(id){
 
 function increaseQuantity(id){
 
-  const item = cart.find(item => item.id == id);
-  const product = products.find(item => item.id == id);
+  const item =
+    cart.find(item => item.id == id);
+
+  const product =
+    products.find(item => item.id == id);
 
   if(!item || !product){
     return;
@@ -1612,7 +843,8 @@ function increaseQuantity(id){
 
 function decreaseQuantity(id){
 
-  const item = cart.find(item => item.id == id);
+  const item =
+    cart.find(item => item.id == id);
 
   if(!item){
     return;
@@ -1621,7 +853,9 @@ function decreaseQuantity(id){
   item.quantity--;
 
   if(item.quantity <= 0){
-    cart = cart.filter(item => item.id != id);
+
+    cart =
+      cart.filter(item => item.id != id);
   }
 
   saveAll();
@@ -1630,7 +864,8 @@ function decreaseQuantity(id){
 
 function removeFromCart(id){
 
-  cart = cart.filter(item => item.id != id);
+  cart =
+    cart.filter(item => item.id != id);
 
   saveAll();
   renderCart();
@@ -1650,10 +885,11 @@ function renderCart(){
   const cartTotal =
     document.getElementById("cartTotal");
 
-  cartCount.textContent = cart.reduce(
-    (sum,item) => sum + Number(item.quantity || 0),
-    0
-  );
+  cartCount.textContent =
+    cart.reduce(
+      (sum,item) => sum + Number(item.quantity || 0),
+      0
+    );
 
   if(!cart.length){
 
@@ -1673,9 +909,14 @@ function renderCart(){
 
   cartItems.innerHTML = cart.map(item => {
 
-    const price = Number(item.price || 0);
-    const quantity = Number(item.quantity || 0);
-    const itemTotal = price * quantity;
+    const price =
+      Number(item.price || 0);
+
+    const quantity =
+      Number(item.quantity || 0);
+
+    const itemTotal =
+      price * quantity;
 
     total += itemTotal;
 
@@ -1683,7 +924,6 @@ function renderCart(){
       <div class="cart-item">
 
         <div>
-
           <h4>${safe(item.name)}</h4>
 
           <p>
@@ -1701,7 +941,6 @@ function renderCart(){
                   onclick="removeFromCart(${item.id})">
             حذف المنتج
           </button>
-
         </div>
 
         <strong>
@@ -1749,19 +988,216 @@ function showCustomerForm(){
     .classList.add("show");
 }
 
+/* التقارير */
+
+function saveOrderReport(order){
+
+  orders.unshift(order);
+
+  localStorage.setItem(
+    "refaeiOrders",
+    JSON.stringify(orders)
+  );
+}
+
+function renderReports(){
+
+  const summary =
+    document.getElementById("reportsSummary");
+
+  const tableBody =
+    document.getElementById("reportsTableBody");
+
+  if(!summary || !tableBody){
+    return;
+  }
+
+  const totalOrders =
+    orders.length;
+
+  const totalSales =
+    orders.reduce(
+      (sum,order) => sum + Number(order.total || 0),
+      0
+    );
+
+  const totalProducts =
+    orders.reduce(
+      (sum,order) => sum + Number(order.itemsCount || 0),
+      0
+    );
+
+  summary.innerHTML = `
+    <div class="report-stat">
+      <strong>عدد الطلبات</strong>
+      <span>${totalOrders}</span>
+    </div>
+
+    <div class="report-stat">
+      <strong>إجمالي المبيعات</strong>
+      <span>${totalSales.toFixed(2)} د.ك</span>
+    </div>
+
+    <div class="report-stat">
+      <strong>عدد المنتجات المباعة</strong>
+      <span>${totalProducts}</span>
+    </div>
+  `;
+
+  if(!orders.length){
+
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="6"
+            style="padding:20px;text-align:center;color:#927c6a">
+          لا توجد تقارير حتى الآن
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  tableBody.innerHTML =
+    orders.map(order => {
+
+      const itemsText =
+        (order.items || []).map(item =>
+          `${item.name} × ${item.quantity}`
+        ).join("، ");
+
+      return `
+        <tr>
+          <td>${safe(order.date)}</td>
+          <td>${safe(order.customerName)}</td>
+          <td>${safe(order.phone)}</td>
+          <td>${safe(order.address || "-")}</td>
+          <td>${safe(itemsText)}</td>
+          <td>
+            <strong>
+              ${Number(order.total || 0).toFixed(2)} د.ك
+            </strong>
+          </td>
+        </tr>
+      `;
+
+    }).join("");
+}
+
+function exportReportsToExcel(){
+
+  if(!orders.length){
+
+    alert("لا توجد تقارير لتصديرها");
+    return;
+  }
+
+  let csv = "\uFEFF";
+
+  csv += [
+    "التاريخ",
+    "اسم العميل",
+    "رقم الهاتف",
+    "العنوان",
+    "الملاحظات",
+    "المنتجات",
+    "عدد المنتجات",
+    "الإجمالي"
+  ].join(",") + "\n";
+
+  orders.forEach(order => {
+
+    const itemsText =
+      (order.items || []).map(item =>
+        `${item.name} x ${item.quantity}`
+      ).join(" | ");
+
+    const row = [
+      order.date,
+      order.customerName,
+      order.phone,
+      order.address || "",
+      order.note || "",
+      itemsText,
+      order.itemsCount || 0,
+      Number(order.total || 0).toFixed(2)
+    ].map(value =>
+      `"${String(value ?? "").replace(/"/g,'""')}"`
+    );
+
+    csv += row.join(",") + "\n";
+  });
+
+  const blob =
+    new Blob(
+      [csv],
+      {type:"text/csv;charset=utf-8;"}
+    );
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const link =
+    document.createElement("a");
+
+  link.href = url;
+
+  link.download =
+    "refaei-reports-" +
+    new Date().toISOString().slice(0,10) +
+    ".csv";
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  URL.revokeObjectURL(url);
+}
+
+function clearReports(){
+
+  if(!orders.length){
+
+    alert("لا توجد تقارير لمسحها");
+    return;
+  }
+
+  if(!confirm("هل أنت متأكد من مسح جميع التقارير؟")){
+
+    return;
+  }
+
+  orders = [];
+
+  localStorage.setItem(
+    "refaeiOrders",
+    JSON.stringify(orders)
+  );
+
+  renderReports();
+
+  alert("تم مسح التقارير");
+}
+
+/* إرسال الطلب */
+
 function sendOrder(){
 
   const name =
-    document.getElementById("customerName").value.trim();
+    document.getElementById("customerName")
+      .value.trim();
 
   const phone =
-    document.getElementById("customerPhone").value.trim();
+    document.getElementById("customerPhone")
+      .value.trim();
 
   const address =
-    document.getElementById("customerAddress").value.trim();
+    document.getElementById("customerAddress")
+      .value.trim();
 
   const note =
-    document.getElementById("customerNote").value.trim();
+    document.getElementById("customerNote")
+      .value.trim();
 
   if(!name || !phone){
 
@@ -1776,6 +1212,8 @@ function sendOrder(){
   }
 
   let total = 0;
+  let itemsCount = 0;
+  const reportItems = [];
 
   let message =
     "طلب جديد من متجر " +
@@ -1789,19 +1227,33 @@ function sendOrder(){
 
   cart.forEach(item => {
 
-    const product = products.find(
-      product => product.id == item.id
-    );
+    const product =
+      products.find(product =>
+        product.id == item.id
+      );
 
     if(!product){
       return;
     }
 
-    const quantity = Number(item.quantity);
+    const quantity =
+      Number(item.quantity);
+
+    const price =
+      Number(product.price);
+
     const itemTotal =
-      quantity * Number(product.price);
+      quantity * price;
 
     total += itemTotal;
+    itemsCount += quantity;
+
+    reportItems.push({
+      name:product.name,
+      quantity:quantity,
+      price:price,
+      total:itemTotal
+    });
 
     message +=
       "- " + product.name +
@@ -1815,6 +1267,20 @@ function sendOrder(){
     "\nالسعر النهائي: " +
     total.toFixed(2) +
     " د.ك";
+
+  const orderReport = {
+    id:Date.now(),
+    date:new Date().toLocaleString("ar-KW"),
+    customerName:name,
+    phone:phone,
+    address:address,
+    note:note,
+    items:reportItems,
+    itemsCount:itemsCount,
+    total:total
+  };
+
+  saveOrderReport(orderReport);
 
   window.open(
     "https://wa.me/" +
@@ -1841,6 +1307,7 @@ function sendOrder(){
 }
 
 /* الإدارة */
+
 function showAdmin(event){
 
   if(event){
@@ -1867,13 +1334,15 @@ function showAdmin(event){
     renderCategorySelect();
     renderAdminCategories();
     renderAdminProducts();
+    renderReports();
   }
 }
 
 function loginAdmin(){
 
   const password =
-    document.getElementById("adminPassword").value;
+    document.getElementById("adminPassword")
+      .value;
 
   const notice =
     document.getElementById("loginNotice");
@@ -1924,32 +1393,33 @@ function renderAdminCategories(){
   const list =
     document.getElementById("adminCategoriesList");
 
-  list.innerHTML = categories.map(category => `
+  list.innerHTML =
+    categories.map(category => `
 
-    <div style="border:1px solid var(--border);padding:10px;margin-bottom:8px">
+      <div style="border:1px solid var(--border);padding:10px;margin-bottom:8px">
 
-      <strong>
-        ${getCategoryEmoji(category.name)}
-        ${safe(category.name)}
-      </strong>
+        <strong>
+          ${getCategoryEmoji(category.name)}
+          ${safe(category.name)}
+        </strong>
 
-      <div style="margin-top:8px">
+        <div style="margin-top:8px">
 
-        <button class="edit-btn"
-                onclick="editCategory(${category.id})">
-          تعديل
-        </button>
+          <button class="edit-btn"
+                  onclick="editCategory(${category.id})">
+            تعديل
+          </button>
 
-        <button class="delete-btn"
-                onclick="deleteCategory(${category.id})">
-          حذف
-        </button>
+          <button class="delete-btn"
+                  onclick="deleteCategory(${category.id})">
+            حذف
+          </button>
+
+        </div>
 
       </div>
 
-    </div>
-
-  `).join("");
+    `).join("");
 }
 
 function saveCategory(event){
@@ -1957,10 +1427,12 @@ function saveCategory(event){
   event.preventDefault();
 
   const id =
-    document.getElementById("editCategoryId").value;
+    document.getElementById("editCategoryId")
+      .value;
 
   const name =
-    document.getElementById("categoryName").value.trim();
+    document.getElementById("categoryName")
+      .value.trim();
 
   if(!name){
     return;
@@ -1973,9 +1445,11 @@ function saveCategory(event){
 
     if(category){
 
-      const oldName = category.name;
+      const oldName =
+        category.name;
 
-      category.name = name;
+      category.name =
+        name;
 
       products.forEach(product => {
 
@@ -2050,9 +1524,10 @@ function deleteCategory(id){
     return;
   }
 
-  const used = products.some(product =>
-    sameCategory(product.category,category.name)
-  );
+  const used =
+    products.some(product =>
+      sameCategory(product.category,category.name)
+    );
 
   if(used){
 
@@ -2074,10 +1549,14 @@ function readFileAsDataURL(file){
 
   return new Promise((resolve,reject) => {
 
-    const reader = new FileReader();
+    const reader =
+      new FileReader();
 
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(reader.error);
+    reader.onload =
+      () => resolve(reader.result);
+
+    reader.onerror =
+      () => reject(reader.error);
 
     reader.readAsDataURL(file);
   });
@@ -2088,10 +1567,12 @@ async function saveProduct(event){
   event.preventDefault();
 
   const id =
-    document.getElementById("editProductId").value;
+    document.getElementById("editProductId")
+      .value;
 
   const file =
-    document.getElementById("productImage").files[0];
+    document.getElementById("productImage")
+      .files[0];
 
   let image = "";
 
@@ -2113,29 +1594,36 @@ async function saveProduct(event){
       return;
     }
 
-    image = await readFileAsDataURL(file);
+    image =
+      await readFileAsDataURL(file);
   }
 
   const data = {
-    name:document.getElementById("productName")
-      .value.trim(),
+    name:
+      document.getElementById("productName")
+        .value.trim(),
 
-    category:normalizeText(
-      document.getElementById("productCategory").value
-    ),
+    category:
+      document.getElementById("productCategory")
+        .value,
 
-    price:Number(
-      document.getElementById("productPrice").value
-    ),
+    price:
+      Number(
+        document.getElementById("productPrice")
+          .value
+      ),
 
-    stock:Number(
-      document.getElementById("productStock").value
-    ),
+    stock:
+      Number(
+        document.getElementById("productStock")
+          .value
+      ),
 
     image:image,
 
-    description:document.getElementById("productDescription")
-      .value.trim()
+    description:
+      document.getElementById("productDescription")
+        .value.trim()
   };
 
   if(id){
@@ -2279,61 +1767,65 @@ function renderAdminProducts(){
 
   if(!products.length){
 
-    list.innerHTML = "<p>لا توجد منتجات</p>";
+    list.innerHTML =
+      "<p>لا توجد منتجات</p>";
+
     return;
   }
 
-  list.innerHTML = products.map(product => `
+  list.innerHTML =
+    products.map(product => `
 
-    <div class="admin-row">
+      <div class="admin-row">
 
-      <div class="admin-placeholder">
+        <div class="admin-placeholder">
 
-        ${
-          product.image
-          ? `<img src="${product.image}" alt="${safe(product.name)}">`
-          : getCategoryEmoji(product.category)
-        }
+          ${
+            product.image
+            ? `<img src="${product.image}" alt="${safe(product.name)}">`
+            : getCategoryEmoji(product.category)
+          }
+
+        </div>
+
+        <div>
+
+          <h3>${safe(product.name)}</h3>
+
+          <p>
+            القسم: ${safe(product.category)}
+            <br>
+            السعر: ${Number(product.price).toFixed(2)} د.ك
+            <br>
+            الكمية: ${Number(product.stock) || 0}
+          </p>
+
+        </div>
+
+        <div class="admin-actions">
+
+          <button class="edit-btn"
+                  onclick="editProduct(${product.id})">
+            تعديل
+          </button>
+
+          <button class="delete-btn"
+                  onclick="deleteProduct(${product.id})">
+            حذف
+          </button>
+
+        </div>
 
       </div>
 
-      <div>
-
-        <h3>${safe(product.name)}</h3>
-
-        <p>
-          القسم: ${safe(product.category)}
-          <br>
-          السعر: ${Number(product.price).toFixed(2)} د.ك
-          <br>
-          الكمية: ${Number(product.stock) || 0}
-        </p>
-
-      </div>
-
-      <div class="admin-actions">
-
-        <button class="edit-btn"
-                onclick="editProduct(${product.id})">
-          تعديل
-        </button>
-
-        <button class="delete-btn"
-                onclick="deleteProduct(${product.id})">
-          حذف
-        </button>
-
-      </div>
-
-    </div>
-
-  `).join("");
+    `).join("");
 }
 
 document.getElementById("productImage")
   .addEventListener("change",function(){
 
-    const file = this.files[0];
+    const file =
+      this.files[0];
 
     const preview =
       document.getElementById("productImagePreview");
@@ -2352,13 +1844,18 @@ document.getElementById("productImage")
       return;
     }
 
-    const reader = new FileReader();
+    const reader =
+      new FileReader();
 
-    reader.onload = function(event){
+    reader.onload =
+      function(event){
 
-      preview.src = event.target.result;
-      preview.style.display = "block";
-    };
+        preview.src =
+          event.target.result;
+
+        preview.style.display =
+          "block";
+      };
 
     reader.readAsDataURL(file);
   });
@@ -2372,9 +1869,11 @@ function checkPage(){
   }
 }
 
-window.addEventListener("hashchange",checkPage);
+window.addEventListener(
+  "hashchange",
+  checkPage
+);
 
-/* تشغيل الموقع */
 repairOldProductCategories();
 
 renderSettings();
