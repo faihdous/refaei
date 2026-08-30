@@ -2,18 +2,19 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>REFAEI</title>
 
 <style>
 :root{
   --bg:#f3efe7;
   --brown:#542d1b;
-  --brown2:#79543d;
+  --brown-light:#79543d;
   --gold:#b6965b;
-  --red:#bd3d36;
   --green:#198754;
+  --red:#bd3d36;
   --border:#e2d9cc;
+  --white:#fff;
 }
 
 *{
@@ -33,7 +34,10 @@ body{
   line-height:1.8;
 }
 
-button,input,textarea,select{
+button,
+input,
+textarea,
+select{
   font:inherit;
 }
 
@@ -113,8 +117,8 @@ nav a{
 
 .nav-actions{
   display:flex;
-  align-items:center;
   gap:8px;
+  align-items:center;
 }
 
 .admin-btn,
@@ -143,14 +147,14 @@ nav a{
   margin-right:3px;
 }
 
-/* الواجهة الرئيسية */
+/* الرئيسية */
 .hero{
-  min-height:650px;
+  min-height:620px;
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
-  padding:25px 0 65px;
+  padding:30px 0 65px;
 }
 
 .hero-content{
@@ -159,31 +163,27 @@ nav a{
 
 .logo{
   width:min(260px,68vw);
-  height:330px;
-  margin:0 auto 5px;
+  height:320px;
+  margin:0 auto 8px;
   display:flex;
-  align-items:center;
   justify-content:center;
+  align-items:center;
 }
 
 .logo img{
   width:100%;
   height:100%;
   object-fit:contain;
-  display:block;
 }
 
 .hero h1{
   color:var(--brown);
-  font:normal 36px Georgia,serif;
-  line-height:1.3;
-  margin-top:0;
+  font:normal 38px Georgia,serif;
 }
 
 .hero p{
-  color:var(--brown2);
-  margin:5px auto 15px;
-  line-height:1.7;
+  color:var(--brown-light);
+  margin:8px auto 18px;
   font-size:16px;
 }
 
@@ -196,13 +196,9 @@ nav a{
   padding:11px 25px;
 }
 
-.main-btn{
-  margin-top:5px;
-}
-
 .main-btn:hover,
 .primary-btn:hover{
-  background:var(--brown2);
+  background:var(--brown-light);
 }
 
 /* الأقسام */
@@ -222,7 +218,7 @@ nav a{
 
 .heading{
   text-align:center;
-  margin-bottom:25px;
+  margin-bottom:26px;
 }
 
 .heading small{
@@ -255,12 +251,11 @@ nav a{
 }
 
 .category-placeholder{
-  width:100%;
   height:100px;
   display:grid;
   place-items:center;
   background:#e6dbcc;
-  font-size:35px;
+  font-size:38px;
 }
 
 .category-card button{
@@ -302,17 +297,15 @@ nav a{
   border:1px solid var(--border);
   display:flex;
   flex-direction:column;
-  height:100%;
   min-width:0;
   overflow:hidden;
 }
 
-/* مساحة الصورة ثابتة حتى لا تغطي التفاصيل */
 .product-img{
   width:100%;
-  height:205px;
-  min-height:205px;
-  flex:0 0 205px;
+  height:410px;
+  min-height:410px;
+  flex:0 0 410px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -334,13 +327,13 @@ nav a{
 
 .stock-badge{
   position:absolute;
-  top:8px;
-  right:8px;
+  top:15px;
+  right:15px;
   background:var(--green);
   color:#fff;
-  padding:3px 7px;
-  border-radius:3px;
-  font-size:11px;
+  padding:5px 9px;
+  border-radius:5px;
+  font-size:13px;
 }
 
 .stock-badge.out{
@@ -350,34 +343,30 @@ nav a{
 .product-info{
   position:relative;
   z-index:2;
-  flex:1 1 auto;
-  min-height:205px;
-  padding:13px;
+  min-height:235px;
+  padding:16px;
   background:#fff;
   display:flex;
   flex-direction:column;
-  overflow:hidden;
 }
 
 .product-info small{
-  display:block;
   color:var(--gold);
   margin-bottom:3px;
 }
 
 .product-info h3{
   color:var(--brown);
-  font-size:16px;
+  font-size:19px;
   line-height:1.6;
-  margin:0 0 5px;
+  margin-bottom:5px;
 }
 
 .product-info p{
   color:#927c6a;
-  font-size:12px;
+  font-size:13px;
   line-height:1.8;
-  min-height:45px;
-  margin:0;
+  min-height:50px;
 }
 
 .product-bottom{
@@ -386,11 +375,12 @@ nav a{
   align-items:flex-end;
   gap:8px;
   margin-top:auto;
-  padding-top:12px;
+  padding-top:15px;
 }
 
 .price{
   color:var(--brown);
+  font-size:21px;
   font-weight:bold;
   white-space:nowrap;
 }
@@ -399,16 +389,17 @@ nav a{
   border:0;
   background:var(--brown);
   color:#fff;
-  padding:8px 10px;
-  border-radius:3px;
-  font-size:12px;
+  padding:10px 14px;
+  border-radius:4px;
+  font-size:13px;
 }
 
 .add-btn:disabled{
   background:#aaa;
+  cursor:not-allowed;
 }
 
-/* عن المتجر والفوتر */
+/* عن المتجر */
 .about{
   background:var(--brown);
   color:#fff;
@@ -566,7 +557,7 @@ footer{
   background:#fff;
 }
 
-/* لوحة الإدارة */
+/* الإدارة */
 .admin-page{
   display:none;
   min-height:700px;
@@ -604,7 +595,7 @@ footer{
   width:100%;
   border:1px solid var(--border);
   padding:10px;
-  margin-bottom:9px;
+  margin-bottom:10px;
   border-radius:4px;
   background:#fff;
 }
@@ -621,8 +612,8 @@ footer{
 
 .admin-top{
   display:flex;
-  align-items:center;
   justify-content:space-between;
+  align-items:center;
   margin-bottom:20px;
 }
 
@@ -650,7 +641,7 @@ footer{
 
 .admin-row{
   display:grid;
-  grid-template-columns:80px 1fr auto;
+  grid-template-columns:90px 1fr auto;
   gap:12px;
   align-items:center;
   border:1px solid var(--border);
@@ -659,12 +650,19 @@ footer{
 }
 
 .admin-placeholder{
-  width:80px;
-  height:80px;
+  width:90px;
+  height:90px;
   display:grid;
   place-items:center;
   background:#e6dbcc;
   font-size:30px;
+  overflow:hidden;
+}
+
+.admin-placeholder img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
 }
 
 .admin-row h3{
@@ -682,8 +680,19 @@ footer{
   gap:5px;
 }
 
+.product-image-preview{
+  display:none;
+  width:180px;
+  height:180px;
+  object-fit:contain;
+  margin:5px 0 15px;
+  padding:5px;
+  border:1px solid var(--border);
+  background:#f4eee5;
+}
+
 /* الجوال */
-@media(max-width:900px){
+@media(max-width:1000px){
   nav{
     display:none;
   }
@@ -710,14 +719,12 @@ footer{
   }
 
   .hero{
-    min-height:570px;
-    padding-top:15px;
+    min-height:560px;
   }
 
   .logo{
     width:230px;
-    height:285px;
-    margin-bottom:5px;
+    height:280px;
   }
 
   .hero h1{
@@ -733,33 +740,40 @@ footer{
   }
 
   .product-img{
-    height:160px;
-    min-height:160px;
-    flex-basis:160px;
+    height:250px;
+    min-height:250px;
+    flex-basis:250px;
   }
 
   .product-info{
-    min-height:220px;
-    padding:9px;
+    min-height:245px;
+    padding:10px;
+  }
+
+  .product-info h3{
+    font-size:16px;
   }
 
   .product-bottom{
     display:block;
-    margin-top:auto;
+  }
+
+  .price{
+    display:block;
+    margin-bottom:8px;
   }
 
   .add-btn{
     width:100%;
-    margin-top:8px;
   }
 
   .admin-row{
-    grid-template-columns:60px 1fr;
+    grid-template-columns:65px 1fr;
   }
 
   .admin-placeholder{
-    width:60px;
-    height:60px;
+    width:65px;
+    height:65px;
   }
 
   .admin-actions{
@@ -896,7 +910,7 @@ footer{
         <div>
           <h2>لوحة الإدارة</h2>
           <p style="color:#927c6a;font-size:13px">
-            تعديل المنتجات والأسعار والكميات
+            إضافة وتعديل المنتجات والأقسام والصور والكميات
           </p>
         </div>
 
@@ -958,9 +972,14 @@ footer{
                  min="0"
                  required>
 
-          <label>رابط صورة المنتج</label>
+          <label>إرفاق صورة المنتج</label>
           <input id="productImage"
-                 placeholder="images/product1.jpg">
+                 type="file"
+                 accept="image/*">
+
+          <img id="productImagePreview"
+               class="product-image-preview"
+               alt="معاينة صورة المنتج">
 
           <label>تفاصيل المنتج</label>
           <textarea id="productDescription"
@@ -982,7 +1001,7 @@ footer{
       </div>
 
       <div class="admin-box">
-        <h2>المنتجات والكميات</h2>
+        <h2>المنتجات</h2>
         <div id="adminProductsList"></div>
       </div>
 
@@ -1059,7 +1078,7 @@ const defaultProducts=[
     category:"أقمشة",
     price:18,
     stock:0,
-    image:"images/product1.jpg",
+    image:"",
     description:"قماش فاخر بخامة ناعمة ومظهر أنيق."
   },
   {
@@ -1068,7 +1087,7 @@ const defaultProducts=[
     category:"أقمشة",
     price:22,
     stock:2,
-    image:"images/product2.jpg",
+    image:"",
     description:"خامة ناعمة مناسبة للمناسبات والتفصيل."
   },
   {
@@ -1077,7 +1096,7 @@ const defaultProducts=[
     category:"شالات",
     price:25,
     stock:4,
-    image:"images/product3.jpg",
+    image:"",
     description:"شال كشميري ناعم بتصميم راقٍ."
   },
   {
@@ -1086,22 +1105,22 @@ const defaultProducts=[
     category:"مسابيح",
     price:12,
     stock:0,
-    image:"images/product4.jpg",
+    image:"",
     description:"مسباح بتفاصيل طبيعية ولمسة تراثية."
   }
 ];
 
 let settings=JSON.parse(
   localStorage.getItem("refaeiSettings")
-)||defaultSettings;
+)||{...defaultSettings};
 
 let categories=JSON.parse(
   localStorage.getItem("refaeiCategories")
-)||defaultCategories;
+)||[...defaultCategories];
 
 let products=JSON.parse(
   localStorage.getItem("refaeiProducts")
-)||defaultProducts;
+)||[...defaultProducts];
 
 let cart=JSON.parse(
   localStorage.getItem("refaeiCart")
@@ -1187,12 +1206,8 @@ function renderProducts(list=products){
 
     const stock=Number(product.stock)||0;
 
-    /*
-      الصورة هنا داخل product-img فقط،
-      والتفاصيل داخل product-info منفصلة تمامًا
-    */
     const image=product.image
-      ? `<img src="${safe(product.image)}"
+      ? `<img src="${product.image}"
                alt="${safe(product.name)}"
                onerror="this.style.display='none'">`
       : getCategoryEmoji(product.category);
@@ -1211,9 +1226,7 @@ function renderProducts(list=products){
         <div class="product-info">
 
           <small>${safe(product.category)}</small>
-
           <h3>${safe(product.name)}</h3>
-
           <p>${safe(product.description)}</p>
 
           <div class="product-bottom">
@@ -1229,7 +1242,6 @@ function renderProducts(list=products){
             </button>
 
           </div>
-
         </div>
 
       </article>
@@ -1483,6 +1495,12 @@ function closeCart(){
 }
 
 function showCustomerForm(){
+
+  if(!cart.length){
+    alert("السلة فارغة");
+    return;
+  }
+
   customerForm.classList.add("show");
 }
 
@@ -1499,13 +1517,14 @@ function sendOrder(){
   }
 
   let total=0;
-  let message="طلب جديد من متجر "+settings.brandName+"\n\n";
 
-  message+="اسم العميل: "+name+"\n";
-  message+="رقم الهاتف: "+phone+"\n";
-  message+="العنوان: "+address+"\n";
-  message+="ملاحظات: "+note+"\n\n";
-  message+="المنتجات:\n";
+  let message=
+    "طلب جديد من متجر "+settings.brandName+"\n\n"+
+    "اسم العميل: "+name+"\n"+
+    "رقم الهاتف: "+phone+"\n"+
+    "العنوان: "+address+"\n"+
+    "ملاحظات: "+note+"\n\n"+
+    "المنتجات:\n";
 
   cart.forEach(item=>{
 
@@ -1533,11 +1552,6 @@ function sendOrder(){
     "?text="+encodeURIComponent(message),
     "_blank"
   );
-
-  cart=[];
-  saveAll();
-  renderCart();
-  closeCart();
 }
 
 /* الإدارة */
@@ -1555,6 +1569,7 @@ function showAdmin(event){
   adminDashboard.classList.toggle("hidden",!logged);
 
   if(logged){
+
     renderCategorySelect();
     renderAdminCategories();
     renderAdminProducts();
@@ -1569,6 +1584,7 @@ function loginAdmin(){
     return;
   }
 
+  loginNotice.textContent="";
   sessionStorage.setItem("refaeiAdmin","true");
   showAdmin();
 }
@@ -1695,7 +1711,8 @@ function deleteCategory(id){
   );
 
   if(used){
-    alert("احذف منتجات القسم أولًا");
+
+    alert("لا يمكن حذف القسم لأنه يحتوي على منتجات");
     return;
   }
 
@@ -1707,18 +1724,63 @@ function deleteCategory(id){
   renderAdminCategories();
 }
 
-function saveProduct(event){
+/* تحويل الصورة إلى نص حتى يتم حفظها */
+function readFileAsDataURL(file){
+
+  return new Promise((resolve,reject)=>{
+
+    const reader=new FileReader();
+
+    reader.onload=function(){
+      resolve(reader.result);
+    };
+
+    reader.onerror=function(){
+      reject(reader.error);
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+/* حفظ المنتج مع الصورة */
+async function saveProduct(event){
 
   event.preventDefault();
 
   const id=editProductId.value;
+  const file=productImage.files[0];
+
+  let oldImage="";
+
+  if(id){
+
+    const oldProduct=products.find(item=>item.id==id);
+
+    if(oldProduct){
+      oldImage=oldProduct.image||"";
+    }
+  }
+
+  let image=oldImage;
+
+  if(file){
+
+    if(!file.type.startsWith("image/")){
+
+      alert("الملف المختار ليس صورة");
+      return;
+    }
+
+    image=await readFileAsDataURL(file);
+  }
 
   const data={
     name:productName.value.trim(),
     category:productCategory.value,
     price:Number(productPrice.value),
     stock:Number(productStock.value),
-    image:productImage.value.trim(),
+    image:image,
     description:productDescription.value.trim()
   };
 
@@ -1726,7 +1788,9 @@ function saveProduct(event){
 
     const product=products.find(item=>item.id==id);
 
-    if(product) Object.assign(product,data);
+    if(product){
+      Object.assign(product,data);
+    }
 
   }else{
 
@@ -1737,12 +1801,14 @@ function saveProduct(event){
   }
 
   saveAll();
+
   renderProducts();
   renderCategories();
   renderAdminProducts();
+
   cancelProductEdit();
 
-  alert("تم حفظ المنتج");
+  alert("تم حفظ المنتج والصورة بنجاح");
 }
 
 function editProduct(id){
@@ -1756,8 +1822,19 @@ function editProduct(id){
   productCategory.value=product.category;
   productPrice.value=product.price;
   productStock.value=product.stock;
-  productImage.value=product.image||"";
   productDescription.value=product.description;
+  productImage.value="";
+
+  if(product.image){
+
+    productImagePreview.src=product.image;
+    productImagePreview.style.display="block";
+
+  }else{
+
+    productImagePreview.src="";
+    productImagePreview.style.display="none";
+  }
 
   cancelProductBtn.classList.remove("hidden");
   productSaveBtn.textContent="حفظ تعديل المنتج";
@@ -1770,8 +1847,11 @@ function cancelProductEdit(){
   productCategory.value="";
   productPrice.value="";
   productStock.value="";
-  productImage.value="";
   productDescription.value="";
+  productImage.value="";
+
+  productImagePreview.src="";
+  productImagePreview.style.display="none";
 
   cancelProductBtn.classList.add("hidden");
   productSaveBtn.textContent="إضافة المنتج";
@@ -1785,6 +1865,7 @@ function deleteProduct(id){
   cart=cart.filter(item=>item.id!=id);
 
   saveAll();
+
   renderProducts();
   renderCategories();
   renderCart();
@@ -1804,12 +1885,14 @@ function renderAdminProducts(){
     <div class="admin-row">
 
       <div class="admin-placeholder">
-        ${product.image
-          ? `<img src="${safe(product.image)}"
-                   style="width:100%;height:100%;object-fit:contain"
-                   onerror="this.style.display='none'">`
+
+        ${
+          product.image
+          ? `<img src="${product.image}"
+                  alt="${safe(product.name)}">`
           : getCategoryEmoji(product.category)
         }
+
       </div>
 
       <div>
@@ -1842,6 +1925,36 @@ function renderAdminProducts(){
 
   `).join("");
 }
+
+/* معاينة الصورة قبل الحفظ */
+productImage.addEventListener("change",function(){
+
+  const file=this.files[0];
+
+  if(!file){
+
+    productImagePreview.src="";
+    productImagePreview.style.display="none";
+    return;
+  }
+
+  if(!file.type.startsWith("image/")){
+
+    alert("اختر ملف صورة فقط");
+    this.value="";
+    return;
+  }
+
+  const reader=new FileReader();
+
+  reader.onload=function(event){
+
+    productImagePreview.src=event.target.result;
+    productImagePreview.style.display="block";
+  };
+
+  reader.readAsDataURL(file);
+});
 
 function checkPage(){
 
