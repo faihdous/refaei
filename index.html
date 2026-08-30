@@ -36,10 +36,7 @@ body{
   line-height:1.8;
 }
 
-button,
-input,
-textarea,
-select{
+button,input,textarea,select{
   font-family:inherit;
 }
 
@@ -166,24 +163,16 @@ nav a:hover{
 .logo{
   width:min(360px,82vw);
   height:470px;
-  border:0;
-  border-radius:0;
   overflow:hidden;
   display:grid;
   place-items:center;
   margin:0 auto 12px;
-  background:transparent;
 }
 
 .logo img{
   width:100%;
   height:100%;
   object-fit:contain;
-  display:block;
-}
-
-.hero h1{
-  display:none;
 }
 
 .hero p{
@@ -415,7 +404,6 @@ nav a:hover{
   background:var(--brown);
   color:#fff;
   text-align:center;
-  scroll-margin-top:85px;
 }
 
 .about h2{
@@ -436,7 +424,6 @@ footer{
   font-size:13px;
 }
 
-/* السلة */
 .overlay{
   position:fixed;
   inset:0;
@@ -537,7 +524,7 @@ footer{
   padding-top:13px;
   margin-top:15px;
   color:var(--brown);
-  font-size:18px;
+  font-size:17px;
   font-weight:bold;
 }
 
@@ -581,7 +568,6 @@ footer{
   display:block;
 }
 
-/* لوحة الإدارة */
 .admin-page{
   display:none;
   min-height:700px;
@@ -705,23 +691,6 @@ footer{
   gap:5px;
 }
 
-.stock-number{
-  display:inline-block;
-  padding:2px 8px;
-  border-radius:3px;
-  color:#fff;
-  background:var(--green);
-  font-size:12px;
-}
-
-.stock-number.low{
-  background:#d88a20;
-}
-
-.stock-number.empty{
-  background:var(--red);
-}
-
 .category-admin{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -778,7 +747,6 @@ footer{
   display:block;
 }
 
-/* التقارير */
 .report-summary{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -836,7 +804,6 @@ footer{
 .product-report{
   display:block;
   margin-bottom:5px;
-  white-space:normal;
 }
 
 @media(max-width:900px){
@@ -878,10 +845,6 @@ footer{
   .product-info{
     padding:10px;
     min-height:215px;
-  }
-
-  .product-info h3{
-    font-size:14px;
   }
 
   .product-bottom{
@@ -936,34 +899,19 @@ footer{
     </a>
 
     <nav>
-      <a href="#home" onclick="showStore(event)">
-        الرئيسية
-      </a>
-
-      <a href="#categories" onclick="showCategoriesPage(event)">
-        الأقسام
-      </a>
-
-      <a href="#products" onclick="showProductsPage(event)">
-        المنتجات
-      </a>
-
-      <a href="#about" onclick="showAboutPage(event)">
-        عن المتجر
-      </a>
+      <a href="#home" onclick="showStore(event)">الرئيسية</a>
+      <a href="#categories" onclick="showCategoriesPage(event)">الأقسام</a>
+      <a href="#products" onclick="showProductsPage(event)">المنتجات</a>
+      <a href="#about" onclick="showAboutPage(event)">عن المتجر</a>
     </nav>
 
     <div class="nav-actions">
-
-      <a href="#admin" class="admin-btn">
-        الإدارة
-      </a>
+      <a href="#admin" class="admin-btn">الإدارة</a>
 
       <button class="cart-btn" onclick="openCart()">
         السلة
         <span class="cart-count" id="cartCount">0</span>
       </button>
-
     </div>
 
   </div>
@@ -972,20 +920,14 @@ footer{
 <main id="storePage">
 
   <section class="hero" id="home">
-
     <div class="hero-content">
 
-      <!-- يجب أن تكون الصورة في نفس مجلد index.html -->
       <div class="logo">
-        <img
-          src="logo.png"
-          alt="REFAEI"
-          onerror="this.style.display='none'"
-        >
+        <img src="logo.png" alt="REFAEI"
+             onerror="this.style.display='none'">
       </div>
 
       <h1 id="heroTitle"></h1>
-
       <p id="heroDescription"></p>
 
       <button class="main-btn" onclick="showShoppingContent()">
@@ -993,11 +935,9 @@ footer{
       </button>
 
     </div>
-
   </section>
 
   <section class="section categories-section" id="categories">
-
     <div class="container">
 
       <div class="heading">
@@ -1009,17 +949,15 @@ footer{
       <div class="categories" id="categoriesList"></div>
 
       <div class="center">
-        <button class="all-btn" onclick="showProductsPage()">
+        <button class="all-btn" onclick="showAllProducts()">
           عرض كل المنتجات
         </button>
       </div>
 
     </div>
-
   </section>
 
   <section class="section products-section" id="products">
-
     <div class="container">
 
       <div class="heading">
@@ -1031,70 +969,51 @@ footer{
       <div class="products" id="productsGrid"></div>
 
     </div>
-
   </section>
 
   <section class="section about" id="about">
-
     <div class="container">
-
       <h2 id="aboutTitle"></h2>
-
       <p id="aboutText"></p>
-
     </div>
-
   </section>
 
   <footer id="footerText"></footer>
 
 </main>
 
-<!-- الإدارة -->
 <section id="adminPage" class="admin-page">
-
   <div class="container">
 
     <div id="adminLogin" class="admin-login">
-
       <h2>تسجيل دخول الإدارة</h2>
 
-      <input
-        type="password"
-        id="adminPassword"
-        placeholder="كلمة المرور"
-      >
+      <input type="password" id="adminPassword"
+             placeholder="كلمة المرور">
 
       <button class="primary-btn" onclick="loginAdmin()">
         دخول
       </button>
 
       <div class="notice" id="loginNotice"></div>
-
     </div>
 
     <div id="adminDashboard" class="hidden">
 
       <div class="admin-top">
-
         <div>
-          <h2 style="color:var(--brown)">
-            لوحة الإدارة
-          </h2>
-
+          <h2 style="color:var(--brown)">لوحة الإدارة</h2>
           <p style="color:#927c6a;font-size:13px">
-            إدارة محتوى المتجر والمنتجات والتقارير
+            إدارة محتوى المتجر والمنتجات والطلبات
           </p>
         </div>
 
         <button class="logout" onclick="logoutAdmin()">
           تسجيل الخروج
         </button>
-
       </div>
 
       <div class="admin-box">
-
         <h2>تعديل محتوى الصفحة</h2>
 
         <form class="settings-form" onsubmit="saveStoreSettings(event)">
@@ -1121,7 +1040,8 @@ footer{
           <input id="settingFooter" required>
 
           <label>رقم الواتساب مع مفتاح الدولة</label>
-          <input id="settingWhatsapp" placeholder="96566771506" required>
+          <input id="settingWhatsapp"
+                 placeholder="96566771506" required>
 
           <button class="primary-btn">
             حفظ محتوى الصفحة
@@ -1132,11 +1052,9 @@ footer{
           </div>
 
         </form>
-
       </div>
 
       <div class="admin-box">
-
         <h2>ملخص المخزون</h2>
 
         <div style="
@@ -1165,12 +1083,10 @@ footer{
           </div>
 
         </div>
-
       </div>
 
       <div class="admin-box">
-
-        <h2>تقارير المشتريات</h2>
+        <h2>تقارير الطلبات</h2>
 
         <div class="report-summary">
 
@@ -1181,54 +1097,46 @@ footer{
 
           <div class="report-card">
             <strong id="totalPurchasedItems">0</strong>
-            <small>عدد القطع المباعة</small>
+            <small>عدد القطع المطلوبة</small>
           </div>
 
           <div class="report-card">
-            <strong id="totalSalesAmount">0 د.ك</strong>
+            <strong id="totalSalesAmount">يحددها البائع</strong>
             <small>إجمالي المبيعات</small>
           </div>
 
         </div>
 
         <div class="report-actions">
-
-          <button class="primary-btn" onclick="exportPurchasesToExcel()">
+          <button class="primary-btn"
+                  onclick="exportPurchasesToExcel()">
             تحميل تقرير Excel
           </button>
 
-          <button class="all-btn" onclick="clearPurchaseReports()">
+          <button class="all-btn"
+                  onclick="clearPurchaseReports()">
             حذف التقارير
           </button>
-
         </div>
 
         <div class="report-table-wrapper">
-
           <table class="report-table">
-
             <thead>
               <tr>
                 <th>اسم المشتري</th>
                 <th>رقم المشتري</th>
-                <th>المنتجات المشتراة</th>
-                <th>سعر المنتجات</th>
+                <th>المنتجات المطلوبة</th>
+                <th>السعر النهائي</th>
               </tr>
             </thead>
 
             <tbody id="purchaseReportsList"></tbody>
-
           </table>
-
         </div>
-
       </div>
 
       <div class="admin-box">
-
-        <h2 id="categoryFormTitle">
-          إضافة قسم جديد
-        </h2>
+        <h2 id="categoryFormTitle">إضافة قسم جديد</h2>
 
         <form class="admin-form" onsubmit="saveCategory(event)">
 
@@ -1244,13 +1152,11 @@ footer{
             إضافة القسم
           </button>
 
-          <button
-            type="button"
-            class="all-btn hidden"
-            id="cancelCategoryBtn"
-            onclick="cancelCategoryEdit()"
-            style="width:100%;margin-top:8px"
-          >
+          <button type="button"
+                  class="all-btn hidden"
+                  id="cancelCategoryBtn"
+                  onclick="cancelCategoryEdit()"
+                  style="width:100%;margin-top:8px">
             إلغاء التعديل
           </button>
 
@@ -1259,16 +1165,11 @@ footer{
         <hr>
 
         <h2>الأقسام الحالية</h2>
-
         <div class="category-admin" id="adminCategoriesList"></div>
-
       </div>
 
       <div class="admin-box">
-
-        <h2 id="productFormTitle">
-          إضافة منتج جديد
-        </h2>
+        <h2 id="productFormTitle">إضافة منتج جديد</h2>
 
         <form class="admin-form" onsubmit="saveProduct(event)">
 
@@ -1280,61 +1181,60 @@ footer{
           <label>القسم</label>
           <select id="productCategory" required></select>
 
-          <label>السعر بالدينار الكويتي</label>
-          <input id="productPrice" type="number" min="0" step="0.01" required>
+          <label>السعر الظاهر للمنتج بالدينار الكويتي</label>
+          <input id="productPrice"
+                 type="number"
+                 min="0"
+                 step="0.01"
+                 required>
 
           <label>الكمية المتوفرة</label>
-          <input id="productStock" type="number" min="0" required>
+          <input id="productStock"
+                 type="number"
+                 min="0"
+                 required>
 
           <label>تفاصيل المنتج</label>
-          <textarea id="productDescription" rows="4" required></textarea>
+          <textarea id="productDescription"
+                    rows="4"
+                    required></textarea>
 
           <label>صورة المنتج</label>
-          <input id="productImage" type="file" accept="image/*">
+          <input id="productImage"
+                 type="file"
+                 accept="image/*">
 
           <button class="primary-btn" id="productSaveBtn">
             إضافة المنتج
           </button>
 
-          <button
-            type="button"
-            class="all-btn hidden"
-            id="cancelProductBtn"
-            onclick="cancelProductEdit()"
-            style="width:100%;margin-top:8px"
-          >
+          <button type="button"
+                  class="all-btn hidden"
+                  id="cancelProductBtn"
+                  onclick="cancelProductEdit()"
+                  style="width:100%;margin-top:8px">
             إلغاء التعديل
           </button>
 
         </form>
-
       </div>
 
       <div class="admin-box">
-
         <h2>المنتجات والكميات المتبقية</h2>
-
         <div id="adminProductsList"></div>
-
       </div>
 
     </div>
-
   </div>
-
 </section>
 
-<!-- السلة -->
 <div class="overlay" id="overlay" onclick="closeCart()"></div>
 
 <aside class="cart-panel" id="cartPanel">
 
   <div class="cart-head">
-
     <h2>سلة المشتريات</h2>
-
     <button class="close" onclick="closeCart()">×</button>
-
   </div>
 
   <div id="cartItems"></div>
@@ -1342,11 +1242,8 @@ footer{
   <div id="cartSummary" class="hidden">
 
     <div class="cart-total">
-
-      <span>الإجمالي</span>
-
-      <span id="cartTotal">0 د.ك</span>
-
+      <span>السعر النهائي</span>
+      <span id="cartTotal">يحدده البائع</span>
     </div>
 
     <div class="notice" id="cartNotice"></div>
@@ -1358,29 +1255,21 @@ footer{
     <div class="customer-form" id="customerForm">
 
       <input id="customerName" placeholder="الاسم الكامل">
-
       <input id="customerPhone" placeholder="رقم الهاتف">
-
       <input id="customerAddress" placeholder="المنطقة أو العنوان">
 
-      <textarea
-        id="customerNote"
-        rows="3"
-        placeholder="ملاحظات إضافية"
-      ></textarea>
+      <textarea id="customerNote"
+                rows="3"
+                placeholder="ملاحظات إضافية"></textarea>
 
-      <button
-        class="primary-btn"
-        style="width:100%"
-        onclick="sendToWhatsApp()"
-      >
+      <button class="primary-btn"
+              style="width:100%"
+              onclick="sendToWhatsApp()">
         إرسال الطلب
       </button>
 
     </div>
-
   </div>
-
 </aside>
 
 <script>
@@ -1451,23 +1340,27 @@ const defaultProducts=[
   }
 ];
 
-let settings=
-  JSON.parse(localStorage.getItem("refaeiSettings"))||defaultSettings;
+let settings=JSON.parse(
+  localStorage.getItem("refaeiSettings")
+)||defaultSettings;
 
-let categories=
-  JSON.parse(localStorage.getItem("refaeiCategories"))||defaultCategories;
+let categories=JSON.parse(
+  localStorage.getItem("refaeiCategories")
+)||defaultCategories;
 
-let products=
-  JSON.parse(localStorage.getItem("refaeiProducts"))||defaultProducts;
+let products=JSON.parse(
+  localStorage.getItem("refaeiProducts")
+)||defaultProducts;
 
-let cart=
-  JSON.parse(localStorage.getItem("refaeiCart"))||[];
+let cart=JSON.parse(
+  localStorage.getItem("refaeiCart")
+)||[];
 
-let purchaseReports=
-  JSON.parse(localStorage.getItem("refaeiPurchaseReports"))||[];
+let purchaseReports=JSON.parse(
+  localStorage.getItem("refaeiPurchaseReports")
+)||[];
 
 function escapeHTML(value){
-
   return String(value??"")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
@@ -1477,35 +1370,17 @@ function escapeHTML(value){
 }
 
 function saveData(){
-
-  localStorage.setItem(
-    "refaeiSettings",
-    JSON.stringify(settings)
-  );
-
-  localStorage.setItem(
-    "refaeiCategories",
-    JSON.stringify(categories)
-  );
-
-  localStorage.setItem(
-    "refaeiProducts",
-    JSON.stringify(products)
-  );
+  localStorage.setItem("refaeiSettings",JSON.stringify(settings));
+  localStorage.setItem("refaeiCategories",JSON.stringify(categories));
+  localStorage.setItem("refaeiProducts",JSON.stringify(products));
 }
 
 function saveCart(){
-
-  localStorage.setItem(
-    "refaeiCart",
-    JSON.stringify(cart)
-  );
-
+  localStorage.setItem("refaeiCart",JSON.stringify(cart));
   renderCart();
 }
 
 function savePurchaseReports(){
-
   localStorage.setItem(
     "refaeiPurchaseReports",
     JSON.stringify(purchaseReports)
@@ -1513,7 +1388,6 @@ function savePurchaseReports(){
 }
 
 function renderSettings(){
-
   topbarText.textContent=settings.topbar;
   brandName.textContent=settings.brandName;
   heroTitle.textContent=settings.heroTitle;
@@ -1524,7 +1398,6 @@ function renderSettings(){
 }
 
 function fillSettings(){
-
   settingTopbar.value=settings.topbar;
   settingBrandName.value=settings.brandName;
   settingHeroTitle.value=settings.heroTitle;
@@ -1536,7 +1409,6 @@ function fillSettings(){
 }
 
 function saveStoreSettings(event){
-
   event.preventDefault();
 
   settings={
@@ -1561,9 +1433,7 @@ function saveStoreSettings(event){
 }
 
 function compressImage(file){
-
   return new Promise((resolve,reject)=>{
-
     if(!file){
       resolve("");
       return;
@@ -1572,68 +1442,48 @@ function compressImage(file){
     const reader=new FileReader();
 
     reader.onload=event=>{
-
       const image=new Image();
 
       image.onload=()=>{
-
         const max=1000;
-
         let width=image.width;
         let height=image.height;
 
         if(width>max){
-
           height=Math.round(height*max/width);
           width=max;
         }
 
         if(height>max){
-
           width=Math.round(width*max/height);
           height=max;
         }
 
         const canvas=document.createElement("canvas");
-
         canvas.width=width;
         canvas.height=height;
 
         canvas.getContext("2d").drawImage(
-          image,
-          0,
-          0,
-          width,
-          height
+          image,0,0,width,height
         );
 
-        resolve(
-          canvas.toDataURL("image/jpeg",.78)
-        );
+        resolve(canvas.toDataURL("image/jpeg",.78));
       };
 
-      image.onerror=()=>{
-        reject("تعذر قراءة الصورة");
-      };
-
+      image.onerror=()=>reject("تعذر قراءة الصورة");
       image.src=event.target.result;
     };
 
-    reader.onerror=()=>{
-      reject("تعذر تحميل الصورة");
-    };
-
+    reader.onerror=()=>reject("تعذر تحميل الصورة");
     reader.readAsDataURL(file);
   });
 }
 
 function renderCategories(){
-
   categoriesList.innerHTML=categories.map(category=>{
-
     const image=category.image
-      ? `<img src="${category.image}" alt="${escapeHTML(category.name)}">`
-      : `<div class="category-placeholder">🛍️</div>`;
+      ?`<img src="${category.image}" alt="${escapeHTML(category.name)}">`
+      :`<div class="category-placeholder">🛍️</div>`;
 
     const count=products.filter(
       product=>product.category===category.name
@@ -1641,80 +1491,62 @@ function renderCategories(){
 
     return `
       <div class="category-card">
-
         ${image}
 
-        <button
-          onclick="filterProducts('${escapeHTML(category.name)}')"
-        >
+        <button onclick="filterProducts('${escapeHTML(category.name)}')">
           ${escapeHTML(category.name)}
         </button>
 
         <small>${count} منتجات</small>
-
       </div>
     `;
   }).join("");
 }
 
 function renderProducts(list=products){
-
   if(!list.length){
-
     productsGrid.innerHTML=`
       <p style="grid-column:1/-1;text-align:center">
         لا توجد منتجات حاليًا
       </p>
     `;
-
     return;
   }
 
   productsGrid.innerHTML=list.map(product=>{
-
     const stock=Number(product.stock)||0;
 
     const image=product.image
-      ? `<img src="${product.image}" alt="${escapeHTML(product.name)}">`
-      : "🛍️";
+      ?`<img src="${product.image}" alt="${escapeHTML(product.name)}">`
+      :"🛍️";
 
     return `
       <article class="product">
 
         <div class="product-img">
-
           ${image}
 
           <span class="stock-badge ${stock<=0?"out":""}">
             ${stock<=0?"نفد المخزون":"متبقي "+stock}
           </span>
-
         </div>
 
         <div class="product-info">
-
           <small>${escapeHTML(product.category)}</small>
-
           <h3>${escapeHTML(product.name)}</h3>
-
           <p>${escapeHTML(product.description)}</p>
 
           <div class="product-bottom">
-
             <span class="price">
-              ${product.price} د.ك
+              ${Number(product.price).toFixed(2)} د.ك
             </span>
 
-            <button
-              class="add-btn"
-              onclick="addToCart(${product.id})"
-              ${stock<=0?"disabled":""}
-            >
+            <button class="add-btn"
+                    onclick="addToCart(${product.id})"
+                    ${stock<=0?"disabled":""}>
               ${stock<=0?"غير متوفر":"إضافة للسلة"}
             </button>
-
           </div>
-
         </div>
 
       </article>
@@ -1722,9 +1554,7 @@ function renderProducts(list=products){
   }).join("");
 }
 
-/* فتح الأقسام والمنتجات معًا */
 function showShoppingContent(){
-
   storePage.classList.remove("hidden");
 
   document.querySelector(".categories-section")
@@ -1737,18 +1567,11 @@ function showShoppingContent(){
   renderProducts(products);
 
   document.getElementById("categories")
-    .scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
+    .scrollIntoView({behavior:"smooth"});
 }
 
-/* فتح الأقسام فقط */
 function showCategoriesPage(event){
-
-  if(event){
-    event.preventDefault();
-  }
+  if(event)event.preventDefault();
 
   storePage.classList.remove("hidden");
 
@@ -1761,18 +1584,11 @@ function showCategoriesPage(event){
   renderCategories();
 
   document.getElementById("categories")
-    .scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
+    .scrollIntoView({behavior:"smooth"});
 }
 
-/* فتح المنتجات فقط */
 function showProductsPage(event){
-
-  if(event){
-    event.preventDefault();
-  }
+  if(event)event.preventDefault();
 
   storePage.classList.remove("hidden");
 
@@ -1783,22 +1599,14 @@ function showProductsPage(event){
     .classList.add("visible");
 
   productsTitle.textContent="جميع المنتجات";
-
   renderProducts(products);
 
   document.getElementById("products")
-    .scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
+    .scrollIntoView({behavior:"smooth"});
 }
 
-/* فتح عن المتجر والنزول إليه */
 function showAboutPage(event){
-
-  if(event){
-    event.preventDefault();
-  }
+  if(event)event.preventDefault();
 
   storePage.classList.remove("hidden");
 
@@ -1809,14 +1617,10 @@ function showAboutPage(event){
     .classList.remove("visible");
 
   document.getElementById("about")
-    .scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
+    .scrollIntoView({behavior:"smooth"});
 }
 
 function showAllProducts(){
-
   document.querySelector(".categories-section")
     .classList.remove("visible");
 
@@ -1824,18 +1628,13 @@ function showAllProducts(){
     .classList.add("visible");
 
   productsTitle.textContent="جميع المنتجات";
-
   renderProducts(products);
 
   document.getElementById("products")
-    .scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
+    .scrollIntoView({behavior:"smooth"});
 }
 
 function filterProducts(category){
-
   document.querySelector(".categories-section")
     .classList.remove("visible");
 
@@ -1845,50 +1644,34 @@ function filterProducts(category){
   productsTitle.textContent=category;
 
   renderProducts(
-    products.filter(
-      product=>product.category===category
-    )
+    products.filter(product=>product.category===category)
   );
 
   document.getElementById("products")
-    .scrollIntoView({
-      behavior:"smooth",
-      block:"start"
-    });
+    .scrollIntoView({behavior:"smooth"});
 }
 
 function addToCart(id){
-
-  const product=products.find(
-    item=>item.id==id
-  );
+  const product=products.find(item=>item.id==id);
 
   if(!product||product.stock<=0){
-
     alert("المنتج غير متوفر حاليًا");
     return;
   }
 
-  const item=cart.find(
-    item=>item.id==id
-  );
+  const item=cart.find(item=>item.id==id);
 
   if(item){
-
     if(item.quantity>=product.stock){
-
       alert("لا توجد كمية إضافية متوفرة");
       return;
     }
 
     item.quantity++;
-
   }else{
-
     cart.push({
       id:product.id,
       name:product.name,
-      price:Number(product.price),
       quantity:1
     });
   }
@@ -1898,21 +1681,12 @@ function addToCart(id){
 }
 
 function increaseQuantity(id){
+  const item=cart.find(item=>item.id==id);
+  const product=products.find(item=>item.id==id);
 
-  const item=cart.find(
-    item=>item.id==id
-  );
-
-  const product=products.find(
-    item=>item.id==id
-  );
-
-  if(!item||!product){
-    return;
-  }
+  if(!item||!product)return;
 
   if(item.quantity>=product.stock){
-
     alert("لا توجد كمية إضافية متوفرة");
     return;
   }
@@ -1922,45 +1696,31 @@ function increaseQuantity(id){
 }
 
 function decreaseQuantity(id){
+  const item=cart.find(item=>item.id==id);
 
-  const item=cart.find(
-    item=>item.id==id
-  );
-
-  if(!item){
-    return;
-  }
+  if(!item)return;
 
   item.quantity--;
 
   if(item.quantity<=0){
-
-    cart=cart.filter(
-      item=>item.id!=id
-    );
+    cart=cart.filter(item=>item.id!=id);
   }
 
   saveCart();
 }
 
 function removeFromCart(id){
-
-  cart=cart.filter(
-    item=>item.id!=id
-  );
-
+  cart=cart.filter(item=>item.id!=id);
   saveCart();
 }
 
 function renderCart(){
-
   cartCount.textContent=cart.reduce(
-    (sum,item)=>sum+item.quantity,
+    (sum,item)=>sum+Number(item.quantity||0),
     0
   );
 
   if(!cart.length){
-
     cartItems.innerHTML=`
       <p style="text-align:center;padding:35px 0;color:#927c6a">
         السلة فارغة حاليًا
@@ -1974,155 +1734,125 @@ function renderCart(){
   cartSummary.classList.remove("hidden");
 
   cartItems.innerHTML=cart.map(item=>`
-
     <div class="cart-item">
 
       <div>
-
         <h4>${escapeHTML(item.name)}</h4>
 
-        <p>${item.price} د.ك للقطعة</p>
+        <p>السعر النهائي يحدده البائع</p>
 
         <div class="qty">
-
-          <button onclick="increaseQuantity(${item.id})">
-            +
-          </button>
-
+          <button onclick="increaseQuantity(${item.id})">+</button>
           <strong>${item.quantity}</strong>
-
-          <button onclick="decreaseQuantity(${item.id})">
-            −
-          </button>
-
+          <button onclick="decreaseQuantity(${item.id})">−</button>
         </div>
 
-        <button
-          class="remove"
-          onclick="removeFromCart(${item.id})"
-        >
+        <button class="remove"
+                onclick="removeFromCart(${item.id})">
           حذف المنتج
         </button>
-
       </div>
 
-      <strong>
-        ${item.price*item.quantity} د.ك
-      </strong>
-
+      <strong>يحدده البائع</strong>
     </div>
-
   `).join("");
 
-  cartTotal.textContent=
-    cart.reduce(
-      (sum,item)=>sum+item.price*item.quantity,
-      0
-    )+" د.ك";
+  cartTotal.textContent="يحدده البائع";
 }
 
 function openCart(){
-
   cartPanel.classList.add("open");
   overlay.classList.add("show");
-
   renderCart();
 }
 
 function closeCart(){
-
   cartPanel.classList.remove("open");
   overlay.classList.remove("show");
 }
 
 function showCustomerForm(){
-
   customerForm.classList.add("show");
 }
 
 function sendToWhatsApp(){
-
   const name=customerName.value.trim();
   const phone=customerPhone.value.trim();
+  const address=customerAddress.value.trim();
+  const note=customerNote.value.trim();
 
   if(!name||!phone){
-
-    cartNotice.textContent=
-      "يرجى كتابة اسم المشتري ورقمه";
-
+    cartNotice.textContent="يرجى كتابة اسم المشتري ورقمه";
     cartNotice.classList.add("show");
     return;
   }
 
   if(!cart.length){
-
     alert("السلة فارغة");
     return;
   }
-
-  let total=0;
 
   let message=
     `طلب جديد من متجر ${settings.brandName}\n\n`;
 
   message+=`اسم المشتري: ${name}\n`;
-  message+=`رقم المشتري: ${phone}\n\n`;
-  message+="المنتجات:\n";
+  message+=`رقم المشتري: ${phone}\n`;
+
+  if(address){
+    message+=`العنوان: ${address}\n`;
+  }
+
+  if(note){
+    message+=`ملاحظات: ${note}\n`;
+  }
+
+  message+=`\nالمنتجات المطلوبة:\n`;
 
   const reportItems=[];
 
   for(const item of cart){
-
     const product=products.find(
       product=>product.id==item.id
     );
 
-    if(!product||product.stock<item.quantity){
-
-      alert(
-        `الكمية المطلوبة من ${item.name} غير متوفرة`
-      );
-
+    if(!product||Number(product.stock)<Number(item.quantity)){
+      alert(`الكمية المطلوبة من ${item.name} غير متوفرة`);
       return;
     }
 
-    const itemTotal=
-      Number(item.price)*Number(item.quantity);
+    /*
+      يتم خصم الكمية من المخزون فقط.
+      لا يتم حساب السعر ولا إرسال سعر للعميل.
+    */
 
-    product.stock-=item.quantity;
-    total+=itemTotal;
+    product.stock-=Number(item.quantity);
 
     reportItems.push({
-
       name:item.name,
-      quantity:item.quantity,
-      price:Number(item.price),
-      total:itemTotal
-
+      quantity:Number(item.quantity)
     });
 
     message+=
-      `- ${item.name} | الكمية: ${item.quantity} | السعر: ${item.price} د.ك\n`;
+      `- ${item.name} | الكمية: ${item.quantity}\n`;
   }
 
+  message+=`
+السعر النهائي: يحدده البائع
+تكلفة التوصيل: يحددها البائع
+`;
+
   purchaseReports.unshift({
-
     id:"RF-"+Date.now(),
-
+    date:new Date().toLocaleString("ar-KW"),
     customerName:name,
-
     customerPhone:phone,
-
-    items:reportItems,
-
-    total:total
-
+    customerAddress:address,
+    customerNote:note,
+    items:reportItems
   });
 
   savePurchaseReports();
   saveData();
-
-  message+=`\nالإجمالي: ${total} د.ك`;
 
   cart=[];
   saveCart();
@@ -2133,20 +1863,19 @@ function sendToWhatsApp(){
   renderPurchaseReports();
 
   window.open(
-    `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(message)}`,
+    `https://wa.me/${settings.whatsapp}?text=${
+      encodeURIComponent(message)
+    }`,
     "_blank"
   );
 
-  alert("تم تسجيل الطلب وإرساله عبر واتساب");
+  alert("تم إرسال الطلب للبائع، والسعر يحدده البائع");
 
   closeCart();
 }
 
 function showStore(event){
-
-  if(event){
-    event.preventDefault();
-  }
+  if(event)event.preventDefault();
 
   storePage.classList.remove("hidden");
   adminPage.classList.remove("active");
@@ -2166,7 +1895,6 @@ function showStore(event){
 }
 
 function showAdmin(){
-
   storePage.classList.add("hidden");
   adminPage.classList.add("active");
 
@@ -2177,7 +1905,6 @@ function showAdmin(){
   adminDashboard.classList.toggle("hidden",!logged);
 
   if(logged){
-
     fillSettings();
     renderAdminCategories();
     renderCategorySelect();
@@ -2188,46 +1915,33 @@ function showAdmin(){
 }
 
 function loginAdmin(){
-
   if(adminPassword.value!==ADMIN_PASSWORD){
-
     loginNotice.textContent="كلمة المرور غير صحيحة";
     loginNotice.classList.add("show");
     return;
   }
 
-  sessionStorage.setItem(
-    "refaeiAdmin",
-    "true"
-  );
-
+  sessionStorage.setItem("refaeiAdmin","true");
   showAdmin();
 }
 
 function logoutAdmin(){
-
   sessionStorage.removeItem("refaeiAdmin");
-
   location.hash="";
-
   showStore();
 }
 
 function renderCategorySelect(){
-
   productCategory.innerHTML=
     `<option value="">اختر القسم</option>`+
     categories.map(category=>`
-
       <option value="${escapeHTML(category.name)}">
         ${escapeHTML(category.name)}
       </option>
-
     `).join("");
 }
 
 async function saveCategory(event){
-
   event.preventDefault();
 
   const id=editCategoryId.value;
@@ -2241,46 +1955,30 @@ async function saveCategory(event){
   }
 
   if(id){
-
-    const category=categories.find(
-      item=>item.id==id
-    );
+    const category=categories.find(item=>item.id==id);
 
     if(category){
-
       const oldName=category.name;
-
       category.name=name;
 
-      if(image){
-        category.image=image;
-      }
+      if(image)category.image=image;
 
       products.forEach(product=>{
-
         if(product.category===oldName){
           product.category=name;
         }
-
       });
     }
-
   }else{
-
-    if(categories.some(
-      item=>item.name===name
-    )){
-
+    if(categories.some(item=>item.name===name)){
       alert("هذا القسم موجود مسبقًا");
       return;
     }
 
     categories.push({
-
       id:Date.now(),
       name:name,
       image:image
-
     });
   }
 
@@ -2293,71 +1991,46 @@ async function saveCategory(event){
 
   cancelCategoryEdit();
 
-  alert(
-    id
-    ?"تم تعديل القسم"
-    :"تمت إضافة القسم"
-  );
+  alert(id?"تم تعديل القسم":"تمت إضافة القسم");
 }
 
 function editCategory(id){
+  const category=categories.find(item=>item.id==id);
 
-  const category=categories.find(
-    item=>item.id==id
-  );
-
-  if(!category){
-    return;
-  }
+  if(!category)return;
 
   editCategoryId.value=category.id;
   categoryName.value=category.name;
 
   categoryFormTitle.textContent="تعديل القسم";
   categorySaveBtn.textContent="حفظ التعديلات";
-
   cancelCategoryBtn.classList.remove("hidden");
 }
 
 function cancelCategoryEdit(){
-
   editCategoryId.value="";
   categoryName.value="";
   categoryImage.value="";
 
   categoryFormTitle.textContent="إضافة قسم جديد";
   categorySaveBtn.textContent="إضافة القسم";
-
   cancelCategoryBtn.classList.add("hidden");
 }
 
 function deleteCategory(id){
+  const category=categories.find(item=>item.id==id);
 
-  const category=categories.find(
-    item=>item.id==id
-  );
-
-  if(!category){
-    return;
-  }
+  if(!category)return;
 
   if(products.some(
     product=>product.category===category.name
   )){
-
-    alert(
-      "لا يمكن حذف القسم قبل حذف المنتجات التابعة له"
-    );
-
+    alert("لا يمكن حذف القسم قبل حذف المنتجات التابعة له");
     return;
   }
 
   if(confirm("هل تريد حذف هذا القسم؟")){
-
-    categories=categories.filter(
-      item=>item.id!=id
-    );
-
+    categories=categories.filter(item=>item.id!=id);
     saveData();
 
     renderCategories();
@@ -2367,16 +2040,12 @@ function deleteCategory(id){
 }
 
 async function saveProduct(event){
-
   event.preventDefault();
 
   const id=editProductId.value;
   const file=productImage.files[0];
 
-  const old=products.find(
-    item=>item.id==id
-  );
-
+  const old=products.find(item=>item.id==id);
   let image=old?.image||"";
 
   if(file){
@@ -2384,38 +2053,21 @@ async function saveProduct(event){
   }
 
   const data={
-
     name:productName.value.trim(),
-
     category:productCategory.value,
-
     price:Number(productPrice.value),
-
     stock:Number(productStock.value),
-
     description:productDescription.value.trim(),
-
     image:image
-
   };
 
   if(id){
-
-    const product=products.find(
-      item=>item.id==id
-    );
-
-    if(product){
-      Object.assign(product,data);
-    }
-
+    const product=products.find(item=>item.id==id);
+    if(product)Object.assign(product,data);
   }else{
-
     products.unshift({
-
       id:Date.now(),
       ...data
-
     });
   }
 
@@ -2428,22 +2080,13 @@ async function saveProduct(event){
 
   cancelProductEdit();
 
-  alert(
-    id
-    ?"تم تعديل المنتج"
-    :"تمت إضافة المنتج"
-  );
+  alert(id?"تم تعديل المنتج":"تمت إضافة المنتج");
 }
 
 function editProduct(id){
+  const product=products.find(item=>item.id==id);
 
-  const product=products.find(
-    item=>item.id==id
-  );
-
-  if(!product){
-    return;
-  }
+  if(!product)return;
 
   editProductId.value=product.id;
   productName.value=product.name;
@@ -2454,17 +2097,10 @@ function editProduct(id){
 
   productFormTitle.textContent="تعديل المنتج";
   productSaveBtn.textContent="حفظ التعديلات";
-
   cancelProductBtn.classList.remove("hidden");
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
 }
 
 function cancelProductEdit(){
-
   editProductId.value="";
   productName.value="";
   productCategory.value="";
@@ -2475,33 +2111,20 @@ function cancelProductEdit(){
 
   productFormTitle.textContent="إضافة منتج جديد";
   productSaveBtn.textContent="إضافة المنتج";
-
   cancelProductBtn.classList.add("hidden");
 }
 
 function deleteProduct(id){
+  const product=products.find(item=>item.id==id);
 
-  const product=products.find(
-    item=>item.id==id
-  );
+  if(!product)return;
 
-  if(!product){
+  if(!confirm(`هل تريد حذف "${product.name}"؟`)){
     return;
   }
 
-  if(!confirm(
-    `هل تريد حذف "${product.name}"؟`
-  )){
-    return;
-  }
-
-  products=products.filter(
-    item=>item.id!=id
-  );
-
-  cart=cart.filter(
-    item=>item.id!=id
-  );
+  products=products.filter(item=>item.id!=id);
+  cart=cart.filter(item=>item.id!=id);
 
   saveData();
   saveCart();
@@ -2513,330 +2136,208 @@ function deleteProduct(id){
 }
 
 function renderAdminProducts(){
-
   if(!products.length){
-
-    adminProductsList.innerHTML=
-      "<p>لا توجد منتجات حاليًا.</p>";
-
+    adminProductsList.innerHTML="<p>لا توجد منتجات حاليًا.</p>";
     return;
   }
 
-  adminProductsList.innerHTML=
-    products.map(product=>{
+  adminProductsList.innerHTML=products.map(product=>{
+    const stock=Number(product.stock)||0;
 
-      const stock=Number(product.stock)||0;
+    const cls=stock<=0
+      ?"empty"
+      :stock<=3
+      ?"low"
+      :"";
 
-      const cls=
-        stock<=0
-        ?"empty"
-        :stock<=3
-        ?"low"
-        :"";
-
-      return `
-
-        <div class="admin-row">
-
-          ${
-            product.image
-            ? `<img src="${product.image}" alt="">`
-            : `<div class="admin-placeholder">🛍️</div>`
-          }
-
-          <div>
-
-            <h3>${escapeHTML(product.name)}</h3>
-
-            <p>
-
-              القسم:
-              ${escapeHTML(product.category)}
-
-              <br>
-
-              السعر:
-              ${product.price} د.ك
-
-              <br>
-
-              <span class="stock-number ${cls}">
-                ${
-                  stock<=0
-                  ?"نفد المخزون"
-                  :stock+" قطعة متبقية"
-                }
-              </span>
-
-            </p>
-
-          </div>
-
-          <div class="admin-actions">
-
-            <button
-              class="edit-btn"
-              onclick="editProduct(${product.id})"
-            >
-              تعديل
-            </button>
-
-            <button
-              class="delete-btn"
-              onclick="deleteProduct(${product.id})"
-            >
-              حذف
-            </button>
-
-          </div>
-
-        </div>
-
-      `;
-    }).join("");
-}
-
-function renderAdminCategories(){
-
-  if(!categories.length){
-
-    adminCategoriesList.innerHTML=
-      "<p>لا توجد أقسام حاليًا.</p>";
-
-    return;
-  }
-
-  adminCategoriesList.innerHTML=
-    categories.map(category=>`
-
-      <div class="category-admin-row">
+    return `
+      <div class="admin-row">
 
         ${
-          category.image
-          ? `<img src="${category.image}" alt="">`
-          : `<div class="category-admin-placeholder">🛍️</div>`
+          product.image
+          ?`<img src="${product.image}" alt="">`
+          :`<div class="admin-placeholder">🛍️</div>`
         }
 
-        <h3>${escapeHTML(category.name)}</h3>
+        <div>
+          <h3>${escapeHTML(product.name)}</h3>
 
-        <div class="category-admin-actions">
+          <p>
+            القسم: ${escapeHTML(product.category)}
+            <br>
+            السعر الظاهر: ${Number(product.price).toFixed(2)} د.ك
+            <br>
+            الكمية:
+            <span class="stock-number ${cls}">
+              ${stock<=0?"نفد المخزون":stock+" قطعة متبقية"}
+            </span>
+          </p>
+        </div>
 
-          <button
-            class="edit-btn"
-            onclick="editCategory(${category.id})"
-          >
+        <div class="admin-actions">
+          <button class="edit-btn"
+                  onclick="editProduct(${product.id})">
             تعديل
           </button>
 
-          <button
-            class="delete-btn"
-            onclick="deleteCategory(${category.id})"
-          >
+          <button class="delete-btn"
+                  onclick="deleteProduct(${product.id})">
             حذف
           </button>
-
         </div>
 
       </div>
+    `;
+  }).join("");
+}
 
-    `).join("");
+function renderAdminCategories(){
+  if(!categories.length){
+    adminCategoriesList.innerHTML="<p>لا توجد أقسام حاليًا.</p>";
+    return;
+  }
+
+  adminCategoriesList.innerHTML=categories.map(category=>`
+    <div class="category-admin-row">
+
+      ${
+        category.image
+        ?`<img src="${category.image}" alt="">`
+        :`<div class="category-admin-placeholder">🛍️</div>`
+      }
+
+      <h3>${escapeHTML(category.name)}</h3>
+
+      <div class="category-admin-actions">
+        <button class="edit-btn"
+                onclick="editCategory(${category.id})">
+          تعديل
+        </button>
+
+        <button class="delete-btn"
+                onclick="deleteCategory(${category.id})">
+          حذف
+        </button>
+      </div>
+
+    </div>
+  `).join("");
 }
 
 function updateSummary(){
+  totalProductsCount.textContent=products.length;
 
-  totalProductsCount.textContent=
-    products.length;
+  totalStockCount.textContent=products.reduce(
+    (sum,product)=>sum+Number(product.stock||0),
+    0
+  );
 
-  totalStockCount.textContent=
-    products.reduce(
-      (sum,product)=>
-        sum+Number(product.stock||0),
-      0
-    );
-
-  outOfStockCount.textContent=
-    products.filter(
-      product=>product.stock<=0
-    ).length;
+  outOfStockCount.textContent=products.filter(
+    product=>Number(product.stock)<=0
+  ).length;
 }
 
 function renderPurchaseReports(){
-
   if(!purchaseReports.length){
-
     purchaseReportsList.innerHTML=`
-
       <tr>
-
-        <td
-          colspan="4"
-          style="padding:20px;text-align:center;color:#927c6a"
-        >
-          لا توجد مشتريات حتى الآن
+        <td colspan="4"
+            style="padding:20px;text-align:center;color:#927c6a">
+          لا توجد طلبات حتى الآن
         </td>
-
       </tr>
-
     `;
-
   }else{
-
     purchaseReportsList.innerHTML=
       purchaseReports.map(order=>{
+        const productsHTML=order.items.map(item=>`
+          <span class="product-report">
+            ${escapeHTML(item.name)} × ${item.quantity}
+          </span>
+        `).join("");
 
-        const productsHTML=
-          order.items.map(item=>`
-
-            <span class="product-report">
-              ${escapeHTML(item.name)}
-              × ${item.quantity}
-            </span>
-
-          `).join("");
-
-        const pricesHTML=
-          order.items.map(item=>`
-
-            <span class="product-report">
-              ${Number(item.total).toFixed(2)} د.ك
-            </span>
-
-          `).join("");
+        const pricesHTML=order.items.map(()=>`
+          <span class="product-report">
+            يحدده البائع
+          </span>
+        `).join("");
 
         return `
-
           <tr>
-
-            <td>
-              ${escapeHTML(order.customerName)}
-            </td>
-
-            <td>
-              ${escapeHTML(order.customerPhone)}
-            </td>
-
-            <td>
-              ${productsHTML}
-            </td>
-
-            <td>
-              ${pricesHTML}
-            </td>
-
+            <td>${escapeHTML(order.customerName)}</td>
+            <td>${escapeHTML(order.customerPhone)}</td>
+            <td>${productsHTML}</td>
+            <td>${pricesHTML}</td>
           </tr>
-
         `;
       }).join("");
   }
 
-  totalOrdersCount.textContent=
-    purchaseReports.length;
+  totalOrdersCount.textContent=purchaseReports.length;
 
   totalPurchasedItems.textContent=
     purchaseReports.reduce(
-
       (sum,order)=>
         sum+order.items.reduce(
-
           (itemsTotal,item)=>
             itemsTotal+Number(item.quantity||0),
-
           0
-
         ),
-
       0
-
     );
 
-  totalSalesAmount.textContent=
-    purchaseReports.reduce(
-
-      (sum,order)=>
-        sum+Number(order.total||0),
-
-      0
-
-    ).toFixed(2)+" د.ك";
+  totalSalesAmount.textContent="يحددها البائع";
 }
 
 function exportPurchasesToExcel(){
-
   if(!purchaseReports.length){
-
-    alert("لا توجد تقارير مشتريات لتصديرها");
+    alert("لا توجد طلبات لتصديرها");
     return;
   }
 
   const rows=[];
 
   purchaseReports.forEach(order=>{
-
     order.items.forEach(item=>{
-
       rows.push({
-
+        "رقم الطلب":order.id,
+        "تاريخ الطلب":order.date||"",
         "اسم المشتري":order.customerName,
-
         "رقم المشتري":order.customerPhone,
-
         "المنتج":item.name,
-
         "الكمية":item.quantity,
-
-        "سعر المنتج":
-          Number(item.price).toFixed(2)+" د.ك",
-
-        "إجمالي المنتج":
-          Number(item.total).toFixed(2)+" د.ك"
-
+        "السعر النهائي":"يحدده البائع",
+        "الإجمالي":"يحدده البائع"
       });
     });
   });
 
-  const worksheet=
-    XLSX.utils.json_to_sheet(rows);
-
-  worksheet["!cols"]=[
-    {wch:25},
-    {wch:18},
-    {wch:30},
-    {wch:10},
-    {wch:18},
-    {wch:20}
-  ];
-
-  const workbook=
-    XLSX.utils.book_new();
+  const worksheet=XLSX.utils.json_to_sheet(rows);
+  const workbook=XLSX.utils.book_new();
 
   XLSX.utils.book_append_sheet(
     workbook,
     worksheet,
-    "تقارير المشتريات"
+    "طلبات المشتريات"
   );
 
   XLSX.writeFile(
     workbook,
-    "تقارير_المشتريات_REFAEI.xlsx"
+    "طلبات_المشتريات_REFAEI.xlsx"
   );
 }
 
 function clearPurchaseReports(){
-
   if(!purchaseReports.length){
-
     alert("لا توجد تقارير لحذفها");
     return;
   }
 
-  if(!confirm(
-    "هل تريد حذف جميع تقارير المشتريات؟"
-  )){
+  if(!confirm("هل تريد حذف جميع التقارير؟")){
     return;
   }
 
   purchaseReports=[];
-
   savePurchaseReports();
   renderPurchaseReports();
 
@@ -2844,7 +2345,6 @@ function clearPurchaseReports(){
 }
 
 function checkPage(){
-
   if(location.hash==="#admin"){
     showAdmin();
   }else{
@@ -2852,10 +2352,7 @@ function checkPage(){
   }
 }
 
-window.addEventListener(
-  "hashchange",
-  checkPage
-);
+window.addEventListener("hashchange",checkPage);
 
 renderSettings();
 renderCategories();
