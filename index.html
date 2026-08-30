@@ -52,7 +52,7 @@ button{
 
 .topbar{
   background:var(--brown);
-  color:#fff;
+  color:white;
   text-align:center;
   padding:7px;
   font-size:13px;
@@ -68,7 +68,7 @@ header{
 }
 
 .nav{
-  min-height:75px;
+  min-height:70px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -111,8 +111,8 @@ nav a{
 
 .nav-actions{
   display:flex;
-  gap:7px;
   align-items:center;
+  gap:7px;
 }
 
 .admin-btn,
@@ -120,9 +120,9 @@ nav a{
   border:0;
   border-radius:22px;
   color:#fff;
-  padding:9px 12px;
+  padding:8px 11px;
   text-decoration:none;
-  font-size:13px;
+  font-size:12px;
   white-space:nowrap;
 }
 
@@ -142,11 +142,11 @@ nav a{
 }
 
 .hero{
-  min-height:650px;
+  min-height:620px;
   display:grid;
   place-items:center;
   text-align:center;
-  padding:30px 0 50px;
+  padding:30px 0;
 }
 
 .hero-content{
@@ -154,8 +154,8 @@ nav a{
 }
 
 .logo{
-  width:min(340px,82vw);
-  height:420px;
+  width:min(330px,82vw);
+  height:390px;
   margin:auto;
   display:grid;
   place-items:center;
@@ -181,9 +181,9 @@ nav a{
 .primary-btn{
   border:0;
   background:var(--brown);
-  color:#fff;
+  color:white;
   border-radius:4px;
-  padding:11px 24px;
+  padding:10px 22px;
 }
 
 .main-btn:hover,
@@ -233,29 +233,34 @@ nav a{
 
 .category-card{
   width:180px;
-  background:#fff;
+  background:white;
   border:1px solid var(--border);
   padding:12px;
   text-align:center;
+  transition:.2s;
+}
+
+.category-card:hover{
+  transform:translateY(-4px);
 }
 
 .category-card img,
 .category-placeholder{
   width:100%;
-  height:100px;
+  height:105px;
   object-fit:contain;
   display:grid;
   place-items:center;
   background:#e6dbcc;
-  font-size:35px;
+  font-size:42px;
 }
 
 .category-card button{
   border:0;
   background:transparent;
   color:var(--brown);
-  font-weight:bold;
   font-size:16px;
+  font-weight:bold;
 }
 
 .category-card small{
@@ -274,7 +279,7 @@ nav a{
   background:transparent;
   color:var(--brown);
   border-radius:4px;
-  padding:9px 15px;
+  padding:8px 14px;
 }
 
 .products{
@@ -284,7 +289,7 @@ nav a{
 }
 
 .product{
-  background:#fff;
+  background:white;
   border:1px solid var(--border);
   display:flex;
   flex-direction:column;
@@ -296,8 +301,8 @@ nav a{
   display:grid;
   place-items:center;
   background:linear-gradient(135deg,#d7c5af,#f0e7da);
-  font-size:55px;
   position:relative;
+  font-size:55px;
 }
 
 .product-img img{
@@ -311,7 +316,7 @@ nav a{
   top:8px;
   right:8px;
   background:var(--green);
-  color:#fff;
+  color:white;
   padding:3px 7px;
   border-radius:3px;
   font-size:11px;
@@ -360,7 +365,7 @@ nav a{
 .add-btn{
   border:0;
   background:var(--brown);
-  color:#fff;
+  color:white;
   padding:8px 10px;
   border-radius:3px;
   font-size:12px;
@@ -372,7 +377,7 @@ nav a{
 
 .about{
   background:var(--brown);
-  color:#fff;
+  color:white;
   text-align:center;
 }
 
@@ -393,6 +398,8 @@ footer{
   padding:22px;
   font-size:13px;
 }
+
+/* السلة */
 
 .overlay{
   position:fixed;
@@ -447,7 +454,7 @@ footer{
   display:grid;
   grid-template-columns:1fr auto;
   gap:10px;
-  background:#fff;
+  background:white;
   border:1px solid var(--border);
   padding:11px;
   margin-bottom:10px;
@@ -475,7 +482,7 @@ footer{
   height:25px;
   border:1px solid var(--brown);
   border-radius:50%;
-  background:#fff;
+  background:white;
   color:var(--brown);
 }
 
@@ -501,7 +508,7 @@ footer{
   width:100%;
   border:0;
   background:var(--green);
-  color:#fff;
+  color:white;
   padding:13px;
   border-radius:4px;
   margin-top:15px;
@@ -529,21 +536,10 @@ footer{
   padding:10px;
   margin-bottom:9px;
   border-radius:4px;
-  background:#fff;
+  background:white;
 }
 
-.notice{
-  display:none;
-  background:#fff1cf;
-  color:#73571c;
-  padding:9px;
-  margin:9px 0;
-  font-size:12px;
-}
-
-.notice.show{
-  display:block;
-}
+/* الإدارة */
 
 .admin-page{
   display:none;
@@ -559,7 +555,7 @@ footer{
 .admin-box{
   max-width:900px;
   margin:0 auto 22px;
-  background:#fff;
+  background:white;
   border:1px solid var(--border);
   padding:22px;
 }
@@ -598,7 +594,7 @@ footer{
 .edit-btn,
 .delete-btn{
   border:0;
-  color:#fff;
+  color:white;
   border-radius:4px;
   padding:7px 10px;
   font-size:12px;
@@ -671,12 +667,13 @@ footer{
   display:grid;
   place-items:center;
   background:#e6dbcc;
-  font-size:28px;
+  font-size:38px;
 }
 
 .category-admin-row h3{
   color:var(--brown);
   font-size:14px;
+  margin-top:5px;
 }
 
 .category-admin-actions{
@@ -687,25 +684,6 @@ footer{
 
 .category-admin-actions button{
   flex:1;
-}
-
-.report-summary{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-bottom:15px;
-  text-align:center;
-}
-
-.report-card{
-  background:var(--bg);
-  padding:12px;
-}
-
-.report-card strong{
-  display:block;
-  color:var(--brown);
-  font-size:19px;
 }
 
 .report-table-wrapper{
@@ -729,7 +707,7 @@ footer{
 
 .report-table th{
   background:var(--brown);
-  color:#fff;
+  color:white;
 }
 
 .report-table tr:nth-child(even){
@@ -737,6 +715,7 @@ footer{
 }
 
 @media(max-width:900px){
+
   nav{
     display:none;
   }
@@ -747,18 +726,13 @@ footer{
 }
 
 @media(max-width:600px){
-  .nav{
-    min-height:66px;
-  }
 
   .brand-name{
     font-size:18px;
   }
 
   /*
-    مهم:
-    لا تضع display:none على زر الإدارة.
-    هذا يجعله ظاهرًا في الآيفون والجوال.
+    زر الإدارة يبقى ظاهرًا في الآيفون والجوال
   */
 
   .admin-btn{
@@ -774,11 +748,7 @@ footer{
 
   .logo{
     width:290px;
-    height:360px;
-  }
-
-  .hero{
-    min-height:570px;
+    height:350px;
   }
 
   .products{
@@ -824,10 +794,6 @@ footer{
   .category-admin{
     grid-template-columns:1fr;
   }
-
-  .report-summary{
-    grid-template-columns:1fr;
-  }
 }
 </style>
 </head>
@@ -839,9 +805,13 @@ footer{
 <header>
   <div class="container nav">
 
-    <a href="#home" class="brand" onclick="showStore(event)">
+    <a href="#home"
+       class="brand"
+       onclick="showStore(event)">
+
       <span class="brand-mark">𓅃</span>
       <span class="brand-name" id="brandName"></span>
+
     </a>
 
     <nav>
@@ -853,14 +823,17 @@ footer{
 
     <div class="nav-actions">
 
-      <!-- زر الإدارة ظاهر على جميع الأجهزة -->
       <a href="#admin" class="admin-btn">
         الإدارة
       </a>
 
-      <button class="cart-btn" onclick="openCart()">
+      <button class="cart-btn"
+              onclick="openCart()">
+
         السلة
-        <span id="cartCount" class="cart-count">0</span>
+        <span class="cart-count"
+              id="cartCount">0</span>
+
       </button>
 
     </div>
@@ -871,10 +844,12 @@ footer{
 <main id="storePage">
 
   <section class="hero" id="home">
+
     <div class="hero-content">
 
       <div class="logo">
-        <img src="logo.png" alt="REFAEI"
+        <img src="logo.png"
+             alt="REFAEI"
              onerror="this.style.display='none'">
       </div>
 
@@ -887,6 +862,7 @@ footer{
       </button>
 
     </div>
+
   </section>
 
   <section class="section categories-section"
@@ -932,22 +908,27 @@ footer{
 
   </section>
 
-  <section class="section about" id="about">
+  <section class="section about"
+           id="about">
+
     <div class="container">
       <h2 id="aboutTitle"></h2>
       <p id="aboutText"></p>
     </div>
+
   </section>
 
   <footer id="footerText"></footer>
 
 </main>
 
-<section id="adminPage" class="admin-page">
+<section id="adminPage"
+         class="admin-page">
 
   <div class="container">
 
-    <div id="adminLogin" class="admin-login">
+    <div id="adminLogin"
+         class="admin-login">
 
       <h2>تسجيل دخول الإدارة</h2>
 
@@ -961,18 +942,20 @@ footer{
       </button>
 
       <div id="loginNotice"
-           class="notice"></div>
+           style="color:#bd3d36;margin-top:10px">
+      </div>
 
     </div>
 
-    <div id="adminDashboard" class="hidden">
+    <div id="adminDashboard"
+         class="hidden">
 
       <div class="admin-top">
 
         <div>
           <h2>لوحة الإدارة</h2>
           <p style="color:#927c6a;font-size:13px">
-            تعديل المنتجات والأسعار والكميات
+            إدارة الأقسام والمنتجات والأسعار والكميات
           </p>
         </div>
 
@@ -1030,32 +1013,9 @@ footer{
 
       <div class="admin-box">
 
-        <h2>إحصائيات المخزون والطلبات</h2>
-
-        <div class="report-summary">
-
-          <div class="report-card">
-            <strong id="totalProductsCount">0</strong>
-            <span>عدد المنتجات</span>
-          </div>
-
-          <div class="report-card">
-            <strong id="totalStockCount">0</strong>
-            <span>إجمالي الكمية</span>
-          </div>
-
-          <div class="report-card">
-            <strong id="totalOrdersCount">0</strong>
-            <span>عدد الطلبات</span>
-          </div>
-
-        </div>
-
-      </div>
-
-      <div class="admin-box">
-
-        <h2>إضافة أو تعديل قسم</h2>
+        <h2 id="categoryFormTitle">
+          إضافة قسم جديد
+        </h2>
 
         <form class="admin-form"
               onsubmit="saveCategory(event)">
@@ -1064,12 +1024,18 @@ footer{
                  id="editCategoryId">
 
           <label>اسم القسم</label>
-          <input id="categoryName" required>
+          <input id="categoryName"
+                 placeholder="مثال: عطور"
+                 required>
 
-          <label>صورة القسم</label>
+          <label>صورة القسم اختيارية</label>
           <input id="categoryImage"
                  type="file"
                  accept="image/*">
+
+          <p style="font-size:12px;color:#927c6a;margin-bottom:10px">
+            إذا لم تضف صورة سيظهر إيموجي مناسب تلقائيًا حسب اسم القسم.
+          </p>
 
           <button class="primary-btn"
                   id="categorySaveBtn">
@@ -1094,7 +1060,9 @@ footer{
 
       <div class="admin-box">
 
-        <h2>إضافة أو تعديل منتج</h2>
+        <h2 id="productFormTitle">
+          إضافة منتج جديد
+        </h2>
 
         <form class="admin-form"
               onsubmit="saveProduct(event)">
@@ -1106,7 +1074,8 @@ footer{
           <input id="productName" required>
 
           <label>القسم</label>
-          <select id="productCategory" required></select>
+          <select id="productCategory"
+                  required></select>
 
           <label>السعر بالدينار الكويتي</label>
           <input id="productPrice"
@@ -1115,7 +1084,7 @@ footer{
                  step="0.01"
                  required>
 
-          <label>عدد الأصناف المتوفرة</label>
+          <label>الكمية المتوفرة</label>
           <input id="productStock"
                  type="number"
                  min="0"
@@ -1126,7 +1095,7 @@ footer{
                     rows="3"
                     required></textarea>
 
-          <label>صورة المنتج</label>
+          <label>صورة المنتج اختيارية</label>
           <input id="productImage"
                  type="file"
                  accept="image/*">
@@ -1159,7 +1128,7 @@ footer{
 
         <h2>طلبات العملاء</h2>
 
-        <div class="report-table-wrapper">
+        <div style="overflow-x:auto">
 
           <table class="report-table">
 
@@ -1189,7 +1158,8 @@ footer{
 
 <div id="overlay"
      class="overlay"
-     onclick="closeCart()"></div>
+     onclick="closeCart()">
+</div>
 
 <aside id="cartPanel"
        class="cart-panel">
@@ -1207,7 +1177,8 @@ footer{
 
   <div id="cartItems"></div>
 
-  <div id="cartSummary" class="hidden">
+  <div id="cartSummary"
+       class="hidden">
 
     <div class="cart-total">
       <span>السعر النهائي</span>
@@ -1262,9 +1233,21 @@ const defaultSettings={
 };
 
 const defaultCategories=[
-  {id:1,name:"أقمشة",image:""},
-  {id:2,name:"شالات",image:""},
-  {id:3,name:"مسابيح",image:""}
+  {
+    id:1,
+    name:"أقمشة",
+    image:""
+  },
+  {
+    id:2,
+    name:"شالات",
+    image:""
+  },
+  {
+    id:3,
+    name:"مسابيح",
+    image:""
+  }
 ];
 
 const defaultProducts=[
@@ -1301,7 +1284,7 @@ let settings=
   JSON.parse(localStorage.getItem("refaeiSettings"))
   ||defaultSettings;
 
-let categories=
+let categoriesData=
   JSON.parse(localStorage.getItem("refaeiCategories"))
   ||defaultCategories;
 
@@ -1317,7 +1300,146 @@ let purchaseReports=
   JSON.parse(localStorage.getItem("refaeiPurchaseReports"))
   ||[];
 
+/*
+  دالة اختيار الإيموجي حسب اسم القسم
+*/
+
+function getCategoryEmoji(categoryName){
+
+  const name=String(categoryName||"")
+    .trim()
+    .toLowerCase();
+
+  const emojiRules=[
+
+    {
+      words:["قماش","أقمشة","نسيج","ثوب","ثياب"],
+      emoji:"🧵"
+    },
+
+    {
+      words:["شال","شالات","كشمير","كشميري","وشاح"],
+      emoji:"🧣"
+    },
+
+    {
+      words:["مسباح","مسابيح","سبحة","سبح"],
+      emoji:"📿"
+    },
+
+    {
+      words:["عطر","عطور","بخور","روائح"],
+      emoji:"🌹"
+    },
+
+    {
+      words:["ساعة","ساعات"],
+      emoji:"⌚"
+    },
+
+    {
+      words:["ملابس","ملبس","أزياء","ملابس رجالية","ملابس نسائية"],
+      emoji:"👕"
+    },
+
+    {
+      words:["عباية","عبايات"],
+      emoji:"🥻"
+    },
+
+    {
+      words:["حذاء","أحذية","جزمة","جزم"],
+      emoji:"👟"
+    },
+
+    {
+      words:["شنطة","شنط","حقيبة","حقائب","محفظة"],
+      emoji:"👜"
+    },
+
+    {
+      words:["مجوهرات","ذهب","فضة","خاتم","خواتم"],
+      emoji:"💎"
+    },
+
+    {
+      words:["ورد","زهور","زهرة"],
+      emoji:"🌸"
+    },
+
+    {
+      words:["هدايا","هدية"],
+      emoji:"🎁"
+    },
+
+    {
+      words:["قهوة","بن","مشروبات"],
+      emoji:"☕"
+    },
+
+    {
+      words:["حلويات","حلوى","كيك","شكولاتة"],
+      emoji:"🍰"
+    },
+
+    {
+      words:["طعام","أكل","مأكولات","غذاء"],
+      emoji:"🍽️"
+    },
+
+    {
+      words:["كتب","كتاب","قرطاسية"],
+      emoji:"📚"
+    },
+
+    {
+      words:["إلكترونيات","جوال","هاتف","هواتف","كمبيوتر"],
+      emoji:"📱"
+    },
+
+    {
+      words:["ألعاب","لعبة","أطفال"],
+      emoji:"🧸"
+    },
+
+    {
+      words:["رياضة","تمارين","كرة"],
+      emoji:"⚽"
+    },
+
+    {
+      words:["منزل","ديكور","أثاث","مفروشات"],
+      emoji:"🏠"
+    }
+
+  ];
+
+  for(const rule of emojiRules){
+
+    const matched=rule.words.some(
+      word=>name.includes(word)
+    );
+
+    if(matched){
+      return rule.emoji;
+    }
+  }
+
+  return "🛍️";
+}
+
+function safe(value){
+
+  return String(value||"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
 function saveAll(){
+
   localStorage.setItem(
     "refaeiSettings",
     JSON.stringify(settings)
@@ -1325,7 +1447,7 @@ function saveAll(){
 
   localStorage.setItem(
     "refaeiCategories",
-    JSON.stringify(categories)
+    JSON.stringify(categoriesData)
   );
 
   localStorage.setItem(
@@ -1342,15 +1464,6 @@ function saveAll(){
     "refaeiPurchaseReports",
     JSON.stringify(purchaseReports)
   );
-}
-
-function safe(text){
-  return String(text??"")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
 }
 
 function renderSettings(){
@@ -1394,35 +1507,46 @@ function saveSettings(event){
   saveAll();
   renderSettings();
 
-  alert("تم حفظ تعديلات المتجر");
+  alert("تم حفظ التعديلات");
 }
 
 function renderCategories(){
 
-  categoriesList.innerHTML=categories.map(category=>{
+  categoriesList.innerHTML=
+    categoriesData.map(category=>{
 
-    const image=category.image
-      ?`<img src="${category.image}" alt="">`
-      :`<div class="category-placeholder">🛍️</div>`;
+      const categoryIcon=category.image
+        ?`
+          <img src="${category.image}"
+               alt="${safe(category.name)}">
+        `
+        :`
+          <div class="category-placeholder">
+            ${getCategoryEmoji(category.name)}
+          </div>
+        `;
 
-    const count=products.filter(
-      product=>product.category===category.name
-    ).length;
+      const count=products.filter(
+        product=>product.category===category.name
+      ).length;
 
-    return `
-      <div class="category-card">
+      return `
 
-        ${image}
+        <div class="category-card">
 
-        <button onclick="filterProducts('${safe(category.name)}')">
-          ${safe(category.name)}
-        </button>
+          ${categoryIcon}
 
-        <small>${count} منتجات</small>
+          <button onclick="filterProducts('${safe(category.name)}')">
+            ${safe(category.name)}
+          </button>
 
-      </div>
-    `;
-  }).join("");
+          <small>${count} منتجات</small>
+
+        </div>
+
+      `;
+
+    }).join("");
 }
 
 function renderProducts(list=products){
@@ -1435,54 +1559,61 @@ function renderProducts(list=products){
     return;
   }
 
-  productsGrid.innerHTML=list.map(product=>{
+  productsGrid.innerHTML=
+    list.map(product=>{
 
-    const stock=Number(product.stock)||0;
+      const stock=Number(product.stock)||0;
 
-    const image=product.image
-      ?`<img src="${product.image}" alt="">`
-      :"🛍️";
+      const productImage=product.image
+        ?`
+          <img src="${product.image}"
+               alt="${safe(product.name)}">
+        `
+        :"🛍️";
 
-    return `
-      <article class="product">
+      return `
 
-        <div class="product-img">
+        <article class="product">
 
-          ${image}
+          <div class="product-img">
 
-          <span class="stock-badge ${stock<=0?"out":""}">
-            ${stock<=0?"نفد المخزون":"متبقي "+stock}
-          </span>
+            ${productImage}
 
-        </div>
-
-        <div class="product-info">
-
-          <small>${safe(product.category)}</small>
-
-          <h3>${safe(product.name)}</h3>
-
-          <p>${safe(product.description)}</p>
-
-          <div class="product-bottom">
-
-            <span class="price">
-              ${Number(product.price).toFixed(2)} د.ك
+            <span class="stock-badge ${stock<=0?"out":""}">
+              ${stock<=0?"نفد المخزون":"متبقي "+stock}
             </span>
-
-            <button class="add-btn"
-                    onclick="addToCart(${product.id})"
-                    ${stock<=0?"disabled":""}>
-              ${stock<=0?"غير متوفر":"إضافة للسلة"}
-            </button>
 
           </div>
 
-        </div>
+          <div class="product-info">
 
-      </article>
-    `;
-  }).join("");
+            <small>${safe(product.category)}</small>
+
+            <h3>${safe(product.name)}</h3>
+
+            <p>${safe(product.description)}</p>
+
+            <div class="product-bottom">
+
+              <span class="price">
+                ${Number(product.price).toFixed(2)} د.ك
+              </span>
+
+              <button class="add-btn"
+                      onclick="addToCart(${product.id})"
+                      ${stock<=0?"disabled":""}>
+                ${stock<=0?"غير متوفر":"إضافة للسلة"}
+              </button>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }).join("");
 }
 
 function showShoppingContent(){
@@ -1496,9 +1627,10 @@ function showShoppingContent(){
   renderCategories();
   renderProducts();
 
-  categories.scrollIntoView({
-    behavior:"smooth"
-  });
+  document.getElementById("categories")
+    .scrollIntoView({
+      behavior:"smooth"
+    });
 }
 
 function showStore(event){
@@ -1718,54 +1850,58 @@ function renderCart(){
 
   let total=0;
 
-  cartItems.innerHTML=cart.map(item=>{
+  cartItems.innerHTML=
+    cart.map(item=>{
 
-    const price=Number(item.price||0);
-    const quantity=Number(item.quantity||0);
-    const itemTotal=price*quantity;
+      const price=Number(item.price||0);
+      const quantity=Number(item.quantity||0);
+      const itemTotal=price*quantity;
 
-    total+=itemTotal;
+      total+=itemTotal;
 
-    return `
-      <div class="cart-item">
+      return `
 
-        <div>
+        <div class="cart-item">
 
-          <h4>${safe(item.name)}</h4>
+          <div>
 
-          <p>
-            سعر القطعة:
-            ${price.toFixed(2)} د.ك
-          </p>
+            <h4>${safe(item.name)}</h4>
 
-          <div class="qty">
+            <p>
+              سعر القطعة:
+              ${price.toFixed(2)} د.ك
+            </p>
 
-            <button onclick="increaseQuantity(${item.id})">
-              +
-            </button>
+            <div class="qty">
 
-            <strong>${quantity}</strong>
+              <button onclick="increaseQuantity(${item.id})">
+                +
+              </button>
 
-            <button onclick="decreaseQuantity(${item.id})">
-              −
+              <strong>${quantity}</strong>
+
+              <button onclick="decreaseQuantity(${item.id})">
+                −
+              </button>
+
+            </div>
+
+            <button class="remove"
+                    onclick="removeFromCart(${item.id})">
+              حذف المنتج
             </button>
 
           </div>
 
-          <button class="remove"
-                  onclick="removeFromCart(${item.id})">
-            حذف المنتج
-          </button>
+          <strong>
+            ${itemTotal.toFixed(2)} د.ك
+          </strong>
 
         </div>
 
-        <strong>
-          ${itemTotal.toFixed(2)} د.ك
-        </strong>
+      `;
 
-      </div>
-    `;
-  }).join("");
+    }).join("");
 
   cartTotal.textContent=
     total.toFixed(2)+" د.ك";
@@ -1810,6 +1946,7 @@ function sendOrder(){
   }
 
   let total=0;
+
   let message=
     "طلب جديد من متجر "+
     settings.brandName+
@@ -1830,14 +1967,14 @@ function sendOrder(){
 
   const reportItems=[];
 
-  for(const item of cart){
+  cart.forEach(item=>{
 
     const product=products.find(
       product=>product.id==item.id
     );
 
     if(!product){
-      continue;
+      return;
     }
 
     const quantity=Number(item.quantity);
@@ -1856,10 +1993,9 @@ function sendOrder(){
     message+=
       "- "+product.name+
       " | الكمية: "+quantity+
-      " | السعر: "+price.toFixed(2)+
-      " د.ك | الإجمالي: "+
+      " | الإجمالي: "+
       itemTotal.toFixed(2)+" د.ك\n";
-  }
+  });
 
   message+=
     "\nالسعر النهائي: "+
@@ -1877,24 +2013,23 @@ function sendOrder(){
     note:note,
     items:reportItems,
     total:total
+
   });
 
   /*
-    مهم:
-    لا يتم إنقاص product.stock هنا.
-    الكمية تبقى ثابتة حتى يغيرها البائع من الإدارة.
+    ملاحظة:
+    لا يتم إنقاص المخزون تلقائيًا.
+    البائع يعدل الكمية يدويًا من لوحة الإدارة.
   */
 
   cart=[];
 
   saveAll();
-
   renderCart();
   renderProducts();
   renderCategories();
   renderAdminProducts();
   renderReports();
-  updateSummary();
 
   window.open(
     "https://wa.me/"+
@@ -1926,7 +2061,6 @@ function showAdmin(){
     renderAdminCategories();
     renderAdminProducts();
     renderReports();
-    updateSummary();
   }
 }
 
@@ -1937,7 +2071,6 @@ function loginAdmin(){
     loginNotice.textContent=
       "كلمة المرور غير صحيحة";
 
-    loginNotice.classList.add("show");
     return;
   }
 
@@ -1951,10 +2084,11 @@ function loginAdmin(){
 
 function logoutAdmin(){
 
-  sessionStorage.removeItem("refaeiAdmin");
+  sessionStorage.removeItem(
+    "refaeiAdmin"
+  );
 
   location.hash="";
-
   showStore();
 }
 
@@ -1962,43 +2096,12 @@ function renderCategorySelect(){
 
   productCategory.innerHTML=
     "<option value=''>اختر القسم</option>"+
-    categories.map(category=>
-      `<option value="${safe(category.name)}">
+    categoriesData.map(category=>`
+
+      <option value="${safe(category.name)}">
         ${safe(category.name)}
-      </option>`
-    ).join("");
-}
+      </option>
 
-function renderAdminCategories(){
-
-  adminCategoriesList.innerHTML=
-    categories.map(category=>`
-
-      <div class="category-admin-row">
-
-        ${
-          category.image
-          ?`<img src="${category.image}" alt="">`
-          :`<div class="category-admin-placeholder">🛍️</div>`
-        }
-
-        <h3>${safe(category.name)}</h3>
-
-        <div class="category-admin-actions">
-
-          <button class="edit-btn"
-                  onclick="editCategory(${category.id})">
-            تعديل
-          </button>
-
-          <button class="delete-btn"
-                  onclick="deleteCategory(${category.id})">
-            حذف
-          </button>
-
-        </div>
-
-      </div>
     `).join("");
 }
 
@@ -2015,7 +2118,7 @@ function saveCategory(event){
 
   if(id){
 
-    const category=categories.find(
+    const category=categoriesData.find(
       item=>item.id==id
     );
 
@@ -2036,10 +2139,12 @@ function saveCategory(event){
 
   }else{
 
-    categories.push({
+    categoriesData.push({
+
       id:Date.now(),
       name:name,
       image:""
+
     });
   }
 
@@ -2048,6 +2153,7 @@ function saveCategory(event){
   renderCategories();
   renderCategorySelect();
   renderAdminCategories();
+  renderProducts();
 
   cancelCategoryEdit();
 
@@ -2056,7 +2162,7 @@ function saveCategory(event){
 
 function editCategory(id){
 
-  const category=categories.find(
+  const category=categoriesData.find(
     item=>item.id==id
   );
 
@@ -2067,8 +2173,13 @@ function editCategory(id){
   editCategoryId.value=category.id;
   categoryName.value=category.name;
 
+  categoryFormTitle.textContent=
+    "تعديل القسم";
+
+  categorySaveBtn.textContent=
+    "حفظ التعديل";
+
   cancelCategoryBtn.classList.remove("hidden");
-  categorySaveBtn.textContent="حفظ التعديل";
 }
 
 function cancelCategoryEdit(){
@@ -2076,13 +2187,18 @@ function cancelCategoryEdit(){
   editCategoryId.value="";
   categoryName.value="";
 
+  categoryFormTitle.textContent=
+    "إضافة قسم جديد";
+
+  categorySaveBtn.textContent=
+    "إضافة القسم";
+
   cancelCategoryBtn.classList.add("hidden");
-  categorySaveBtn.textContent="إضافة القسم";
 }
 
 function deleteCategory(id){
 
-  const category=categories.find(
+  const category=categoriesData.find(
     item=>item.id==id
   );
 
@@ -2096,11 +2212,11 @@ function deleteCategory(id){
 
   if(used){
 
-    alert("احذف منتجات القسم أولًا");
+    alert("لا يمكن حذف قسم يحتوي على منتجات");
     return;
   }
 
-  categories=categories.filter(
+  categoriesData=categoriesData.filter(
     item=>item.id!=id
   );
 
@@ -2118,11 +2234,17 @@ function saveProduct(event){
   const id=editProductId.value;
 
   const data={
+
     name:productName.value.trim(),
+
     category:productCategory.value,
+
     price:Number(productPrice.value),
+
     stock:Number(productStock.value),
+
     description:productDescription.value.trim()
+
   };
 
   if(id){
@@ -2138,9 +2260,11 @@ function saveProduct(event){
   }else{
 
     products.unshift({
+
       id:Date.now(),
       ...data,
       image:""
+
     });
   }
 
@@ -2149,7 +2273,6 @@ function saveProduct(event){
   renderProducts();
   renderCategories();
   renderAdminProducts();
-  updateSummary();
 
   cancelProductEdit();
 
@@ -2173,8 +2296,13 @@ function editProduct(id){
   productStock.value=product.stock;
   productDescription.value=product.description;
 
+  productFormTitle.textContent=
+    "تعديل المنتج";
+
+  productSaveBtn.textContent=
+    "حفظ التعديل";
+
   cancelProductBtn.classList.remove("hidden");
-  productSaveBtn.textContent="حفظ تعديل المنتج";
 }
 
 function cancelProductEdit(){
@@ -2186,8 +2314,13 @@ function cancelProductEdit(){
   productStock.value="";
   productDescription.value="";
 
+  productFormTitle.textContent=
+    "إضافة منتج جديد";
+
+  productSaveBtn.textContent=
+    "إضافة المنتج";
+
   cancelProductBtn.classList.add("hidden");
-  productSaveBtn.textContent="إضافة المنتج";
 }
 
 function deleteProduct(id){
@@ -2210,7 +2343,51 @@ function deleteProduct(id){
   renderCategories();
   renderCart();
   renderAdminProducts();
-  updateSummary();
+}
+
+function renderAdminCategories(){
+
+  adminCategoriesList.innerHTML=
+    categoriesData.map(category=>{
+
+      const icon=category.image
+        ?`
+          <img src="${category.image}"
+               alt="${safe(category.name)}">
+        `
+        :`
+          <div class="category-admin-placeholder">
+            ${getCategoryEmoji(category.name)}
+          </div>
+        `;
+
+      return `
+
+        <div class="category-admin-row">
+
+          ${icon}
+
+          <h3>${safe(category.name)}</h3>
+
+          <div class="category-admin-actions">
+
+            <button class="edit-btn"
+                    onclick="editCategory(${category.id})">
+              تعديل
+            </button>
+
+            <button class="delete-btn"
+                    onclick="deleteCategory(${category.id})">
+              حذف
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
 }
 
 function renderAdminProducts(){
@@ -2224,66 +2401,47 @@ function renderAdminProducts(){
   }
 
   adminProductsList.innerHTML=
-    products.map(product=>{
+    products.map(product=>`
 
-      const stock=Number(product.stock)||0;
+      <div class="admin-row">
 
-      return `
-        <div class="admin-row">
+        <div class="admin-placeholder">
+          🛍️
+        </div>
 
-          <div class="admin-placeholder">
-            🛍️
-          </div>
+        <div>
 
-          <div>
+          <h3>${safe(product.name)}</h3>
 
-            <h3>${safe(product.name)}</h3>
-
-            <p>
-              القسم: ${safe(product.category)}
-              <br>
-              السعر:
-              ${Number(product.price).toFixed(2)} د.ك
-              <br>
-              الكمية المتبقية:
-              ${stock}
-            </p>
-
-          </div>
-
-          <div class="admin-actions">
-
-            <button class="edit-btn"
-                    onclick="editProduct(${product.id})">
-              تعديل السعر والكمية
-            </button>
-
-            <button class="delete-btn"
-                    onclick="deleteProduct(${product.id})">
-              حذف
-            </button>
-
-          </div>
+          <p>
+            القسم: ${safe(product.category)}
+            <br>
+            السعر:
+            ${Number(product.price).toFixed(2)} د.ك
+            <br>
+            الكمية المتبقية:
+            ${Number(product.stock)}
+          </p>
 
         </div>
-      `;
-    }).join("");
-}
 
-function updateSummary(){
+        <div class="admin-actions">
 
-  totalProductsCount.textContent=
-    products.length;
+          <button class="edit-btn"
+                  onclick="editProduct(${product.id})">
+            تعديل السعر والكمية
+          </button>
 
-  totalStockCount.textContent=
-    products.reduce(
-      (sum,product)=>
-        sum+Number(product.stock||0),
-      0
-    );
+          <button class="delete-btn"
+                  onclick="deleteProduct(${product.id})">
+            حذف
+          </button>
 
-  totalOrdersCount.textContent=
-    purchaseReports.length;
+        </div>
+
+      </div>
+
+    `).join("");
 }
 
 function renderReports(){
@@ -2291,12 +2449,14 @@ function renderReports(){
   if(!purchaseReports.length){
 
     purchaseReportsList.innerHTML=`
+
       <tr>
         <td colspan="5"
             style="text-align:center;padding:20px">
           لا توجد طلبات حتى الآن
         </td>
       </tr>
+
     `;
 
     return;
@@ -2310,6 +2470,7 @@ function renderReports(){
       ).join("<br>");
 
       return `
+
         <tr>
 
           <td>${safe(order.date)}</td>
@@ -2326,7 +2487,9 @@ function renderReports(){
           </td>
 
         </tr>
+
       `;
+
     }).join("");
 }
 
