@@ -205,7 +205,7 @@ nav a{
   background:var(--brown2);
 }
 
-/* الأقسام والمنتجات */
+/* الأقسام */
 .section{
   padding:55px 0;
 }
@@ -254,11 +254,9 @@ nav a{
   text-align:center;
 }
 
-.category-card img,
 .category-placeholder{
   width:100%;
   height:100px;
-  object-fit:contain;
   display:grid;
   place-items:center;
   background:#e6dbcc;
@@ -292,6 +290,7 @@ nav a{
   padding:9px 15px;
 }
 
+/* المنتجات */
 .products{
   display:grid;
   grid-template-columns:repeat(4,1fr);
@@ -303,22 +302,34 @@ nav a{
   border:1px solid var(--border);
   display:flex;
   flex-direction:column;
+  height:100%;
+  min-width:0;
   overflow:hidden;
 }
 
+/* مساحة الصورة ثابتة حتى لا تغطي التفاصيل */
 .product-img{
+  width:100%;
   height:205px;
-  display:grid;
-  place-items:center;
+  min-height:205px;
+  flex:0 0 205px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
   background:linear-gradient(135deg,#d7c5af,#f0e7da);
   font-size:55px;
-  position:relative;
 }
 
 .product-img img{
+  display:block;
   width:100%;
   height:100%;
+  max-width:100%;
+  max-height:100%;
   object-fit:contain;
+  object-position:center;
 }
 
 .stock-badge{
@@ -337,33 +348,45 @@ nav a{
 }
 
 .product-info{
-  padding:13px;
+  position:relative;
+  z-index:2;
+  flex:1 1 auto;
   min-height:205px;
+  padding:13px;
+  background:#fff;
   display:flex;
   flex-direction:column;
+  overflow:hidden;
 }
 
 .product-info small{
+  display:block;
   color:var(--gold);
+  margin-bottom:3px;
 }
 
 .product-info h3{
   color:var(--brown);
   font-size:16px;
+  line-height:1.6;
+  margin:0 0 5px;
 }
 
 .product-info p{
   color:#927c6a;
   font-size:12px;
+  line-height:1.8;
   min-height:45px;
+  margin:0;
 }
 
 .product-bottom{
   display:flex;
   justify-content:space-between;
-  align-items:end;
+  align-items:flex-end;
   gap:8px;
   margin-top:auto;
+  padding-top:12px;
 }
 
 .price{
@@ -534,11 +557,7 @@ footer{
 }
 
 .customer-form input,
-.customer-form textarea,
-.admin-login input,
-.admin-form input,
-.admin-form textarea,
-.admin-form select{
+.customer-form textarea{
   width:100%;
   border:1px solid var(--border);
   padding:10px;
@@ -547,7 +566,7 @@ footer{
   background:#fff;
 }
 
-/* الإدارة */
+/* لوحة الإدارة */
 .admin-page{
   display:none;
   min-height:700px;
@@ -576,6 +595,18 @@ footer{
 .admin-box h2{
   color:var(--brown);
   margin-bottom:14px;
+}
+
+.admin-login input,
+.admin-form input,
+.admin-form textarea,
+.admin-form select{
+  width:100%;
+  border:1px solid var(--border);
+  padding:10px;
+  margin-bottom:9px;
+  border-radius:4px;
+  background:#fff;
 }
 
 .admin-form label{
@@ -651,19 +682,7 @@ footer{
   gap:5px;
 }
 
-.notice{
-  display:none;
-  background:#fff1cf;
-  color:#73571c;
-  padding:9px;
-  margin:9px 0;
-  font-size:12px;
-}
-
-.notice.show{
-  display:block;
-}
-
+/* الجوال */
 @media(max-width:900px){
   nav{
     display:none;
@@ -675,6 +694,7 @@ footer{
 }
 
 @media(max-width:600px){
+
   .nav{
     min-height:66px;
   }
@@ -714,15 +734,18 @@ footer{
 
   .product-img{
     height:160px;
+    min-height:160px;
+    flex-basis:160px;
   }
 
   .product-info{
-    padding:9px;
     min-height:220px;
+    padding:9px;
   }
 
   .product-bottom{
     display:block;
+    margin-top:auto;
   }
 
   .add-btn{
@@ -789,7 +812,8 @@ footer{
     <div class="hero-content">
 
       <div class="logo">
-        <img src="logo.png" alt="REFAEI"
+        <img src="logo.png"
+             alt="REFAEI"
              onerror="this.style.display='none'">
       </div>
 
@@ -862,7 +886,8 @@ footer{
         دخول
       </button>
 
-      <div id="loginNotice" class="notice"></div>
+      <p id="loginNotice"
+         style="color:#bd3d36;margin-top:10px"></p>
     </div>
 
     <div id="adminDashboard" class="hidden">
@@ -871,51 +896,13 @@ footer{
         <div>
           <h2>لوحة الإدارة</h2>
           <p style="color:#927c6a;font-size:13px">
-            تعديل الأقسام والمنتجات والأسعار والكميات
+            تعديل المنتجات والأسعار والكميات
           </p>
         </div>
 
         <button class="logout" onclick="logoutAdmin()">
           تسجيل الخروج
         </button>
-      </div>
-
-      <div class="admin-box">
-        <h2>بيانات المتجر</h2>
-
-        <form class="admin-form" onsubmit="saveSettings(event)">
-
-          <label>النص العلوي</label>
-          <input id="settingTopbar" required>
-
-          <label>اسم المتجر</label>
-          <input id="settingBrandName" required>
-
-          <label>عنوان الصفحة الرئيسية</label>
-          <input id="settingHeroTitle" required>
-
-          <label>وصف الصفحة الرئيسية</label>
-          <textarea id="settingHeroDescription" rows="3" required></textarea>
-
-          <label>عنوان عن المتجر</label>
-          <input id="settingAboutTitle" required>
-
-          <label>وصف عن المتجر</label>
-          <textarea id="settingAboutText" rows="3" required></textarea>
-
-          <label>نص أسفل الصفحة</label>
-          <input id="settingFooter" required>
-
-          <label>رقم واتساب مع مفتاح الدولة</label>
-          <input id="settingWhatsapp"
-                 placeholder="965XXXXXXXX"
-                 required>
-
-          <button class="primary-btn">
-            حفظ البيانات
-          </button>
-
-        </form>
       </div>
 
       <div class="admin-box">
@@ -938,6 +925,7 @@ footer{
                   onclick="cancelCategoryEdit()">
             إلغاء التعديل
           </button>
+
         </form>
 
         <br>
@@ -970,6 +958,10 @@ footer{
                  min="0"
                  required>
 
+          <label>رابط صورة المنتج</label>
+          <input id="productImage"
+                 placeholder="images/product1.jpg">
+
           <label>تفاصيل المنتج</label>
           <textarea id="productDescription"
                     rows="3"
@@ -985,11 +977,12 @@ footer{
                   onclick="cancelProductEdit()">
             إلغاء التعديل
           </button>
+
         </form>
       </div>
 
       <div class="admin-box">
-        <h2>المنتجات</h2>
+        <h2>المنتجات والكميات</h2>
         <div id="adminProductsList"></div>
       </div>
 
@@ -1065,38 +1058,50 @@ const defaultProducts=[
     name:"قماش فاخر بني",
     category:"أقمشة",
     price:18,
-    stock:10,
+    stock:0,
+    image:"images/product1.jpg",
     description:"قماش فاخر بخامة ناعمة ومظهر أنيق."
   },
   {
     id:2,
-    name:"شال كشميري بيج",
-    category:"شالات",
-    price:25,
-    stock:5,
-    description:"شال كشميري ناعم بتصميم راقٍ."
+    name:"قماش حرير كريمي",
+    category:"أقمشة",
+    price:22,
+    stock:2,
+    image:"images/product2.jpg",
+    description:"خامة ناعمة مناسبة للمناسبات والتفصيل."
   },
   {
     id:3,
+    name:"شال كشميري بيج",
+    category:"شالات",
+    price:25,
+    stock:4,
+    image:"images/product3.jpg",
+    description:"شال كشميري ناعم بتصميم راقٍ."
+  },
+  {
+    id:4,
     name:"مسباح خشب طبيعي",
     category:"مسابيح",
     price:12,
-    stock:12,
+    stock:0,
+    image:"images/product4.jpg",
     description:"مسباح بتفاصيل طبيعية ولمسة تراثية."
   }
 ];
 
 let settings=JSON.parse(
   localStorage.getItem("refaeiSettings")
-)||{...defaultSettings};
+)||defaultSettings;
 
 let categories=JSON.parse(
   localStorage.getItem("refaeiCategories")
-)||[...defaultCategories];
+)||defaultCategories;
 
 let products=JSON.parse(
   localStorage.getItem("refaeiProducts")
-)||[...defaultProducts];
+)||defaultProducts;
 
 let cart=JSON.parse(
   localStorage.getItem("refaeiCart")
@@ -1124,17 +1129,10 @@ function getCategoryEmoji(name){
 
   if(text.includes("قماش")||text.includes("أقمشة")) return "🧵";
   if(text.includes("شال")||text.includes("كشمير")) return "🧣";
-  if(text.includes("مسباح")||text.includes("مسابيح")||text.includes("سبحة")) return "📿";
+  if(text.includes("مسباح")||text.includes("مسابيح")) return "📿";
   if(text.includes("عطر")||text.includes("بخور")) return "🌹";
-  if(text.includes("ملابس")||text.includes("أزياء")) return "👕";
-  if(text.includes("عباية")) return "🥻";
-  if(text.includes("حذاء")||text.includes("أحذية")) return "👟";
-  if(text.includes("شنطة")||text.includes("حقيبة")) return "👜";
   if(text.includes("ذهب")||text.includes("مجوهرات")) return "💎";
-  if(text.includes("ساعة")) return "⌚";
   if(text.includes("هدايا")||text.includes("هدية")) return "🎁";
-  if(text.includes("ورد")||text.includes("زهور")) return "🌸";
-  if(text.includes("قهوة")||text.includes("بن")) return "☕";
 
   return "🛍️";
 }
@@ -1150,38 +1148,6 @@ function renderSettings(){
   footerText.textContent=settings.footer;
 }
 
-function fillSettings(){
-
-  settingTopbar.value=settings.topbar;
-  settingBrandName.value=settings.brandName;
-  settingHeroTitle.value=settings.heroTitle;
-  settingHeroDescription.value=settings.heroDescription;
-  settingAboutTitle.value=settings.aboutTitle;
-  settingAboutText.value=settings.aboutText;
-  settingFooter.value=settings.footer;
-  settingWhatsapp.value=settings.whatsapp;
-}
-
-function saveSettings(event){
-
-  event.preventDefault();
-
-  settings={
-    topbar:settingTopbar.value.trim(),
-    brandName:settingBrandName.value.trim(),
-    heroTitle:settingHeroTitle.value.trim(),
-    heroDescription:settingHeroDescription.value.trim(),
-    aboutTitle:settingAboutTitle.value.trim(),
-    aboutText:settingAboutText.value.trim(),
-    footer:settingFooter.value.trim(),
-    whatsapp:settingWhatsapp.value.trim()
-  };
-
-  saveAll();
-  renderSettings();
-  alert("تم حفظ البيانات");
-}
-
 function renderCategories(){
 
   categoriesList.innerHTML=categories.map(category=>{
@@ -1192,6 +1158,7 @@ function renderCategories(){
 
     return `
       <div class="category-card">
+
         <div class="category-placeholder">
           ${getCategoryEmoji(category.name)}
         </div>
@@ -1220,11 +1187,21 @@ function renderProducts(list=products){
 
     const stock=Number(product.stock)||0;
 
+    /*
+      الصورة هنا داخل product-img فقط،
+      والتفاصيل داخل product-info منفصلة تمامًا
+    */
+    const image=product.image
+      ? `<img src="${safe(product.image)}"
+               alt="${safe(product.name)}"
+               onerror="this.style.display='none'">`
+      : getCategoryEmoji(product.category);
+
     return `
       <article class="product">
 
         <div class="product-img">
-          ${getCategoryEmoji(product.category)}
+          ${image}
 
           <span class="stock-badge ${stock<=0?"out":""}">
             ${stock<=0?"نفد المخزون":"متبقي "+stock}
@@ -1234,7 +1211,9 @@ function renderProducts(list=products){
         <div class="product-info">
 
           <small>${safe(product.category)}</small>
+
           <h3>${safe(product.name)}</h3>
+
           <p>${safe(product.description)}</p>
 
           <div class="product-bottom">
@@ -1250,7 +1229,9 @@ function renderProducts(list=products){
             </button>
 
           </div>
+
         </div>
+
       </article>
     `;
   }).join("");
@@ -1357,6 +1338,7 @@ function showAllProducts(){
     .scrollIntoView({behavior:"smooth"});
 }
 
+/* السلة */
 function addToCart(id){
 
   const product=products.find(item=>item.id==id);
@@ -1464,7 +1446,6 @@ function renderCart(){
 
         <div>
           <h4>${safe(item.name)}</h4>
-
           <p>سعر القطعة: ${price.toFixed(2)} د.ك</p>
 
           <div class="qty">
@@ -1517,21 +1498,14 @@ function sendOrder(){
     return;
   }
 
-  if(!cart.length){
-    alert("السلة فارغة");
-    return;
-  }
-
   let total=0;
   let message="طلب جديد من متجر "+settings.brandName+"\n\n";
 
   message+="اسم العميل: "+name+"\n";
   message+="رقم الهاتف: "+phone+"\n";
-
-  if(address) message+="العنوان: "+address+"\n";
-  if(note) message+="ملاحظات: "+note+"\n";
-
-  message+="\nالمنتجات:\n";
+  message+="العنوان: "+address+"\n";
+  message+="ملاحظات: "+note+"\n\n";
+  message+="المنتجات:\n";
 
   cart.forEach(item=>{
 
@@ -1563,11 +1537,10 @@ function sendOrder(){
   cart=[];
   saveAll();
   renderCart();
-
-  alert("تم إرسال الطلب بنجاح");
   closeCart();
 }
 
+/* الإدارة */
 function showAdmin(event){
 
   if(event) event.preventDefault();
@@ -1582,7 +1555,6 @@ function showAdmin(event){
   adminDashboard.classList.toggle("hidden",!logged);
 
   if(logged){
-    fillSettings();
     renderCategorySelect();
     renderAdminCategories();
     renderAdminProducts();
@@ -1594,7 +1566,6 @@ function loginAdmin(){
   if(adminPassword.value!==ADMIN_PASSWORD){
 
     loginNotice.textContent="كلمة المرور غير صحيحة";
-    loginNotice.classList.add("show");
     return;
   }
 
@@ -1632,6 +1603,7 @@ function renderAdminCategories(){
       </strong>
 
       <div style="margin-top:8px">
+
         <button class="edit-btn"
                 onclick="editCategory(${category.id})">
           تعديل
@@ -1641,8 +1613,8 @@ function renderAdminCategories(){
                 onclick="deleteCategory(${category.id})">
           حذف
         </button>
-      </div>
 
+      </div>
     </div>
 
   `).join("");
@@ -1746,6 +1718,7 @@ function saveProduct(event){
     category:productCategory.value,
     price:Number(productPrice.value),
     stock:Number(productStock.value),
+    image:productImage.value.trim(),
     description:productDescription.value.trim()
   };
 
@@ -1783,6 +1756,7 @@ function editProduct(id){
   productCategory.value=product.category;
   productPrice.value=product.price;
   productStock.value=product.stock;
+  productImage.value=product.image||"";
   productDescription.value=product.description;
 
   cancelProductBtn.classList.remove("hidden");
@@ -1796,6 +1770,7 @@ function cancelProductEdit(){
   productCategory.value="";
   productPrice.value="";
   productStock.value="";
+  productImage.value="";
   productDescription.value="";
 
   cancelProductBtn.classList.add("hidden");
@@ -1829,7 +1804,12 @@ function renderAdminProducts(){
     <div class="admin-row">
 
       <div class="admin-placeholder">
-        ${getCategoryEmoji(product.category)}
+        ${product.image
+          ? `<img src="${safe(product.image)}"
+                   style="width:100%;height:100%;object-fit:contain"
+                   onerror="this.style.display='none'">`
+          : getCategoryEmoji(product.category)
+        }
       </div>
 
       <div>
