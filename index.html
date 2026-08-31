@@ -990,6 +990,41 @@ footer{
     </div>
 
     <div id="adminDashboard" class="hidden">
+<div class="admin-box">
+  <h2>إعدادات واجهة الموقع</h2>
+
+  <form class="admin-form" onsubmit="saveSiteSettings(event)">
+
+    <label>الشريط العلوي</label>
+    <input id="settingTopbar" type="text" required>
+
+    <label>اسم المتجر</label>
+    <input id="settingBrandName" type="text" required>
+
+    <label>عنوان الواجهة الرئيسية</label>
+    <input id="settingHeroTitle" type="text" required>
+
+    <label>وصف الواجهة الرئيسية</label>
+    <textarea id="settingHeroDescription" rows="3" required></textarea>
+
+    <label>عنوان قسم عن المتجر</label>
+    <input id="settingAboutTitle" type="text" required>
+
+    <label>النص التعريفي عن المتجر</label>
+    <textarea id="settingAboutText" rows="5" required></textarea>
+
+    <label>نص أسفل الموقع</label>
+    <input id="settingFooter" type="text" required>
+
+    <label>رقم واتساب مع رمز الدولة</label>
+    <input id="settingWhatsapp" type="text" required>
+
+    <button class="primary-btn" type="submit">
+      حفظ إعدادات الموقع
+    </button>
+
+  </form>
+</div>
 
       <div class="admin-top">
         <div>
@@ -1399,6 +1434,107 @@ function renderSettings(){
 
   document.getElementById("footerText").textContent =
     settings.footer;
+}
+function renderAdminSettings(){
+async function saveSiteSettings(event){
+
+  event.preventDefault();
+
+  const data = {
+    id: 1,
+
+    topbar:
+      document.getElementById("settingTopbar")
+        .value.trim(),
+
+    brand_name:
+      document.getElementById("settingBrandName")
+        .value.trim(),
+
+    hero_title:
+      document.getElementById("settingHeroTitle")
+        .value.trim(),
+
+    hero_description:
+      document.getElementById("settingHeroDescription")
+        .value.trim(),
+
+    about_title:
+      document.getElementById("settingAboutTitle")
+        .value.trim(),
+
+    about_text:
+      document.getElementById("settingAboutText")
+        .value.trim(),
+
+    footer:
+      document.getElementById("settingFooter")
+        .value.trim(),
+
+    whatsapp:
+      document.getElementById("settingWhatsapp")
+        .value.trim(),
+
+    updated_at: new Date().toISOString()
+  };
+
+  const result = await supabaseClient
+    .from("site_settings")
+    .upsert(data, {
+      onConflict: "id"
+    });
+
+  if(result.error){
+
+    console.error(result.error);
+
+    alert(
+      "حدث خطأ أثناء الحفظ:\n" +
+      result.error.message
+    );
+
+    return;
+  }
+
+  settings = {
+    topbar: data.topbar,
+    brandName: data.brand_name,
+    heroTitle: data.hero_title,
+    heroDescription: data.hero_description,
+    aboutTitle: data.about_title,
+    aboutText: data.about_text,
+    footer: data.footer,
+    whatsapp: data.whatsapp
+  };
+
+  renderSettings();
+
+  alert("تم حفظ إعدادات الموقع بنجاح");
+}
+
+  document.getElementById("settingTopbar").value =
+    settings.topbar || "";
+
+  document.getElementById("settingBrandName").value =
+    settings.brandName || "";
+
+  document.getElementById("settingHeroTitle").value =
+    settings.heroTitle || "";
+
+  document.getElementById("settingHeroDescription").value =
+    settings.heroDescription || "";
+
+  document.getElementById("settingAboutTitle").value =
+    settings.aboutTitle || "";
+
+  document.getElementById("settingAboutText").value =
+    settings.aboutText || "";
+
+  document.getElementById("settingFooter").value =
+    settings.footer || "";
+
+  document.getElementById("settingWhatsapp").value =
+    settings.whatsapp || "";
 }
 
 /* عرض الأقسام */
@@ -2034,6 +2170,7 @@ async function showAdmin(event){
     .classList.toggle("hidden",!logged);
 
   if(logged){
+renderAdminSettings();
 
     await loadAllData();
 
