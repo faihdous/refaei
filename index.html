@@ -917,6 +917,7 @@ footer{
     </nav>
 
     <div class="nav-actions">
+
       <a href="#admin" class="admin-btn" onclick="showAdmin(event)">
         الإدارة
       </a>
@@ -925,21 +926,26 @@ footer{
         السلة
         <span id="cartCount" class="cart-count">0</span>
       </button>
+
     </div>
 
   </div>
 </header>
+
 <main id="storePage">
 
   <section class="hero" id="home">
     <div class="hero-content">
 
       <div class="logo">
-        <img src="logo.png" alt="REFAEI"
-             onerror="this.style.display='none'">
+        <img
+          src="logo.png"
+          alt="REFAEI"
+          onerror="this.style.display='none'">
       </div>
 
       <h1 id="heroTitle"></h1>
+
       <p id="heroDescription"></p>
 
       <button class="main-btn" onclick="showShoppingContent()">
@@ -998,17 +1004,30 @@ footer{
   <div class="container">
 
     <div id="adminLogin" class="admin-login">
+
       <h2>تسجيل دخول الإدارة</h2>
 
-      <input type="password" id="adminPassword"
-             placeholder="كلمة المرور">
+      <input
+        type="email"
+        id="adminEmail"
+        placeholder="البريد الإلكتروني"
+        autocomplete="email">
+
+      <input
+        type="password"
+        id="adminPassword"
+        placeholder="كلمة المرور"
+        autocomplete="current-password">
 
       <button class="primary-btn" onclick="loginAdmin()">
         دخول
       </button>
 
-      <p id="loginNotice"
-         style="color:#bd3d36;margin-top:10px"></p>
+      <p
+        id="loginNotice"
+        style="color:#bd3d36;margin-top:10px">
+      </p>
+
     </div>
 
     <div id="adminDashboard" class="hidden">
@@ -1016,6 +1035,7 @@ footer{
       <div class="admin-top">
         <div>
           <h2>لوحة الإدارة</h2>
+
           <p style="color:#927c6a;font-size:13px">
             إدارة الأقسام والمنتجات والصور والكميات
           </p>
@@ -1026,32 +1046,36 @@ footer{
         </button>
       </div>
 
-      <!-- التقارير -->
       <div class="reports-box">
 
         <h2>التقارير</h2>
 
         <div class="reports-buttons">
 
-          <button class="primary-btn"
-                  onclick="renderReports()">
+          <button
+            class="primary-btn"
+            onclick="renderReports()">
             تحديث التقارير
           </button>
 
-          <button class="all-btn"
-                  onclick="exportReportsToExcel()">
+          <button
+            class="all-btn"
+            onclick="exportReportsToExcel()">
             تصدير إلى Excel
           </button>
 
-          <button class="delete-btn"
-                  onclick="clearReports()">
+          <button
+            class="delete-btn"
+            onclick="clearReports()">
             مسح التقارير
           </button>
 
         </div>
 
-        <div id="reportsSummary"
-             class="report-stats"></div>
+        <div
+          id="reportsSummary"
+          class="report-stats">
+        </div>
 
         <div class="report-table-wrap">
 
@@ -1077,216 +1101,266 @@ footer{
       </div>
 
       <div class="admin-box">
+
         <h2>إضافة أو تعديل قسم</h2>
 
-        <form class="admin-form" onsubmit="saveCategory(event)">
+        <form
+          class="admin-form"
+          onsubmit="saveCategory(event)">
 
-          <input type="hidden" id="editCategoryId">
+          <input
+            type="hidden"
+            id="editCategoryId">
 
           <label>اسم القسم</label>
-          <input id="categoryName" required>
 
-          <button class="primary-btn" id="categorySaveBtn">
+          <input
+            id="categoryName"
+            required>
+
+          <button
+            class="primary-btn"
+            id="categorySaveBtn">
             إضافة القسم
           </button>
 
-          <button type="button"
-                  id="cancelCategoryBtn"
-                  class="all-btn hidden"
-                  onclick="cancelCategoryEdit()">
+          <button
+            type="button"
+            id="cancelCategoryBtn"
+            class="all-btn hidden"
+            onclick="cancelCategoryEdit()">
             إلغاء التعديل
           </button>
 
         </form>
 
         <br>
+
         <div id="adminCategoriesList"></div>
+
       </div>
 
       <div class="admin-box">
+
         <h2>إضافة أو تعديل منتج</h2>
 
-        <form class="admin-form" onsubmit="saveProduct(event)">
+        <form
+          class="admin-form"
+          onsubmit="saveProduct(event)">
 
-          <input type="hidden" id="editProductId">
+          <input
+            type="hidden"
+            id="editProductId">
 
           <label>اسم المنتج</label>
-          <input id="productName" required>
+
+          <input
+            id="productName"
+            required>
 
           <label>القسم</label>
-          <select id="productCategory" required></select>
+
+          <select
+            id="productCategory"
+            required>
+          </select>
 
           <label>السعر بالدينار الكويتي</label>
-          <input id="productPrice" type="number"
-                 min="0" step="0.01" required>
+
+          <input
+            id="productPrice"
+            type="number"
+            min="0"
+            step="0.01"
+            required>
 
           <label>الكمية المتوفرة</label>
-          <input id="productStock" type="number"
-                 min="0" required>
+
+          <input
+            id="productStock"
+            type="number"
+            min="0"
+            required>
 
           <label>صورة المنتج</label>
-          <input id="productImage" type="file" accept="image/*">
 
-          <img id="productImagePreview"
-               class="product-image-preview"
-               alt="معاينة الصورة">
+          <input
+            id="productImage"
+            type="file"
+            accept="image/*">
+
+          <img
+            id="productImagePreview"
+            class="product-image-preview"
+            alt="معاينة الصورة">
 
           <label>تفاصيل المنتج</label>
-          <textarea id="productDescription"
-                    rows="3" required></textarea>
 
-          <button class="primary-btn" id="productSaveBtn">
+          <textarea
+            id="productDescription"
+            rows="3"
+            required>
+          </textarea>
+
+          <button
+            class="primary-btn"
+            id="productSaveBtn">
             إضافة المنتج
           </button>
 
-          <button type="button"
-                  id="cancelProductBtn"
-                  class="all-btn hidden"
-                  onclick="cancelProductEdit()">
+          <button
+            type="button"
+            id="cancelProductBtn"
+            class="all-btn hidden"
+            onclick="cancelProductEdit()">
             إلغاء التعديل
           </button>
 
         </form>
+
       </div>
 
       <div class="admin-box">
+
         <h2>المنتجات</h2>
+
         <div id="adminProductsList"></div>
+
       </div>
 
     </div>
+
   </div>
 </section>
 
-<div id="overlay" class="overlay" onclick="closeCart()"></div>
+<div
+  id="overlay"
+  class="overlay"
+  onclick="closeCart()">
+</div>
 
 <aside id="cartPanel" class="cart-panel">
 
   <div class="cart-head">
+
     <h2>سلة المشتريات</h2>
-    <button class="close" onclick="closeCart()">×</button>
+
+    <button
+      class="close"
+      onclick="closeCart()">
+      ×
+    </button>
+
   </div>
 
   <div id="cartItems"></div>
 
-  <div id="cartSummary" class="hidden">
+  <div
+    id="cartSummary"
+    class="hidden">
 
     <div class="cart-total">
       <span>السعر النهائي</span>
       <span id="cartTotal">0.00 د.ك</span>
     </div>
 
-    <button class="whatsapp" onclick="showCustomerForm()">
+    <button
+      class="whatsapp"
+      onclick="showCustomerForm()">
       إتمام الطلب عبر واتساب
     </button>
 
-    <div id="customerForm" class="customer-form">
+    <div
+      id="customerForm"
+      class="customer-form">
 
-      <input id="customerName" placeholder="الاسم الكامل">
-      <input id="customerPhone" placeholder="رقم الهاتف">
-      <input id="customerAddress" placeholder="العنوان">
+      <input
+        id="customerName"
+        placeholder="الاسم الكامل">
 
-      <textarea id="customerNote"
-                rows="3"
-                placeholder="ملاحظات إضافية"></textarea>
+      <input
+        id="customerPhone"
+        placeholder="رقم الهاتف">
 
-      <button class="primary-btn"
-              style="width:100%"
-              onclick="sendOrder()">
+      <input
+        id="customerAddress"
+        placeholder="العنوان">
+
+      <textarea
+        id="customerNote"
+        rows="3"
+        placeholder="ملاحظات إضافية">
+      </textarea>
+
+      <button
+        class="primary-btn"
+        style="width:100%"
+        onclick="sendOrder()">
         إرسال الطلب
       </button>
 
     </div>
 
   </div>
+
 </aside>
 
 <script>
-const ADMIN_PASSWORD = "1234";
+const SUPABASE_URL =
+  "https://mvsdblzjzrscnfgiqxan.supabase.co";
 
-const defaultSettings = {
-  topbar:"توصيل راقٍ واختيارات مختارة بعناية من REFAEI",
-  brandName:"REFAEI",
-  heroTitle:"REFAEI",
-  heroDescription:"أقمشة مختارة، شالات كشميرية، ومسابيح بطابع فاخر",
-  aboutTitle:"عن REFAEI",
-  aboutText:"نختار لكم المنتجات بعناية لنقدم منتجات تجمع بين الجودة والذوق والأصالة.",
-  footer:"© 2025 REFAEI — جميع الحقوق محفوظة",
-  whatsapp:"96500000000"
-};
+const SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im12c2RibHpqenJzY25mZ2lxeGFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgwNzgxODIsImV4cCI6MjEwMzY1NDE4Mn0.DK5K4GU2Ga6mFEFx7dx0ILx6s6Pcuif0AzfLrD7Mz3w";
 
-const defaultCategories = [
-  {id:1,name:"أقمشة"},
-  {id:2,name:"شالات"},
-  {id:3,name:"مسابيح"}
-];
+const ADMIN_USER_ID =
+  "04ac2fb6-8750-4f29-a7c1-1d53313d563c";
 
-const defaultProducts = [
-  {
-    id:1,
-    name:"قماش فاخر بني",
-    category:"أقمشة",
-    price:18,
-    stock:0,
-    image:"",
-    description:"قماش فاخر بخامة ناعمة ومظهر أنيق."
-  },
-  {
-    id:2,
-    name:"قماش حرير كريمي",
-    category:"أقمشة",
-    price:22,
-    stock:2,
-    image:"",
-    description:"خامة ناعمة مناسبة للمناسبات والتفصيل."
-  },
-  {
-    id:3,
-    name:"شال كشميري بيج",
-    category:"شالات",
-    price:25,
-    stock:4,
-    image:"",
-    description:"شال كشميري ناعم بتصميم راقٍ."
-  },
-  {
-    id:4,
-    name:"مسباح خشب طبيعي",
-    category:"مسابيح",
-    price:12,
-    stock:3,
-    image:"",
-    description:"مسباح بتفاصيل طبيعية ولمسة تراثية."
-  }
-];
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_ANON_KEY
+  );
 
-let settings =
-  JSON.parse(localStorage.getItem("refaeiSettings"))
-  || {...defaultSettings};
+const WHATSAPP_NUMBER = "96500000000";
 
 let categories =
-  JSON.parse(localStorage.getItem("refaeiCategories"))
-  || [...defaultCategories];
+  JSON.parse(localStorage.getItem("refaeiCategories")) || [
+    {
+      id: "cat-1",
+      name: "العطور"
+    },
+    {
+      id: "cat-2",
+      name: "البخور"
+    },
+    {
+      id: "cat-3",
+      name: "الهدايا"
+    }
+  ];
 
 let products =
-  JSON.parse(localStorage.getItem("refaeiProducts"))
-  || [...defaultProducts];
+  JSON.parse(localStorage.getItem("refaeiProducts")) || [];
 
 let cart =
-  JSON.parse(localStorage.getItem("refaeiCart"))
-  || [];
+  JSON.parse(localStorage.getItem("refaeiCart")) || [];
 
-let orders =
-  JSON.parse(localStorage.getItem("refaeiOrders"))
-  || [];
+let reports =
+  JSON.parse(localStorage.getItem("refaeiReports")) || [];
 
-/* حفظ البيانات */
-function saveAll(){
+const settings = {
+  brand: "REFAEI",
+  topbar: "توصيل مميز داخل الكويت",
+  heroTitle: "أناقة تبدأ من التفاصيل",
+  heroDescription:
+    "اكتشف تشكيلتنا المختارة من المنتجات المميزة.",
+  aboutTitle: "عن REFAEI",
+  aboutText:
+    "نقدم لكم منتجات مختارة بعناية بجودة وأناقة تناسب ذوقكم.",
+  footer: "© 2025 REFAEI - جميع الحقوق محفوظة"
+};
 
-  localStorage.setItem(
-    "refaeiSettings",
-    JSON.stringify(settings)
-  );
+function saveData(){
 
   localStorage.setItem(
     "refaeiCategories",
@@ -1304,233 +1378,208 @@ function saveAll(){
   );
 
   localStorage.setItem(
-    "refaeiOrders",
-    JSON.stringify(orders)
+    "refaeiReports",
+    JSON.stringify(reports)
   );
 }
 
-/* حماية النصوص */
-function safe(text){
-
-  return String(text ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+function byId(id){
+  return document.getElementById(id);
 }
 
-/* توحيد أسماء الأقسام */
-function normalizeText(value){
+function showStore(event){
 
-  return String(value ?? "")
-    .trim()
-    .replace(/\s+/g,"")
-    .replace(/[إأآا]/g,"ا")
-    .replace(/ى/g,"ي")
-    .replace(/ة/g,"ه");
+  if(event){
+    event.preventDefault();
+  }
+
+  byId("storePage").style.display = "block";
+  byId("adminPage").classList.remove("active");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
 }
 
-/* مقارنة أسماء الأقسام القديمة والجديدة */
-function sameCategory(first,second){
+function showAdmin(event){
 
-  const a = normalizeText(first);
-  const b = normalizeText(second);
+  if(event){
+    event.preventDefault();
+  }
 
-  const aliases = {
-    "مسباح":"مسابيح",
-    "مسابيح":"مسابيح",
-    "قماش":"اقمشه",
-    "اقمشه":"اقمشه",
-    "شال":"شالات",
-    "شالات":"شالات"
-  };
+  byId("storePage").style.display = "none";
+  byId("adminPage").classList.add("active");
 
-  return (aliases[a] || a) === (aliases[b] || b);
+  checkAdminSession();
 }
 
-/* إصلاح بيانات الأقسام القديمة */
-function repairOldProductCategories(){
+function showShoppingContent(){
 
-  products.forEach(product => {
+  byId("categories").classList.add("visible");
+  byId("products").classList.add("visible");
 
-    if(sameCategory(product.category,"مسابيح")){
-      product.category = "مسابيح";
-    }
-
-    if(sameCategory(product.category,"أقمشة")){
-      product.category = "أقمشة";
-    }
-
-    if(sameCategory(product.category,"شالات")){
-      product.category = "شالات";
-    }
+  byId("categories").scrollIntoView({
+    behavior:"smooth"
   });
 
-  saveAll();
+  renderCategories();
+  renderProducts();
 }
 
-/* رمز القسم */
-function getCategoryEmoji(name){
+function showCategoriesPage(event){
 
-  const text = String(name || "").toLowerCase();
-
-  if(
-    text.includes("قماش") ||
-    text.includes("أقمشة") ||
-    text.includes("اقمشه")
-  ){
-    return "🧵";
+  if(event){
+    event.preventDefault();
   }
 
-  if(
-    text.includes("شال") ||
-    text.includes("شالات") ||
-    text.includes("كشمير")
-  ){
-    return "🧣";
-  }
+  showStore();
+  byId("categories").classList.add("visible");
+  byId("products").classList.remove("visible");
+  renderCategories();
 
-  if(
-    text.includes("مسباح") ||
-    text.includes("مسابيح")
-  ){
-    return "📿";
-  }
-
-  if(text.includes("عطر") || text.includes("بخور")){
-    return "🌹";
-  }
-
-  if(text.includes("ذهب") || text.includes("مجوهرات")){
-    return "💎";
-  }
-
-  if(text.includes("هدايا") || text.includes("هدية")){
-    return "🎁";
-  }
-
-  return "🛍️";
-}
-/* بيانات الموقع */
-function renderSettings(){
-
-  document.getElementById("topbarText").textContent =
-    settings.topbar;
-
-  document.getElementById("brandName").textContent =
-    settings.brandName;
-
-  document.getElementById("heroTitle").textContent =
-    settings.heroTitle;
-
-  document.getElementById("heroDescription").textContent =
-    settings.heroDescription;
-
-  document.getElementById("aboutTitle").textContent =
-    settings.aboutTitle;
-
-  document.getElementById("aboutText").textContent =
-    settings.aboutText;
-
-  document.getElementById("footerText").textContent =
-    settings.footer;
+  byId("categories").scrollIntoView({
+    behavior:"smooth"
+  });
 }
 
-/* عرض الأقسام */
+function showProductsPage(event){
+
+  if(event){
+    event.preventDefault();
+  }
+
+  showStore();
+  byId("categories").classList.add("visible");
+  byId("products").classList.add("visible");
+  renderCategories();
+  renderProducts();
+
+  byId("products").scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
+function showAboutPage(event){
+
+  if(event){
+    event.preventDefault();
+  }
+
+  showStore();
+
+  byId("about").scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
+function showAllProducts(){
+
+  byId("products").classList.add("visible");
+  byId("productsTitle").textContent =
+    "جميع المنتجات";
+
+  renderProducts();
+
+  byId("products").scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
 function renderCategories(){
 
-  const list =
-    document.getElementById("categoriesList");
+  const box = byId("categoriesList");
 
-  list.innerHTML = categories.map(category => {
+  box.innerHTML = categories.map(category => {
 
-    const count = products.filter(product =>
-      sameCategory(product.category,category.name)
+    const count = products.filter(
+      product => product.categoryId === category.id
     ).length;
 
     return `
       <div class="category-card">
-
-        <div class="category-placeholder">
-          ${getCategoryEmoji(category.name)}
-        </div>
-
-        <button
-          type="button"
-          onclick='filterProducts(${JSON.stringify(category.name)})'>
-          ${safe(category.name)}
+        <div class="category-placeholder">✦</div>
+        <button onclick="filterProducts('${category.id}')">
+          ${escapeHTML(category.name)}
         </button>
-
-        <small>${count} منتجات</small>
-
+        <small>${count} منتج</small>
       </div>
     `;
 
   }).join("");
 }
 
-/* عرض المنتجات */
-function renderProducts(list = products){
+function filterProducts(categoryId){
 
-  const grid =
-    document.getElementById("productsGrid");
+  byId("products").classList.add("visible");
+
+  const category =
+    categories.find(item => item.id === categoryId);
+
+  byId("productsTitle").textContent =
+    category ? category.name : "المنتجات";
+
+  renderProducts(categoryId);
+
+  byId("products").scrollIntoView({
+    behavior:"smooth"
+  });
+}
+
+function renderProducts(categoryId = null){
+
+  const box = byId("productsGrid");
+
+  let list = categoryId
+    ? products.filter(
+        product => product.categoryId === categoryId
+      )
+    : products;
 
   if(!list.length){
 
-    grid.innerHTML = `
-      <p style="grid-column:1/-1;text-align:center">
-        لا توجد منتجات في هذا القسم
-      </p>
-    `;
+    box.innerHTML =
+      "<p style='grid-column:1/-1;text-align:center;color:#927c6a'>لا توجد منتجات حالياً</p>";
 
     return;
   }
 
-  grid.innerHTML = list.map(product => {
+  box.innerHTML = list.map(product => {
 
-    const stock = Number(product.stock) || 0;
-
-    const image = product.image
-      ? `<img src="${product.image}" alt="${safe(product.name)}">`
-      : getCategoryEmoji(product.category);
+    const out = Number(product.stock) <= 0;
 
     return `
       <article class="product">
 
         <div class="product-img">
+          ${
+            product.image
+              ? `<img src="${product.image}" alt="${escapeHTML(product.name)}">`
+              : "🛍️"
+          }
 
-          ${image}
-
-          <span class="stock-badge ${stock <= 0 ? "out" : ""}">
-            ${stock <= 0 ? "نفد المخزون" : "متبقي " + stock}
+          <span class="stock-badge ${out ? "out" : ""}">
+            ${out ? "غير متوفر" : `متوفر: ${product.stock}`}
           </span>
-
         </div>
 
         <div class="product-info">
-
-          <small>${safe(product.category)}</small>
-
-          <h3>${safe(product.name)}</h3>
-
-          <p>${safe(product.description)}</p>
+          <small>${escapeHTML(getCategoryName(product.categoryId))}</small>
+          <h3>${escapeHTML(product.name)}</h3>
+          <p>${escapeHTML(product.description || "")}</p>
 
           <div class="product-bottom">
-
             <span class="price">
               ${Number(product.price).toFixed(2)} د.ك
             </span>
 
             <button
               class="add-btn"
-              onclick="addToCart(${product.id})"
-              ${stock <= 0 ? "disabled" : ""}>
-              ${stock <= 0 ? "غير متوفر" : "إضافة للسلة"}
+              ${out ? "disabled" : ""}
+              onclick="addToCart('${product.id}')">
+              ${out ? "غير متوفر" : "أضف للسلة"}
             </button>
-
           </div>
-
         </div>
 
       </article>
@@ -1539,283 +1588,98 @@ function renderProducts(list = products){
   }).join("");
 }
 
-/* عرض الأقسام والمنتجات */
-function showShoppingContent(){
+function getCategoryName(id){
 
-  document.querySelector(".categories-section")
-    .classList.add("visible");
+  const category =
+    categories.find(item => item.id === id);
 
-  document.querySelector(".products-section")
-    .classList.add("visible");
-
-  document.getElementById("productsTitle")
-    .textContent = "جميع المنتجات";
-
-  renderCategories();
-  renderProducts();
-
-  document.getElementById("categories")
-    .scrollIntoView({behavior:"smooth"});
+  return category ? category.name : "بدون قسم";
 }
 
-/* الرئيسية */
-function showStore(event){
+function addToCart(productId){
 
-  if(event){
-    event.preventDefault();
-  }
-
-  document.getElementById("storePage")
-    .classList.remove("hidden");
-
-  document.getElementById("adminPage")
-    .classList.remove("active");
-
-  document.querySelector(".categories-section")
-    .classList.remove("visible");
-
-  document.querySelector(".products-section")
-    .classList.remove("visible");
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
-}
-
-/* صفحة الأقسام */
-function showCategoriesPage(event){
-
-  event.preventDefault();
-
-  document.getElementById("storePage")
-    .classList.remove("hidden");
-
-  document.getElementById("adminPage")
-    .classList.remove("active");
-
-  document.querySelector(".categories-section")
-    .classList.add("visible");
-
-  document.querySelector(".products-section")
-    .classList.remove("visible");
-
-  renderCategories();
-
-  document.getElementById("categories")
-    .scrollIntoView({behavior:"smooth"});
-}
-
-/* صفحة المنتجات */
-function showProductsPage(event){
-
-  event.preventDefault();
-
-  document.getElementById("storePage")
-    .classList.remove("hidden");
-
-  document.getElementById("adminPage")
-    .classList.remove("active");
-
-  document.querySelector(".categories-section")
-    .classList.add("visible");
-
-  document.querySelector(".products-section")
-    .classList.add("visible");
-
-  document.getElementById("productsTitle")
-    .textContent = "جميع المنتجات";
-
-  renderCategories();
-  renderProducts();
-
-  document.getElementById("products")
-    .scrollIntoView({behavior:"smooth"});
-}
-
-/* صفحة عن المتجر */
-function showAboutPage(event){
-
-  event.preventDefault();
-
-  document.getElementById("storePage")
-    .classList.remove("hidden");
-
-  document.getElementById("adminPage")
-    .classList.remove("active");
-
-  document.getElementById("about")
-    .scrollIntoView({behavior:"smooth"});
-}
-
-/* عرض منتجات القسم */
-function filterProducts(category){
-
-  const selectedCategory =
-    String(category ?? "").trim();
-
-  document.querySelector(".categories-section")
-    .classList.add("visible");
-
-  document.querySelector(".products-section")
-    .classList.add("visible");
-
-  document.getElementById("productsTitle")
-    .textContent = selectedCategory;
-
-  const filteredProducts = products.filter(product =>
-    sameCategory(product.category,selectedCategory)
-  );
-
-  renderProducts(filteredProducts);
-
-  document.getElementById("products")
-    .scrollIntoView({behavior:"smooth"});
-}
-
-/* عرض كل المنتجات */
-function showAllProducts(){
-
-  document.querySelector(".categories-section")
-    .classList.add("visible");
-
-  document.querySelector(".products-section")
-    .classList.add("visible");
-
-  document.getElementById("productsTitle")
-    .textContent = "جميع المنتجات";
-
-  renderProducts(products);
-
-  document.getElementById("products")
-    .scrollIntoView({behavior:"smooth"});
-}
-
-/* السلة */
-function addToCart(id){
-
-  const product = products.find(item => item.id == id);
+  const product =
+    products.find(item => item.id === productId);
 
   if(!product || Number(product.stock) <= 0){
-
-    alert("المنتج غير متوفر");
     return;
   }
 
-  const item = cart.find(item => item.id == id);
+  const existing =
+    cart.find(item => item.productId === productId);
 
-  if(item){
+  if(existing){
 
-    if(item.quantity >= Number(product.stock)){
-
-      alert("لا توجد كمية إضافية متوفرة");
-      return;
+    if(existing.quantity < Number(product.stock)){
+      existing.quantity++;
     }
-
-    item.quantity++;
 
   }else{
 
     cart.push({
-      id:product.id,
-      name:product.name,
-      price:Number(product.price),
+      productId,
       quantity:1
     });
   }
 
-  saveAll();
-  renderCart();
-  openCart();
-}
-
-function increaseQuantity(id){
-
-  const item = cart.find(item => item.id == id);
-  const product = products.find(item => item.id == id);
-
-  if(!item || !product){
-    return;
-  }
-
-  if(item.quantity >= Number(product.stock)){
-
-    alert("لا توجد كمية إضافية متوفرة");
-    return;
-  }
-
-  item.quantity++;
-
-  saveAll();
+  saveData();
+  updateCartCount();
   renderCart();
 }
 
-function decreaseQuantity(id){
+function updateCartCount(){
 
-  const item = cart.find(item => item.id == id);
+  const count = cart.reduce(
+    (total,item) => total + item.quantity,
+    0
+  );
 
-  if(!item){
-    return;
-  }
+  byId("cartCount").textContent = count;
+}
 
-  item.quantity--;
+function openCart(){
 
-  if(item.quantity <= 0){
-    cart = cart.filter(item => item.id != id);
-  }
+  byId("overlay").classList.add("show");
+  byId("cartPanel").classList.add("open");
 
-  saveAll();
   renderCart();
 }
 
-function removeFromCart(id){
+function closeCart(){
 
-  cart = cart.filter(item => item.id != id);
-
-  saveAll();
-  renderCart();
+  byId("overlay").classList.remove("show");
+  byId("cartPanel").classList.remove("open");
 }
 
 function renderCart(){
 
-  const cartCount =
-    document.getElementById("cartCount");
-
-  const cartItems =
-    document.getElementById("cartItems");
-
-  const cartSummary =
-    document.getElementById("cartSummary");
-
-  const cartTotal =
-    document.getElementById("cartTotal");
-
-  cartCount.textContent = cart.reduce(
-    (sum,item) => sum + Number(item.quantity || 0),
-    0
-  );
+  const box = byId("cartItems");
+  const summary = byId("cartSummary");
 
   if(!cart.length){
 
-    cartItems.innerHTML = `
-      <p style="text-align:center;padding:30px;color:#927c6a">
-        السلة فارغة
-      </p>
-    `;
+    box.innerHTML =
+      "<p style='text-align:center;color:#927c6a'>السلة فارغة</p>";
 
-    cartSummary.classList.add("hidden");
+    summary.classList.add("hidden");
     return;
   }
 
-  cartSummary.classList.remove("hidden");
-
   let total = 0;
 
-  cartItems.innerHTML = cart.map(item => {
+  box.innerHTML = cart.map(item => {
 
-    const price = Number(item.price || 0);
-    const quantity = Number(item.quantity || 0);
-    const itemTotal = price * quantity;
+    const product =
+      products.find(
+        product => product.id === item.productId
+      );
+
+    if(!product){
+      return "";
+    }
+
+    const itemTotal =
+      Number(product.price) * item.quantity;
 
     total += itemTotal;
 
@@ -1823,307 +1687,360 @@ function renderCart(){
       <div class="cart-item">
 
         <div>
-
-          <h4>${safe(item.name)}</h4>
-
-          <p>
-            سعر القطعة:
-            ${price.toFixed(2)} د.ك
-          </p>
+          <h4>${escapeHTML(product.name)}</h4>
+          <p>${itemTotal.toFixed(2)} د.ك</p>
 
           <div class="qty">
-            <button onclick="increaseQuantity(${item.id})">+</button>
-            <strong>${quantity}</strong>
-            <button onclick="decreaseQuantity(${item.id})">−</button>
+            <button onclick="changeQuantity('${product.id}',1)">+</button>
+            <span>${item.quantity}</span>
+            <button onclick="changeQuantity('${product.id}',-1)">−</button>
           </div>
 
-          <button class="remove"
-                  onclick="removeFromCart(${item.id})">
-            حذف المنتج
+          <button
+            class="remove"
+            onclick="removeFromCart('${product.id}')">
+            حذف
           </button>
-
         </div>
 
-        <strong>
-          ${itemTotal.toFixed(2)} د.ك
-        </strong>
+        <strong>${Number(product.price).toFixed(2)} د.ك</strong>
 
       </div>
     `;
 
   }).join("");
 
-  cartTotal.textContent =
-    total.toFixed(2) + " د.ك";
+  byId("cartTotal").textContent =
+    `${total.toFixed(2)} د.ك`;
+
+  summary.classList.remove("hidden");
 }
 
-function openCart(){
+function changeQuantity(productId, amount){
 
-  document.getElementById("cartPanel")
-    .classList.add("open");
+  const item =
+    cart.find(cartItem => cartItem.productId === productId);
 
-  document.getElementById("overlay")
-    .classList.add("show");
+  const product =
+    products.find(product => product.id === productId);
 
+  if(!item || !product){
+    return;
+  }
+
+  item.quantity += amount;
+
+  if(item.quantity <= 0){
+    cart = cart.filter(
+      cartItem => cartItem.productId !== productId
+    );
+  }
+
+  if(item.quantity > Number(product.stock)){
+    item.quantity = Number(product.stock);
+  }
+
+  saveData();
+  updateCartCount();
   renderCart();
 }
 
-function closeCart(){
+function removeFromCart(productId){
 
-  document.getElementById("cartPanel")
-    .classList.remove("open");
+  cart = cart.filter(
+    item => item.productId !== productId
+  );
 
-  document.getElementById("overlay")
-    .classList.remove("show");
+  saveData();
+  updateCartCount();
+  renderCart();
 }
 
 function showCustomerForm(){
 
-  if(!cart.length){
-
-    alert("السلة فارغة");
-    return;
-  }
-
-  document.getElementById("customerForm")
-    .classList.add("show");
+  byId("customerForm").classList.add("show");
 }
 
-/* إرسال الطلب وحفظه في التقارير */
 function sendOrder(){
 
-  const name =
-    document.getElementById("customerName").value.trim();
-
-  const phone =
-    document.getElementById("customerPhone").value.trim();
-
-  const address =
-    document.getElementById("customerAddress").value.trim();
-
-  const note =
-    document.getElementById("customerNote").value.trim();
-
-  if(!name || !phone){
-
-    alert("اكتب اسم العميل ورقم الهاتف");
+  if(!cart.length){
     return;
   }
 
-  if(!cart.length){
+  const name = byId("customerName").value.trim();
+  const phone = byId("customerPhone").value.trim();
+  const address = byId("customerAddress").value.trim();
+  const note = byId("customerNote").value.trim();
 
-    alert("السلة فارغة");
+  if(!name || !phone || !address){
+
+    alert("يرجى تعبئة الاسم ورقم الهاتف والعنوان");
     return;
   }
 
   let total = 0;
-  let itemsCount = 0;
-  const reportItems = [];
 
-  let message =
-    "طلب جديد من متجر " +
-    settings.brandName +
-    "\n\n" +
-    "اسم العميل: " + name +
-    "\nرقم الهاتف: " + phone +
-    "\nالعنوان: " + address +
-    "\nملاحظات: " + note +
-    "\n\nالمنتجات:\n";
+  const orderItems = cart.map(item => {
+
+    const product =
+      products.find(
+        product => product.id === item.productId
+      );
+
+    const itemTotal =
+      Number(product.price) * item.quantity;
+
+    total += itemTotal;
+
+    return {
+      name:product.name,
+      quantity:item.quantity,
+      price:product.price
+    };
+  });
+
+  reports.push({
+    date:new Date().toLocaleString("ar-KW"),
+    name,
+    phone,
+    address,
+    note,
+    items:orderItems,
+    total
+  });
 
   cart.forEach(item => {
 
-    const product = products.find(
-      product => product.id == item.id
-    );
+    const product =
+      products.find(
+        product => product.id === item.productId
+      );
 
-    if(!product){
-      return;
+    if(product){
+      product.stock =
+        Math.max(
+          0,
+          Number(product.stock) - item.quantity
+        );
     }
+  });
 
-    const quantity = Number(item.quantity);
-    const price = Number(product.price);
-    const itemTotal = quantity * price;
+  let message =
+    `طلب جديد من REFAEI%0A%0A` +
+    `الاسم: ${encodeURIComponent(name)}%0A` +
+    `الهاتف: ${encodeURIComponent(phone)}%0A` +
+    `العنوان: ${encodeURIComponent(address)}%0A%0A`;
 
-    total += itemTotal;
-    itemsCount += quantity;
-
-    reportItems.push({
-      name:product.name,
-      quantity:quantity,
-      price:price,
-      total:itemTotal
-    });
+  orderItems.forEach(item => {
 
     message +=
-      "- " + product.name +
-      " | الكمية: " + quantity +
-      " | الإجمالي: " +
-      itemTotal.toFixed(2) +
-      " د.ك\n";
+      `${encodeURIComponent(item.name)} × ${item.quantity} - ` +
+      `${Number(item.price).toFixed(2)} د.ك%0A`;
   });
 
   message +=
-    "\nالسعر النهائي: " +
-    total.toFixed(2) +
-    " د.ك";
+    `%0Aالإجمالي: ${total.toFixed(2)} د.ك`;
 
-  orders.unshift({
+  if(note){
+    message +=
+      `%0Aملاحظات: ${encodeURIComponent(note)}`;
+  }
 
-    id:Date.now(),
-
-    date:new Date().toLocaleString("ar-KW"),
-
-    customerName:name,
-
-    phone:phone,
-
-    address:address,
-
-    note:note,
-
-    items:reportItems,
-
-    itemsCount:itemsCount,
-
-    total:total
-  });
-
-  saveAll();
-
-  window.open(
-    "https://wa.me/" +
-    settings.whatsapp +
-    "?text=" +
-    encodeURIComponent(message),
-    "_blank"
-  );
+  saveData();
 
   cart = [];
+  saveData();
 
-  saveAll();
+  updateCartCount();
   renderCart();
+  renderProducts();
 
-  document.getElementById("customerName").value = "";
-  document.getElementById("customerPhone").value = "";
-  document.getElementById("customerAddress").value = "";
-  document.getElementById("customerNote").value = "";
-
-  document.getElementById("customerForm")
-    .classList.remove("show");
-
-  closeCart();
+  window.open(
+    `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`,
+    "_blank"
+  );
 }
 
-/* الإدارة */
-function showAdmin(event){
+async function loginAdmin(){
 
-  if(event){
-    event.preventDefault();
-  }
-
-  document.getElementById("storePage")
-    .classList.add("hidden");
-
-  document.getElementById("adminPage")
-    .classList.add("active");
-
-  const logged =
-    sessionStorage.getItem("refaeiAdmin") === "true";
-
-  document.getElementById("adminLogin")
-    .classList.toggle("hidden",logged);
-
-  document.getElementById("adminDashboard")
-    .classList.toggle("hidden",!logged);
-
-  if(logged){
-
-    renderCategorySelect();
-    renderAdminCategories();
-    renderAdminProducts();
-    renderReports();
-  }
-}
-
-function loginAdmin(){
+  const email =
+    byId("adminEmail").value.trim();
 
   const password =
-    document.getElementById("adminPassword").value;
+    byId("adminPassword").value;
 
   const notice =
-    document.getElementById("loginNotice");
+    byId("loginNotice");
 
-  if(password !== ADMIN_PASSWORD){
+  notice.textContent = "";
+
+  if(!email || !password){
 
     notice.textContent =
-      "كلمة المرور غير صحيحة";
+      "اكتب البريد الإلكتروني وكلمة المرور";
 
     return;
   }
 
-  notice.textContent = "";
+  const result =
+    await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
 
-  sessionStorage.setItem(
-    "refaeiAdmin",
-    "true"
-  );
+  if(result.error){
 
-  showAdmin();
+    notice.textContent =
+      "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+
+    return;
+  }
+
+  if(
+    !result.data.user ||
+    result.data.user.id !== ADMIN_USER_ID
+  ){
+
+    await supabaseClient.auth.signOut();
+
+    notice.textContent =
+      "هذا الحساب غير مصرح له بالدخول";
+
+    return;
+  }
+
+  byId("adminLogin").classList.add("hidden");
+  byId("adminDashboard").classList.remove("hidden");
+
+  renderAdmin();
 }
 
-function logoutAdmin(){
+async function checkAdminSession(){
 
-  sessionStorage.removeItem("refaeiAdmin");
+  const result =
+    await supabaseClient.auth.getSession();
 
-  location.hash = "";
+  const user =
+    result.data.session?.user;
+
+  if(user && user.id === ADMIN_USER_ID){
+
+    byId("adminLogin").classList.add("hidden");
+    byId("adminDashboard").classList.remove("hidden");
+
+    renderAdmin();
+
+  }else{
+
+    byId("adminLogin").classList.remove("hidden");
+    byId("adminDashboard").classList.add("hidden");
+  }
+}
+
+async function logoutAdmin(){
+
+  await supabaseClient.auth.signOut();
+
+  byId("adminLogin").classList.remove("hidden");
+  byId("adminDashboard").classList.add("hidden");
 
   showStore();
 }
 
-function renderCategorySelect(){
+function renderAdmin(){
 
-  const select =
-    document.getElementById("productCategory");
-
-  select.innerHTML =
-    "<option value=''>اختر القسم</option>" +
-    categories.map(category => `
-      <option value="${safe(category.name)}">
-        ${safe(category.name)}
-      </option>
-    `).join("");
+  renderAdminCategories();
+  renderAdminProducts();
+  renderCategoryOptions();
+  renderReports();
 }
 
 function renderAdminCategories(){
 
-  const list =
-    document.getElementById("adminCategoriesList");
+  const box = byId("adminCategoriesList");
 
-  list.innerHTML = categories.map(category => `
+  box.innerHTML = categories.map(category => `
+    <div class="admin-row">
 
-    <div style="border:1px solid var(--border);padding:10px;margin-bottom:8px">
+      <div class="admin-placeholder">✦</div>
 
-      <strong>
-        ${getCategoryEmoji(category.name)}
-        ${safe(category.name)}
-      </strong>
+      <div>
+        <h3>${escapeHTML(category.name)}</h3>
+        <p>
+          ${
+            products.filter(
+              product => product.categoryId === category.id
+            ).length
+          } منتج
+        </p>
+      </div>
 
-      <div style="margin-top:8px">
-
-        <button class="edit-btn"
-                onclick="editCategory(${category.id})">
+      <div class="admin-actions">
+        <button
+          class="edit-btn"
+          onclick="editCategory('${category.id}')">
           تعديل
         </button>
 
-        <button class="delete-btn"
-                onclick="deleteCategory(${category.id})">
+        <button
+          class="delete-btn"
+          onclick="deleteCategory('${category.id}')">
           حذف
         </button>
-
       </div>
 
     </div>
+  `).join("");
+}
 
+function renderCategoryOptions(){
+
+  byId("productCategory").innerHTML =
+    categories.map(category => `
+      <option value="${category.id}">
+        ${escapeHTML(category.name)}
+      </option>
+    `).join("");
+}
+
+function renderAdminProducts(){
+
+  const box = byId("adminProductsList");
+
+  box.innerHTML = products.map(product => `
+    <div class="admin-row">
+
+      <div class="admin-placeholder">
+        ${
+          product.image
+            ? `<img src="${product.image}" alt="">`
+            : "🛍️"
+        }
+      </div>
+
+      <div>
+        <h3>${escapeHTML(product.name)}</h3>
+        <p>
+          ${Number(product.price).toFixed(2)} د.ك -
+          الكمية: ${product.stock}
+        </p>
+      </div>
+
+      <div class="admin-actions">
+        <button
+          class="edit-btn"
+          onclick="editProduct('${product.id}')">
+          تعديل
+        </button>
+
+        <button
+          class="delete-btn"
+          onclick="deleteProduct('${product.id}')">
+          حذف
+        </button>
+      </div>
+
+    </div>
   `).join("");
 }
 
@@ -2131,11 +2048,8 @@ function saveCategory(event){
 
   event.preventDefault();
 
-  const id =
-    document.getElementById("editCategoryId").value;
-
-  const name =
-    document.getElementById("categoryName").value.trim();
+  const id = byId("editCategoryId").value;
+  const name = byId("categoryName").value.trim();
 
   if(!name){
     return;
@@ -2144,232 +2058,154 @@ function saveCategory(event){
   if(id){
 
     const category =
-      categories.find(item => item.id == id);
+      categories.find(item => item.id === id);
 
     if(category){
-
-      const oldName = category.name;
-
       category.name = name;
-
-      products.forEach(product => {
-
-        if(sameCategory(product.category,oldName)){
-          product.category = name;
-        }
-      });
     }
 
   }else{
 
     categories.push({
-      id:Date.now(),
-      name:name
+      id:"cat-" + Date.now(),
+      name
     });
   }
 
-  saveAll();
-
-  renderCategories();
-  renderCategorySelect();
-  renderAdminCategories();
-  renderProducts();
+  saveData();
   cancelCategoryEdit();
-
-  alert("تم حفظ القسم");
+  renderAdmin();
+  renderCategories();
 }
 
 function editCategory(id){
 
   const category =
-    categories.find(item => item.id == id);
+    categories.find(item => item.id === id);
 
   if(!category){
     return;
   }
 
-  document.getElementById("editCategoryId")
-    .value = category.id;
-
-  document.getElementById("categoryName")
-    .value = category.name;
-
-  document.getElementById("cancelCategoryBtn")
-    .classList.remove("hidden");
-
-  document.getElementById("categorySaveBtn")
-    .textContent = "حفظ التعديل";
+  byId("editCategoryId").value = category.id;
+  byId("categoryName").value = category.name;
+  byId("categorySaveBtn").textContent = "حفظ التعديل";
+  byId("cancelCategoryBtn").classList.remove("hidden");
 }
 
 function cancelCategoryEdit(){
 
-  document.getElementById("editCategoryId")
-    .value = "";
-
-  document.getElementById("categoryName")
-    .value = "";
-
-  document.getElementById("cancelCategoryBtn")
-    .classList.add("hidden");
-
-  document.getElementById("categorySaveBtn")
-    .textContent = "إضافة القسم";
+  byId("editCategoryId").value = "";
+  byId("categoryName").value = "";
+  byId("categorySaveBtn").textContent = "إضافة القسم";
+  byId("cancelCategoryBtn").classList.add("hidden");
 }
 
 function deleteCategory(id){
 
-  const category =
-    categories.find(item => item.id == id);
-
-  if(!category){
-    return;
-  }
-
-  const used = products.some(product =>
-    sameCategory(product.category,category.name)
-  );
+  const used =
+    products.some(product => product.categoryId === id);
 
   if(used){
 
-    alert("لا يمكن حذف القسم لأنه يحتوي على منتجات");
+    alert("لا يمكن حذف قسم يحتوي على منتجات");
+    return;
+  }
+
+  if(!confirm("هل تريد حذف القسم؟")){
     return;
   }
 
   categories =
-    categories.filter(item => item.id != id);
+    categories.filter(category => category.id !== id);
 
-  saveAll();
-
+  saveData();
+  renderAdmin();
   renderCategories();
-  renderCategorySelect();
-  renderAdminCategories();
 }
 
-function readFileAsDataURL(file){
-
-  return new Promise((resolve,reject) => {
-
-    const reader = new FileReader();
-
-    reader.onload = () => resolve(reader.result);
-    reader.onerror = () => reject(reader.error);
-
-    reader.readAsDataURL(file);
-  });
-}
-
-async function saveProduct(event){
+function saveProduct(event){
 
   event.preventDefault();
 
-  const id =
-    document.getElementById("editProductId").value;
+  const id = byId("editProductId").value;
+  const name = byId("productName").value.trim();
+  const categoryId = byId("productCategory").value;
+  const price = Number(byId("productPrice").value);
+  const stock = Number(byId("productStock").value);
+  const description =
+    byId("productDescription").value.trim();
 
   const file =
-    document.getElementById("productImage").files[0];
+    byId("productImage").files[0];
 
-  let image = "";
+  const oldProduct =
+    products.find(product => product.id === id);
 
-  if(id){
+  const save = image => {
 
-    const oldProduct =
-      products.find(item => item.id == id);
+    const data = {
+      id:id || "product-" + Date.now(),
+      name,
+      categoryId,
+      price,
+      stock,
+      description,
+      image:image || oldProduct?.image || ""
+    };
 
-    if(oldProduct){
-      image = oldProduct.image || "";
+    if(id){
+
+      const index =
+        products.findIndex(product => product.id === id);
+
+      if(index !== -1){
+        products[index] = data;
+      }
+
+    }else{
+
+      products.push(data);
     }
-  }
+
+    saveData();
+    cancelProductEdit();
+    renderAdmin();
+    renderProducts();
+  };
 
   if(file){
 
-    if(!file.type.startsWith("image/")){
+    const reader = new FileReader();
 
-      alert("الملف المختار ليس صورة");
-      return;
-    }
-
-    image = await readFileAsDataURL(file);
-  }
-
-  const data = {
-    name:document.getElementById("productName")
-      .value.trim(),
-
-    category:document.getElementById("productCategory").value,
-
-    price:Number(
-      document.getElementById("productPrice").value
-    ),
-
-    stock:Number(
-      document.getElementById("productStock").value
-    ),
-
-    image:image,
-
-    description:document.getElementById("productDescription")
-      .value.trim()
-  };
-
-  if(id){
-
-    const product =
-      products.find(item => item.id == id);
-
-    if(product){
-      Object.assign(product,data);
-    }
+    reader.onload = () => save(reader.result);
+    reader.readAsDataURL(file);
 
   }else{
 
-    products.unshift({
-      id:Date.now(),
-      ...data
-    });
+    save("");
   }
-
-  saveAll();
-
-  renderProducts();
-  renderCategories();
-  renderAdminProducts();
-  cancelProductEdit();
-
-  alert("تم حفظ المنتج بنجاح");
 }
 
 function editProduct(id){
 
   const product =
-    products.find(item => item.id == id);
+    products.find(item => item.id === id);
 
   if(!product){
     return;
   }
 
-  document.getElementById("editProductId")
-    .value = product.id;
-
-  document.getElementById("productName")
-    .value = product.name;
-
-  document.getElementById("productCategory")
-    .value = product.category;
-
-  document.getElementById("productPrice")
-    .value = product.price;
-
-  document.getElementById("productStock")
-    .value = product.stock;
-
-  document.getElementById("productDescription")
-    .value = product.description;
-
-  document.getElementById("productImage")
-    .value = "";
+  byId("editProductId").value = product.id;
+  byId("productName").value = product.name;
+  byId("productCategory").value = product.categoryId;
+  byId("productPrice").value = product.price;
+  byId("productStock").value = product.stock;
+  byId("productDescription").value =
+    product.description || "";
 
   const preview =
-    document.getElementById("productImagePreview");
+    byId("productImagePreview");
 
   if(product.image){
 
@@ -2378,51 +2214,31 @@ function editProduct(id){
 
   }else{
 
-    preview.src = "";
     preview.style.display = "none";
   }
 
-  document.getElementById("cancelProductBtn")
-    .classList.remove("hidden");
+  byId("productSaveBtn").textContent =
+    "حفظ التعديل";
 
-  document.getElementById("productSaveBtn")
-    .textContent = "حفظ تعديل المنتج";
+  byId("cancelProductBtn").classList.remove("hidden");
 }
 
 function cancelProductEdit(){
 
-  document.getElementById("editProductId")
-    .value = "";
+  byId("editProductId").value = "";
+  byId("productName").value = "";
+  byId("productPrice").value = "";
+  byId("productStock").value = "";
+  byId("productDescription").value = "";
+  byId("productImage").value = "";
 
-  document.getElementById("productName")
-    .value = "";
+  byId("productImagePreview").style.display =
+    "none";
 
-  document.getElementById("productCategory")
-    .value = "";
+  byId("productSaveBtn").textContent =
+    "إضافة المنتج";
 
-  document.getElementById("productPrice")
-    .value = "";
-
-  document.getElementById("productStock")
-    .value = "";
-
-  document.getElementById("productDescription")
-    .value = "";
-
-  document.getElementById("productImage")
-    .value = "";
-
-  const preview =
-    document.getElementById("productImagePreview");
-
-  preview.src = "";
-  preview.style.display = "none";
-
-  document.getElementById("cancelProductBtn")
-    .classList.add("hidden");
-
-  document.getElementById("productSaveBtn")
-    .textContent = "إضافة المنتج";
+  byId("cancelProductBtn").classList.add("hidden");
 }
 
 function deleteProduct(id){
@@ -2432,141 +2248,42 @@ function deleteProduct(id){
   }
 
   products =
-    products.filter(item => item.id != id);
+    products.filter(product => product.id !== id);
 
   cart =
-    cart.filter(item => item.id != id);
+    cart.filter(item => item.productId !== id);
 
-  saveAll();
-
+  saveData();
+  renderAdmin();
   renderProducts();
-  renderCategories();
-  renderCart();
-  renderAdminProducts();
+  updateCartCount();
 }
 
-function renderAdminProducts(){
-
-  const list =
-    document.getElementById("adminProductsList");
-
-  if(!products.length){
-
-    list.innerHTML = "<p>لا توجد منتجات</p>";
-    return;
-  }
-
-  list.innerHTML = products.map(product => `
-
-    <div class="admin-row">
-
-      <div class="admin-placeholder">
-
-        ${
-          product.image
-          ? `<img src="${product.image}" alt="${safe(product.name)}">`
-          : getCategoryEmoji(product.category)
-        }
-
-      </div>
-
-      <div>
-
-        <h3>${safe(product.name)}</h3>
-
-        <p>
-          القسم: ${safe(product.category)}
-          <br>
-          السعر: ${Number(product.price).toFixed(2)} د.ك
-          <br>
-          الكمية: ${Number(product.stock) || 0}
-        </p>
-
-      </div>
-
-      <div class="admin-actions">
-
-        <button class="edit-btn"
-                onclick="editProduct(${product.id})">
-          تعديل
-        </button>
-
-        <button class="delete-btn"
-                onclick="deleteProduct(${product.id})">
-          حذف
-        </button>
-
-      </div>
-
-    </div>
-
-  `).join("");
-}
-
-/* معاينة صورة المنتج */
-document.getElementById("productImage")
-  .addEventListener("change",function(){
-
-    const file = this.files[0];
-
-    const preview =
-      document.getElementById("productImagePreview");
-
-    if(!file){
-
-      preview.src = "";
-      preview.style.display = "none";
-      return;
-    }
-
-    if(!file.type.startsWith("image/")){
-
-      alert("اختر ملف صورة فقط");
-      this.value = "";
-      return;
-    }
-
-    const reader = new FileReader();
-
-    reader.onload = function(event){
-
-      preview.src = event.target.result;
-      preview.style.display = "block";
-    };
-
-    reader.readAsDataURL(file);
-  });
-
-/* التقارير */
 function renderReports(){
 
-  const summary =
-    document.getElementById("reportsSummary");
+  const summary = byId("reportsSummary");
+  const body = byId("reportsTableBody");
 
-  const tableBody =
-    document.getElementById("reportsTableBody");
-
-  if(!summary || !tableBody){
-    return;
-  }
-
-  const totalOrders =
-    orders.length;
+  const totalOrders = reports.length;
 
   const totalSales =
-    orders.reduce(
-      (sum,order) => sum + Number(order.total || 0),
+    reports.reduce(
+      (sum, report) => sum + Number(report.total || 0),
       0
     );
 
   const totalItems =
-    orders.reduce(
-      (sum,order) => sum + Number(order.itemsCount || 0),
+    reports.reduce(
+      (sum, report) =>
+        sum +
+        (report.items || []).reduce(
+          (itemSum, item) => itemSum + Number(item.quantity || 0),
+          0
+        ),
       0
     );
 
   summary.innerHTML = `
-
     <div class="report-stat">
       <strong>عدد الطلبات</strong>
       <span>${totalOrders}</span>
@@ -2574,115 +2291,76 @@ function renderReports(){
 
     <div class="report-stat">
       <strong>إجمالي المبيعات</strong>
-      <span>${totalSales.toFixed(2)} د.ك</span>
+      <span>${totalSales.toFixed(2)}</span>
     </div>
 
     <div class="report-stat">
-      <strong>المنتجات المباعة</strong>
+      <strong>عدد المنتجات المباعة</strong>
       <span>${totalItems}</span>
     </div>
-
   `;
 
-  if(!orders.length){
+  body.innerHTML = reports.slice().reverse().map(report => `
 
-    tableBody.innerHTML = `
-      <tr>
-        <td colspan="6"
-            style="text-align:center;color:#927c6a">
-          لا توجد طلبات حتى الآن
-        </td>
-      </tr>
-    `;
+    <tr>
+      <td>${escapeHTML(report.date || "")}</td>
+      <td>${escapeHTML(report.name || "")}</td>
+      <td>${escapeHTML(report.phone || "")}</td>
+      <td>${escapeHTML(report.address || "")}</td>
+      <td>
+        ${(report.items || []).map(item =>
+          `${escapeHTML(item.name)} × ${item.quantity}`
+        ).join("<br>")}
+      </td>
+      <td>${Number(report.total || 0).toFixed(2)} د.ك</td>
+    </tr>
 
-    return;
-  }
-
-  tableBody.innerHTML = orders.map(order => {
-
-    const itemsText =
-      (order.items || []).map(item =>
-        `${safe(item.name)} × ${item.quantity}`
-      ).join("<br>");
-
-    return `
-
-      <tr>
-
-        <td>${safe(order.date)}</td>
-
-        <td>${safe(order.customerName)}</td>
-
-        <td>${safe(order.phone)}</td>
-
-        <td>${safe(order.address || "-")}</td>
-
-        <td>${itemsText || "-"}</td>
-
-        <td>
-          ${Number(order.total || 0).toFixed(2)} د.ك
-        </td>
-
-      </tr>
-
-    `;
-
-  }).join("");
+  `).join("");
 }
 
-/* تصدير التقارير إلى ملف CSV يفتح في Excel */
-function exportReportsToExcel(){
+function clearReports(){
 
-  if(!orders.length){
-
-    alert("لا توجد تقارير لتصديرها");
+  if(!confirm("هل تريد مسح جميع التقارير؟")){
     return;
   }
 
-  let csv = "\uFEFF";
+  reports = [];
+  saveData();
+  renderReports();
+}
 
-  csv +=
-    "رقم الطلب,التاريخ,اسم العميل,رقم الهاتف,العنوان,المنتجات,عدد المنتجات,الإجمالي,الملاحظات\n";
+function exportReportsToExcel(){
 
-  orders.forEach(order => {
+  if(!reports.length){
+
+    alert("لا توجد تقارير للتصدير");
+    return;
+  }
+
+  let csv =
+    "التاريخ,العميل,الهاتف,العنوان,المنتجات,الإجمالي\n";
+
+  reports.forEach(report => {
 
     const items =
-      (order.items || []).map(item =>
+      (report.items || []).map(item =>
         `${item.name} × ${item.quantity}`
       ).join(" | ");
 
-    const row = [
-
-      order.id,
-
-      order.date,
-
-      order.customerName,
-
-      order.phone,
-
-      order.address || "",
-
+    csv += [
+      report.date,
+      report.name,
+      report.phone,
+      report.address,
       items,
-
-      order.itemsCount || 0,
-
-      Number(order.total || 0).toFixed(2),
-
-      order.note || ""
-
-    ].map(value => {
-
-      return `"${String(value ?? "")
-        .replace(/"/g,'""')}"`;
-
-    }).join(",");
-
-    csv += row + "\n";
+      Number(report.total || 0).toFixed(2)
+    ].map(value =>
+      `"${String(value || "").replaceAll('"','""')}"`
+    ).join(",") + "\n";
   });
 
   const blob =
-    new Blob([csv],{
+    new Blob(["\ufeff" + csv], {
       type:"text/csv;charset=utf-8;"
     });
 
@@ -2693,63 +2371,74 @@ function exportReportsToExcel(){
     document.createElement("a");
 
   link.href = url;
-
-  link.download =
-    "refaei-orders-report.csv";
-
-  document.body.appendChild(link);
-
+  link.download = "refaei-reports.csv";
   link.click();
-
-  document.body.removeChild(link);
 
   URL.revokeObjectURL(url);
 }
 
-/* مسح التقارير */
-function clearReports(){
+function escapeHTML(value){
 
-  if(!orders.length){
-
-    alert("لا توجد تقارير لمسحها");
-    return;
-  }
-
-  const confirmed =
-    confirm("هل تريد مسح جميع التقارير؟");
-
-  if(!confirmed){
-    return;
-  }
-
-  orders = [];
-
-  saveAll();
-  renderReports();
-
-  alert("تم مسح التقارير");
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
 }
 
-function checkPage(){
+function initialize(){
 
-  if(location.hash === "#admin"){
-    showAdmin();
-  }else{
-    showStore();
-  }
+  byId("brandName").textContent = settings.brand;
+  byId("topbarText").textContent = settings.topbar;
+  byId("heroTitle").textContent = settings.heroTitle;
+  byId("heroDescription").textContent =
+    settings.heroDescription;
+  byId("aboutTitle").textContent = settings.aboutTitle;
+  byId("aboutText").textContent = settings.aboutText;
+  byId("footerText").textContent = settings.footer;
+
+  renderCategories();
+  renderProducts();
+  renderCart();
+  updateCartCount();
+
+  byId("productImage").addEventListener(
+    "change",
+    function(){
+
+      const file = this.files[0];
+      const preview = byId("productImagePreview");
+
+      if(!file){
+        preview.style.display = "none";
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = event => {
+        preview.src = event.target.result;
+        preview.style.display = "block";
+      };
+
+      reader.readAsDataURL(file);
+    }
+  );
+
+  supabaseClient.auth.onAuthStateChange(
+    () => {
+      if(
+        location.hash === "#admin" ||
+        byId("adminPage").classList.contains("active")
+      ){
+        checkAdminSession();
+      }
+    }
+  );
 }
 
-window.addEventListener("hashchange",checkPage);
-
-/* تشغيل الموقع */
-repairOldProductCategories();
-
-renderSettings();
-renderCategories();
-renderProducts();
-renderCart();
-checkPage();
-
+initialize();
 </script>
 
 </body>
