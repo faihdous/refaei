@@ -875,7 +875,7 @@ footer{
     </a>
 
     <nav>
-      <a href="#home" onclick="showStore(event)">الرئيسية</a>
+      <a href="#home" onclick="showHomePage(event)">الرئيسية</a>
       <a href="#categories" onclick="showCategoriesPage(event)">الأقسام</a>
       <a href="#products" onclick="showProductsPage(event)">المنتجات</a>
       <a href="#about" onclick="showAboutPage(event)">عن المتجر</a>
@@ -1586,8 +1586,55 @@ function renderProducts(categoryName = ""){
 }
 
 
+/* إخفاء جميع خانات المتجر */
+function hideStoreSections(){
+
+  document
+    .querySelector(".hero")
+    ?.classList.add("hidden");
+
+  document
+    .querySelector(".categories-section")
+    ?.classList.remove("visible");
+
+  document
+    .querySelector(".products-section")
+    ?.classList.remove("visible");
+
+  document
+    .querySelector(".about")
+    ?.classList.add("hidden");
+}
+
+
+/* إظهار الصفحة الرئيسية */
+function showHomePage(event){
+
+  if(event){
+    event.preventDefault();
+  }
+
+  showStore();
+
+  hideStoreSections();
+
+  document
+    .querySelector(".hero")
+    ?.classList.remove("hidden");
+
+  window.scrollTo({
+    top:0,
+    behavior:"smooth"
+  });
+}
+
+
 /* عرض صفحة التسوق */
 function showShoppingContent(){
+
+  showStore();
+
+  hideStoreSections();
 
   document
     .querySelector(".categories-section")
@@ -1619,12 +1666,8 @@ function showStore(event){
   document
     .getElementById("adminPage")
     .classList.remove("active");
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
 }
+
 
 
 /* عرض صفحة الأقسام */
@@ -1635,6 +1678,8 @@ function showCategoriesPage(event){
   }
 
   showStore();
+
+  hideStoreSections();
 
   document
     .querySelector(".categories-section")
@@ -1656,6 +1701,8 @@ function showProductsPage(event){
   }
 
   showStore();
+
+  hideStoreSections();
 
   document
     .querySelector(".products-section")
@@ -1680,6 +1727,12 @@ function showAboutPage(event){
 
   showStore();
 
+  hideStoreSections();
+
+  document
+    .querySelector(".about")
+    ?.classList.remove("hidden");
+
   document
     .getElementById("about")
     ?.scrollIntoView({
@@ -1690,6 +1743,10 @@ function showAboutPage(event){
 
 /* عرض كل المنتجات */
 function showAllProducts(){
+
+  showStore();
+
+  hideStoreSections();
 
   document
     .querySelector(".products-section")
@@ -1707,6 +1764,24 @@ function showAllProducts(){
 
 /* فلترة المنتجات حسب القسم */
 function filterProductsByCategory(categoryName){
+
+  showStore();
+
+  hideStoreSections();
+
+  document
+    .querySelector(".products-section")
+    ?.classList.add("visible");
+
+  renderProducts(categoryName);
+
+  document
+    .getElementById("products")
+    ?.scrollIntoView({
+      behavior:"smooth"
+    });
+}
+
 
   document
     .querySelector(".products-section")
