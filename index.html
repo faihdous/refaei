@@ -2049,15 +2049,16 @@ async function sendOrder(){
   const total =
     getCartTotal();
 
-  const orderData = {
-    customer_name:name,
-    customer_phone:phone,
-    customer_address:address,
-    note:note,
-    items:orderItems,
-    total:total,
-    created_at:new Date().toISOString()
-  };
+ const orderData = {
+  customer_name:name,
+  phone:phone,
+  address:address,
+  note:note,
+  items:orderItems,
+  total:total,
+  created_at:new Date().toISOString()
+};
+
 
   const result =
     await supabaseClient
