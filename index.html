@@ -1946,11 +1946,11 @@ function renderCategories(){
         </div>
 
        <button
-  type="button"
-  data-category="${safe(category.name)}"
-  onclick="filterProductsByCategory(this.getAttribute('data-category'))">
+  <button type="button"
+        onclick='filterProductsByCategory(${JSON.stringify(category.name)})'>
   ${safe(category.name)}
 </button>
+
 
 
         <small>${count} منتج</small>
@@ -2185,23 +2185,20 @@ function showAllProducts(){
 /* فلترة المنتجات حسب القسم */
 function filterProductsByCategory(categoryName){
 
-  const productsSection =
-    document.querySelector(".products-section");
+  document
+    .querySelector(".products-section")
+    .classList.add("visible");
 
-  productsSection.classList.add("visible");
+  renderProducts(String(categoryName));
 
-  renderProducts(categoryName);
-
-  setTimeout(function(){
-
+  setTimeout(() => {
     document
       .getElementById("products")
       .scrollIntoView({
-        behavior:"smooth",
-        block:"start"
+        behavior: "smooth",
+        block: "start"
       });
-
-  }, 50);
+  }, 100);
 }
 
 
