@@ -1332,6 +1332,21 @@ footer{
     font-size:32px;
   }
 }
+.category-card{
+  cursor:pointer;
+}
+
+.category-name{
+  color:var(--brown);
+  font-weight:bold;
+  font-size:16px;
+}
+
+.category-card:focus{
+  outline:2px solid var(--gold);
+  outline-offset:3px;
+}
+
 </style>
 </head>
 
@@ -1931,27 +1946,30 @@ function renderCategories(){
 
   list.innerHTML = categories.map(category => {
 
+    const categoryName = String(category.name || "");
+
     const count = products.filter(product =>
       sameCategory(
-        product.category_name || product.category,
-        category.name
+        product.category,
+        categoryName
       )
     ).length;
 
     return `
-      <div class="category-card">
+      <div class="category-card"
+           role="button"
+           tabindex="0"
+           onclick="filterProductsByCategory(this.dataset.category)"
+           onkeydown="if(event.key==='Enter' || event.key===' '){ event.preventDefault(); this.click(); }"
+           data-category="${safe(categoryName)}">
 
         <div class="category-placeholder">
-          ${getCategoryEmoji(category.name)}
+          ${getCategoryEmoji(categoryName)}
         </div>
 
-       <button
-  <button type="button"
-        onclick='filterProductsByCategory(${JSON.stringify(category.name)})'>
-  ${safe(category.name)}
-</button>
-
-
+        <div class="category-name">
+          ${safe(categoryName)}
+        </div>
 
         <small>${count} منتج</small>
 
@@ -2187,19 +2205,20 @@ function filterProductsByCategory(categoryName){
 
   document
     .querySelector(".products-section")
-    .classList.add("visible");
+    ?.classList.add("visible");
 
-  renderProducts(String(categoryName));
+  renderProducts(categoryName);
 
   setTimeout(() => {
     document
       .getElementById("products")
-      .scrollIntoView({
-        behavior: "smooth",
-        block: "start"
+      ?.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
       });
-  }, 100);
+  },100);
 }
+
 
 
 
