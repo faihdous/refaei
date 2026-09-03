@@ -1909,7 +1909,10 @@ function renderSettings(){
     settings.footer;
 }
 /* عرض الأقسام في واجهة المتجر */
-function renderCategories(){
+<button type="button"
+        data-category="${safe(category.name)}"
+        onclick="filterProductsByCategory(this.dataset.category)">
+
 
   const list =
     document.getElementById("categoriesList");
@@ -1945,17 +1948,22 @@ function renderCategories(){
           ${getCategoryEmoji(category.name)}
         </div>
 
-        <button onclick="filterProductsByCategory('${safe(category.name)}')">
-          ${safe(category.name)}
-        </button>
+        function filterProductsByCategory(categoryName){
 
-        <small>${count} منتج</small>
+  document
+    .querySelector(".products-section")
+    ?.classList.add("visible");
 
-      </div>
-    `;
+  renderProducts(categoryName);
 
-  }).join("");
+  document
+    .getElementById("products")
+    ?.scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
 }
+
 
 
 /* عرض المنتجات */
