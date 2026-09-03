@@ -1350,7 +1350,11 @@ footer{
     <nav>
       <a href="#home" onclick="showStore(event)">الرئيسية</a>
       <a href="#categories" onclick="showCategoriesPage(event)">الأقسام</a>
-      <a href="#products" onclick="showProductsPage(event)">المنتجات</a>
+     <a href="#products"
+   onclick="return showProductsPage(event)">
+  المنتجات
+</a>
+
       <a href="#about" onclick="showAboutPage(event)">عن المتجر</a>
     </nav>
 
@@ -2146,20 +2150,33 @@ function renderProducts(categoryName = ""){
 /* عرض صفحة التسوق */
 function showShoppingContent(){
 
-  document
-    .querySelector(".categories-section")
-    ?.classList.add("visible");
+  const categoriesSection =
+    document.querySelector(".categories-section");
 
-  document
-    .querySelector(".products-section")
-    ?.classList.add("visible");
+  const productsSection =
+    document.querySelector(".products-section");
+
+  if(categoriesSection){
+    categoriesSection.classList.add("visible");
+    categoriesSection.style.display = "block";
+  }
+
+  if(productsSection){
+    productsSection.classList.add("visible");
+    productsSection.style.display = "block";
+  }
+
+  renderCategories();
+  renderProducts();
 
   document
     .getElementById("categories")
     ?.scrollIntoView({
-      behavior:"smooth"
+      behavior:"smooth",
+      block:"start"
     });
 }
+
 
 
 /* عرض المتجر */
@@ -2207,26 +2224,6 @@ function showCategoriesPage(event){
 
 /* عرض صفحة المنتجات */
 function showProductsPage(event){
-
-  if(event){
-    event.preventDefault();
-  }
-
-  showStore();
-
-  document
-    .querySelector(".products-section")
-    ?.classList.add("visible");
-
-  renderProducts();
-
-  document
-    .getElementById("products")
-    ?.scrollIntoView({
-      behavior:"smooth"
-    });
-}
-
 
 /* عرض صفحة عن المتجر */
 function showAboutPage(event){
