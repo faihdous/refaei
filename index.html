@@ -1745,7 +1745,8 @@ function normalizeText(value){
     .replace(/\s+/g,"")
     .replace(/[إأآا]/g,"ا")
     .replace(/ى/g,"ي")
-    .replace(/ة/g,"ه");
+    .replace(/ة/g,"ه")
+    .replace(/^ال/,"");
 }
 
 function sameCategory(first,second){
@@ -1756,8 +1757,10 @@ function sameCategory(first,second){
   const aliases = {
     "مسباح":"مسابيح",
     "مسابيح":"مسابيح",
+
     "قماش":"اقمشه",
     "اقمشه":"اقمشه",
+
     "شال":"شالات",
     "شالات":"شالات"
   };
@@ -1945,7 +1948,9 @@ function renderCategories(){
           ${getCategoryEmoji(category.name)}
         </div>
 
-        <button onclick="filterProductsByCategory('${safe(category.name)}')">
+        <button
+          type="button"
+          data-category="${safe(category.name)}">
           ${safe(category.name)}
         </button>
 
@@ -1955,6 +1960,20 @@ function renderCategories(){
     `;
 
   }).join("");
+
+  list
+    .querySelectorAll("button[data-category]")
+    .forEach(button => {
+
+      button.addEventListener("click",function(){
+
+        filterProductsByCategory(
+          this.getAttribute("data-category")
+        );
+
+      });
+
+    });
 }
 
 
@@ -2181,18 +2200,30 @@ function showAllProducts(){
 /* فلترة المنتجات حسب القسم */
 function filterProductsByCategory(categoryName){
 
+  showStore();
+
+  document
+    .querySelector(".categories-section")
+    ?.classList.add("visible");
+
   document
     .querySelector(".products-section")
     ?.classList.add("visible");
 
   renderProducts(categoryName);
 
-  document
-    .getElementById("products")
-    ?.scrollIntoView({
-      behavior:"smooth"
-    });
+  setTimeout(function(){
+
+    document
+      .getElementById("products")
+      ?.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+  },100);
 }
+
 
 
 /* إضافة منتج إلى السلة */
