@@ -1957,7 +1957,7 @@ function renderCategories(){
           ${getCategoryEmoji(category.name)}
         </div>
 
-        <button onclick="filterProductsByCategory('${safe(category.name)}')">
+        <button type="button"         data-category="${safe(category.name)}"         onclick="filterProductsByCategory(this.dataset.category)">
           ${safe(category.name)}
         </button>
 
@@ -2229,21 +2229,20 @@ function showAllProducts(){
 /* فلترة المنتجات حسب القسم */
 function filterProductsByCategory(categoryName){
 
-  const productsSection =
-    document.querySelector(".products-section");
-
-  productsSection?.classList.add("visible");
+  document
+    .querySelector(".products-section")
+    ?.classList.add("visible");
 
   renderProducts(categoryName);
 
-  setTimeout(() => {
+  document
+    .getElementById("products")
+    ?.scrollIntoView({
+      behavior:"smooth",
+      block:"start"
+    });
+}
 
-    document
-      .getElementById("products")
-      ?.scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
 
   },100);
 }
