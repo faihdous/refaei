@@ -650,24 +650,37 @@ nav a:hover::after{
   overflow:hidden;
 }
 
-.about::before{
-  content:"𓅃";
-  position:absolute;
-  left:5%;
-  top:-55px;
-  color:rgba(255,255,255,.05);
-  font-size:280px;
+.about{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
 }
 
+.about::before,
 .about::after{
   content:"𓅃";
   position:absolute;
-  right:5%;
-  top:-55px;
-  color:rgba(255,255,255,.05);
-  font-size:280px;
-  transform:scaleX(-1);
+  top:35px;
+  z-index:0;
+  display:block;
+  color:rgba(255,255,255,.16);
+  font-size:190px;
+  line-height:1;
   pointer-events:none;
+}
+
+.about::before{
+  left:-20px;
+}
+
+.about::after{
+  right:-20px;
+  transform:scaleX(-1);
+}
+
+.about > *{
+  position:relative;
+  z-index:1;
 }
 
 
@@ -1122,21 +1135,34 @@ footer{
 }
 
 @media(max-width:600px){
+   .about{
+    min-height:420px;
+    padding:95px 20px 130px;
+    overflow:hidden;
+  }
+
+  .about::before,
+  .about::after{
+    top:45px;
+    display:block;
+    font-size:150px;
+    color:rgba(255,255,255,.18);
+    z-index:0;
+  }
+
   .about::before{
-    left:-35px;
-    top:-35px;
-    font-size:170px;
+    left:-38px;
   }
 
   .about::after{
-    right:-35px;
-    top:-35px;
-    font-size:170px;
+    right:-38px;
   }
 
-  header{
+  .about > *{
     position:relative;
+    z-index:1;
   }
+
 
   .nav{
     min-height:auto;
