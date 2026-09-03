@@ -1572,6 +1572,8 @@ footer{
                 <th>العنوان</th>
                 <th>المنتجات</th>
                 <th>الإجمالي</th>
+                <th>الإجمالي</th>
+
               </tr>
             </thead>
 
@@ -3523,7 +3525,7 @@ function renderReports(){
     tableBody.innerHTML = `
       <tr>
         <td
-          colspan="6"
+          colspan="7"
           style="text-align:center;color:#927c6a">
           لا توجد طلبات حتى الآن
         </td>
@@ -3543,11 +3545,40 @@ function renderReports(){
           : "-";
 
       const itemsText =
-        (order.items || [])
-          .map(item =>
-            `${safe(item.name)} × ${Number(item.quantity || 0)}`
-          )
-          .join("<br>");
+  (order.items || [])
+    .map((item, index) => {
+
+      const isCancelled = item.cancelled === true;
+
+      return `
+        <div style="
+          margin-bottom:6px;
+          ${isCancelled
+            ? "text-decoration:line-through;color:#b84038;"
+            : ""}
+        ">
+          ${safe(item.name)}
+          ×
+          ${Number(item.quantity || 0)}
+
+          ${
+            isCancelled
+              ? `<strong> (ملغاة)</strong>`
+              : `
+                <button
+                  class="delete-btn"
+                  style="padding:3px 7px;margin-right:6px"
+                  onclick="cancelOrderItem('${safe(order.id)}',${index})">
+                  إلغاء
+                </button>
+              `
+          }
+        </div>
+      `;
+
+    })
+    .join("");
+
 
       return `
 
@@ -3671,6 +3702,90 @@ function exportReportsToExcel(){
   URL.revokeObjectURL(url);
 }
 
+/* إلغاء منتج من الطلب */
+async function cancelOrderItem(orderId, itemIndex){
+
+  const order =
+    orders.find(item =>
+      String(item.id) === String(orderId)
+    );
+
+  if(!order){
+    alert("لم يتم العثور على الطلب");
+    return;
+  }
+
+  const items = Array.isArray(order.items)
+    ? [...order.items]
+    : [];
+
+  const item = items[itemIndex];
+
+  if(!item){
+    alert("لم يتم العثور على المنتج");
+    return;
+  }
+
+  if(item.cancelled === true){
+    alert("هذا المنتج ملغى مسبقًا");
+    return;
+  }
+
+  if(!confirm(`هل تريد إلغاء المنتج: ${item.name}؟`)){
+    return;
+  }
+
+  item.cancelled = true;
+
+  const activeItems =
+    items.filter(product =>
+      product.cancelled !== true
+    );
+
+  const newTotal =
+    activeItems.reduce((sum, product) =>
+      sum +
+      Number(product.price || 0) *
+      Number(product.quantity || 0),
+      0
+    );
+
+  const newItemsCount =
+    activeItems.reduce((sum, product) =>
+      sum + Number(product.quantity || 0),
+      0
+    );
+
+  const result =
+    await supabaseClient
+      .from("orders")
+      .update({
+        items:items,
+        total:newTotal,
+        items_count:newItemsCount
+      })
+      .eq("id",orderId);
+
+  if(result.error){
+
+    console.error(result.error);
+
+    alert(
+      "تعذر إلغاء المنتج:\n" +
+      result.error.message
+    );
+
+    return;
+  }
+
+  order.items = items;
+  order.total = newTotal;
+  order.items_count = newItemsCount;
+
+  renderReports();
+
+  alert("تم إلغاء المنتج وتحديث إجمالي الطلب");
+}
 
 /* مسح التقارير */
 async function clearReports(){
