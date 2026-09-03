@@ -1742,12 +1742,17 @@ function normalizeText(value){
 
   return String(value ?? "")
     .trim()
+    .toLowerCase()
     .replace(/\s+/g,"")
     .replace(/[إأآا]/g,"ا")
     .replace(/ى/g,"ي")
-    .replace(/ة/g,"ه");
+    .replace(/ة/g,"ه")
+    .replace(/^ال/,"")
+    .replace(/^ال/,"");
 }
 
+
+/* مقارنة أسماء الأقسام */
 function sameCategory(first,second){
 
   const a = normalizeText(first);
@@ -1756,10 +1761,17 @@ function sameCategory(first,second){
   const aliases = {
     "مسباح":"مسابيح",
     "مسابيح":"مسابيح",
+
     "قماش":"اقمشه",
     "اقمشه":"اقمشه",
+
     "شال":"شالات",
-    "شالات":"شالات"
+    "شالات":"شالات",
+
+    "بخور":"بخور",
+    "هدايا":"هدايا",
+    "هديه":"هدايا",
+    "هدايا":"هدايا"
   };
 
   return (aliases[a] || a) === (aliases[b] || b);
@@ -1972,15 +1984,22 @@ function renderProducts(categoryName = ""){
 
   if(categoryName){
 
-    visibleProducts = products.filter(product =>
-      sameCategory(
-        product.category_name || product.category,
+    visibleProducts = products.filter(product => {
+
+      const productCategory =
+        product.category_name ||
+        product.category ||
+        "";
+
+      return sameCategory(
+        productCategory,
         categoryName
-      )
-    );
+      );
+    });
 
     document.getElementById("productsTitle").textContent =
       categoryName;
+
   }else{
 
     document.getElementById("productsTitle").textContent =
@@ -1990,7 +2009,11 @@ function renderProducts(categoryName = ""){
   if(!visibleProducts.length){
 
     grid.innerHTML = `
-      <p style="grid-column:1/-1;text-align:center;color:#927c6a">
+      <p style="
+        grid-column:1/-1;
+        text-align:center;
+        color:#927c6a;
+        padding:30px">
         لا توجد منتجات في هذا القسم
       </p>
     `;
@@ -2000,18 +2023,26 @@ function renderProducts(categoryName = ""){
 
   grid.innerHTML = visibleProducts.map(product => {
 
-    const stock = Number(product.stock || 0);
-    const isOut = stock <= 0;
+    const stock =
+      Number(product.stock || 0);
 
-    const image = product.image_url
+    const isOut =
+      stock <= 0;
+
+    const productCategory =
+      product.category_name ||
+      product.category ||
+      "";
+
+    const image =
+      product.image_url
       ? `
-        <img src="${safe(product.image_url)}"
-             alt="${safe(product.name)}"
-             onerror="this.style.display='none'">
+        <img
+          src="${safe(product.image_url)}"
+          alt="${safe(product.name)}"
+          onerror="this.style.display='none'">
       `
-      : getCategoryEmoji(
-          product.category_name || product.category
-        );
+      : getCategoryEmoji(productCategory);
 
     return `
       <article class="product">
@@ -2021,7 +2052,11 @@ function renderProducts(categoryName = ""){
           ${image}
 
           <span class="stock-badge ${isOut ? "out" : ""}">
-            ${isOut ? "نفدت الكمية" : `متوفر: ${stock}`}
+            ${
+              isOut
+              ? "نفدت الكمية"
+              : `متوفر: ${stock}`
+            }
           </span>
 
         </div>
@@ -2029,23 +2064,35 @@ function renderProducts(categoryName = ""){
         <div class="product-info">
 
           <small>
-            ${safe(product.category_name || product.category || "")}
+            ${safe(productCategory)}
           </small>
 
-          <h3>${safe(product.name)}</h3>
+          <h3>
+            ${safe(product.name)}
+          </h3>
 
-          <p>${safe(product.description || "")}</p>
+          <p>
+            ${safe(product.description || "")}
+          </p>
 
           <div class="product-bottom">
 
             <span class="price">
-              ${Number(product.price || 0).toFixed(2)} د.ك
+              ${Number(product.price || 0).toFixed(2)}
+              د.ك
             </span>
 
-            <button class="add-btn"
-                    ${isOut ? "disabled" : ""}
-                    onclick="addToCart('${safe(product.id)}')">
-              ${isOut ? "غير متوفر" : "أضف للسلة"}
+            <button
+              class="add-btn"
+              ${isOut ? "disabled" : ""}
+              onclick="addToCart('${safe(product.id)}')">
+
+              ${
+                isOut
+                ? "غير متوفر"
+                : "أضف للسلة"
+              }
+
             </button>
 
           </div>
@@ -2057,6 +2104,7 @@ function renderProducts(categoryName = ""){
 
   }).join("");
 }
+
 
 
 /* عرض صفحة التسوق */
@@ -2181,18 +2229,25 @@ function showAllProducts(){
 /* فلترة المنتجات حسب القسم */
 function filterProductsByCategory(categoryName){
 
-  document
-    .querySelector(".products-section")
-    ?.classList.add("visible");
+  const productsSection =
+    document.querySelector(".products-section");
+
+  productsSection?.classList.add("visible");
 
   renderProducts(categoryName);
 
-  document
-    .getElementById("products")
-    ?.scrollIntoView({
-      behavior:"smooth"
-    });
+  setTimeout(() => {
+
+    document
+      .getElementById("products")
+      ?.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+  },100);
 }
+
 
 
 /* إضافة منتج إلى السلة */
