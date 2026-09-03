@@ -1945,9 +1945,13 @@ function renderCategories(){
           ${getCategoryEmoji(category.name)}
         </div>
 
-        <button onclick="filterProductsByCategory('${safe(category.name)}')">
-          ${safe(category.name)}
-        </button>
+       <button
+  type="button"
+  data-category="${safe(category.name)}"
+  onclick="filterProductsByCategory(this.getAttribute('data-category'))">
+  ${safe(category.name)}
+</button>
+
 
         <small>${count} منتج</small>
 
@@ -2181,18 +2185,25 @@ function showAllProducts(){
 /* فلترة المنتجات حسب القسم */
 function filterProductsByCategory(categoryName){
 
-  document
-    .querySelector(".products-section")
-    ?.classList.add("visible");
+  const productsSection =
+    document.querySelector(".products-section");
+
+  productsSection.classList.add("visible");
 
   renderProducts(categoryName);
 
-  document
-    .getElementById("products")
-    ?.scrollIntoView({
-      behavior:"smooth"
-    });
+  setTimeout(function(){
+
+    document
+      .getElementById("products")
+      .scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+  }, 50);
 }
+
 
 
 /* إضافة منتج إلى السلة */
