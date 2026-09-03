@@ -650,37 +650,24 @@ nav a:hover::after{
   overflow:hidden;
 }
 
-.about{
-  position:relative;
-  overflow:hidden;
-  isolation:isolate;
+.about::before{
+  content:"𓅃";
+  position:absolute;
+  left:5%;
+  top:-55px;
+  color:rgba(255,255,255,.05);
+  font-size:280px;
 }
 
-.about::before,
 .about::after{
   content:"𓅃";
   position:absolute;
-  top:35px;
-  z-index:0;
-  display:block;
-  color:rgba(255,255,255,.16);
-  font-size:190px;
-  line-height:1;
-  pointer-events:none;
-}
-
-.about::before{
-  left:-20px;
-}
-
-.about::after{
-  right:-20px;
+  right:5%;
+  top:-55px;
+  color:rgba(255,255,255,.05);
+  font-size:280px;
   transform:scaleX(-1);
-}
-
-.about > *{
-  position:relative;
-  z-index:1;
+  pointer-events:none;
 }
 
 
@@ -1135,119 +1122,21 @@ footer{
 }
 
 @media(max-width:600px){
-/* تقليل مساحة قسم البداية */
-.hero{
-  min-height:520px !important;
-  height:auto !important;
-  padding:25px 20px 80px !important;
-}
-
-/* الصقران السفليان */
-.about::before,
-.about::after{
-  top:25px;
-  font-size:105px;
-}
-
-/* تقريب الصقرين من بعض */
-.about::before{
-  left:13%;
-}
-
-.about::after{
-  right:13%;
-}
-
-/* تقليل المساحة الفارغة في قسم عن المتجر */
-.about{
-  min-height:320px !important;
-  height:auto !important;
-  padding:35px 20px 55px !important;
-  overflow:hidden;
-}
-
-/* إعدادات الآيفون */
-@media (max-width:600px){
-
-  .hero{
-    min-height:420px !important;
-    padding:25px 15px 55px !important;
-  }
-
-  .about{
-    min-height:280px !important;
-    padding:30px 15px 45px !important;
-  }
-
-  .about::before,
-  .about::after{
-    top:20px;
-    font-size:85px;
-  }
-
   .about::before{
-    left:16%;
+    left:-35px;
+    top:-35px;
+    font-size:170px;
   }
 
   .about::after{
-    right:16%;
-  }
-}
-
-
-
-/* إعدادات الآيفون */
-@media (max-width:600px){
-
-  .about{
-    min-height:420px;
-    padding:35px 20px 100px;
+    right:-35px;
+    top:-35px;
+    font-size:170px;
   }
 
-  .about::before,
-  .about::after{
-    top:20px;
-    font-size:105px;
-    color:rgba(255,255,255,.15);
-  }
-
-  .about::before{
-    left:0;
-  }
-
-  .about::after{
-    right:0;
-  }
-}
-
-  .about{
-    min-height:420px;
-    padding:95px 20px 130px;
-    overflow:hidden;
-  }
-
-  .about::before,
-  .about::after{
-    top:45px;
-    display:block;
-    font-size:150px;
-    color:rgba(255,255,255,.18);
-    z-index:0;
-  }
-
-  .about::before{
-    left:-38px;
-  }
-
-  .about::after{
-    right:-38px;
-  }
-
-  .about > *{
+  header{
     position:relative;
-    z-index:1;
   }
-
 
   .nav{
     min-height:auto;
