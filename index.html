@@ -1135,7 +1135,74 @@ footer{
 }
 
 @media(max-width:600px){
-   .about{
+   /* إلغاء الصقر الشفاف الموجود في الصفحة الرئيسية */
+.hero::after{
+  content:none !important;
+  display:none !important;
+}
+
+/* ضبط قسم الصقرين السفليين */
+.about{
+  position:relative;
+  overflow:hidden;
+}
+
+/* الصقران السفليان */
+.about::before,
+.about::after{
+  content:"𓅃";
+  position:absolute;
+  top:25px;
+  z-index:0;
+  display:block;
+  font-size:125px;
+  line-height:1;
+  color:rgba(255,255,255,.16);
+  pointer-events:none;
+}
+
+/* الصقر الأيسر */
+.about::before{
+  left:8px;
+}
+
+/* الصقر الأيمن */
+.about::after{
+  right:8px;
+  transform:scaleX(-1);
+}
+
+/* إبقاء نص قسم عن المتجر فوق الصقور */
+.about > *{
+  position:relative;
+  z-index:1;
+}
+
+/* إعدادات الآيفون */
+@media (max-width:600px){
+
+  .about{
+    min-height:420px;
+    padding:35px 20px 100px;
+  }
+
+  .about::before,
+  .about::after{
+    top:20px;
+    font-size:105px;
+    color:rgba(255,255,255,.15);
+  }
+
+  .about::before{
+    left:0;
+  }
+
+  .about::after{
+    right:0;
+  }
+}
+
+  .about{
     min-height:420px;
     padding:95px 20px 130px;
     overflow:hidden;
