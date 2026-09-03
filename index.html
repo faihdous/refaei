@@ -1135,48 +1135,66 @@ footer{
 }
 
 @media(max-width:600px){
-   /* إلغاء الصقر الشفاف الموجود في الصفحة الرئيسية */
-.hero::after{
-  content:none !important;
-  display:none !important;
-}
-
-/* ضبط قسم الصقرين السفليين */
-.about{
-  position:relative;
-  overflow:hidden;
+/* تقليل مساحة قسم البداية */
+.hero{
+  min-height:520px !important;
+  height:auto !important;
+  padding:25px 20px 80px !important;
 }
 
 /* الصقران السفليان */
 .about::before,
 .about::after{
-  content:"𓅃";
-  position:absolute;
   top:25px;
-  z-index:0;
-  display:block;
-  font-size:125px;
-  line-height:1;
-  color:rgba(255,255,255,.16);
-  pointer-events:none;
+  font-size:105px;
 }
 
-/* الصقر الأيسر */
+/* تقريب الصقرين من بعض */
 .about::before{
-  left:8px;
+  left:13%;
 }
 
-/* الصقر الأيمن */
 .about::after{
-  right:8px;
-  transform:scaleX(-1);
+  right:13%;
 }
 
-/* إبقاء نص قسم عن المتجر فوق الصقور */
-.about > *{
-  position:relative;
-  z-index:1;
+/* تقليل المساحة الفارغة في قسم عن المتجر */
+.about{
+  min-height:320px !important;
+  height:auto !important;
+  padding:35px 20px 55px !important;
+  overflow:hidden;
 }
+
+/* إعدادات الآيفون */
+@media (max-width:600px){
+
+  .hero{
+    min-height:420px !important;
+    padding:25px 15px 55px !important;
+  }
+
+  .about{
+    min-height:280px !important;
+    padding:30px 15px 45px !important;
+  }
+
+  .about::before,
+  .about::after{
+    top:20px;
+    font-size:85px;
+  }
+
+  .about::before{
+    left:16%;
+  }
+
+  .about::after{
+    right:16%;
+  }
+}
+
+
 
 /* إعدادات الآيفون */
 @media (max-width:600px){
