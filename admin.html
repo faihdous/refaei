@@ -70,10 +70,11 @@
     @media(max-width:900px){ .grid{ grid-template-columns:1fr; } }
     .field{ display:flex; flex-direction:column; gap:7px; margin:10px 0; }
     .field label{ font-size:13px; color:#6e5a4c; font-weight:bold; }
-    .field input, .field textarea{
+    .field input, .field textarea, .field select{
       width:100%;
       padding:11px; border-radius:6px; border:1px solid var(--border);
       background:#fffdf9; outline:none;
+      color:var(--brown);
     }
     .field textarea{ resize:vertical; min-height:90px; }
     .toast{
@@ -97,7 +98,6 @@
       background:rgba(184,149,87,.18); color:var(--brown); border:1px solid rgba(184,149,87,.35);
     }
     .badge.red{ background:rgba(184,56,56,.12); border-color:rgba(184,56,56,.25); color:#8d1f1f; }
-    .row-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
     .img-preview{
       width:100%;
       max-width:420px;
@@ -111,6 +111,35 @@
       margin-top:8px;
     }
     .img-preview img{ max-width:100%; height:auto; display:block; margin:0 auto 6px; }
+
+    /* ✅ Modal */
+    .modal-overlay{
+      position:fixed; inset:0; background:rgba(20,14,10,.55);
+      display:none; align-items:center; justify-content:center;
+      z-index:999;
+      padding:16px;
+    }
+    .modal-overlay.show{ display:flex; }
+    .modal{
+      width:min(720px,100%);
+      background:rgba(255,253,249,.96);
+      border:1px solid var(--border);
+      border-radius:10px;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+      padding:18px;
+      max-height:85vh;
+      overflow:auto;
+    }
+    .modal-head{
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:10px;
+    }
+    .modal-title{ font-family:'Playfair Display',Georgia,serif; color:var(--brown); font-weight:900; font-size:22px; }
+    .modal-close{
+      border:0; background:transparent; cursor:pointer; font-size:26px; color:var(--brown);
+      padding:4px 8px;
+    }
+    .modal-actions{ display:flex; gap:10px; justify-content:flex-start; flex-wrap:wrap; margin-top:12px; }
   </style>
 </head>
 
@@ -126,6 +155,9 @@
     </div>
   </div>
 </header>
+
+<!-- ✅ input file ثابت (حل مشكلة File chooser activation) -->
+<input id="adminImageUpload" type="file" accept="image/*" class="hidden" />
 
 <main class="container" style="padding:22px 0 60px;">
   <!-- LOGIN -->
@@ -282,12 +314,66 @@
   </section>
 </main>
 
+<!-- ✅ Edit Product Modal -->
+<div id="editModalOverlay" class="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
+    <div class="modal-head">
+      <div class="modal-title" id="editModalTitle">تعديل المنتج</div>
+      <button class="modal-close" type="button" onclick="closeEditModal()">×</button>
+    </div>
+
+    <div class="field">
+      <label>اسم المنتج</label>
+      <input id="edit_p_name" />
+    </div>
+
+    <div class="field">
+      <label>القسم (category) - Dropdown</label>
+      <select id="edit_p_category"></select>
+    </div>
+
+    <div class="field">
+      <label>وصف المنتج</label>
+      <textarea id="edit_p_description"></textarea>
+    </div>
+
+    <div class="grid">
+      <div class="field">
+        <label>السعر</label>
+        <input id="edit_p_price" type="number" step="0.01" />
+      </div>
+      <div class="field">
+        <label>stock</label>
+        <input id="edit_p_stock" type="number" step="1" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>صورة المنتج (اختياري)</label>
+
+      <div class="row-actions">
+        <button class="btn btn-secondary" type="button" onclick="startPickImageForEdit()">اختيار صورة جديدة</button>
+        <button class="btn btn-secondary" type="button" onclick="clearPickedEditImage()">إزالة اختيار الصورة</button>
+      </div>
+
+      <div id="edit_p_image_preview" class="img-preview">لم يتم اختيار صورة جديدة</div>
+      <div class="small-muted" style="margin-top:6px;">
+        إذا لم تختَر صورة جديدة لن يتم تعديل image_url.
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" type="button" onclick="saveEditProduct()">حفظ التعديل</button>
+      <button class="btn btn-secondary" type="button" onclick="closeEditModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /** ====== CONFIG ====== **/
 const SUPABASE_URL = "https://mvsdblzjzrscnfgiqxan.supabase.co";
 const SUPABASE_KEY = "sb_publishable_KWMjd7EDbWtH2Ay7TdJwZg_s2et1Hc7";
 
-/** ✅ bucket عندك من الصورة: product-images */
 const STORAGE_BUCKET = "product-images";
 const STORAGE_FOLDER = "products";
 
@@ -326,19 +412,15 @@ async function uploadImageFile(file, objectBaseName){
 
   const res = await supabaseClient.storage
     .from(STORAGE_BUCKET)
-    .upload(filePath, file, {
-      cacheControl: "3600",
-      upsert: true
-    });
+    .upload(filePath, file, { upsert:true });
 
   if(res.error) throw res.error;
 
-  // لأن bucket عندك Public حسب الصورة
   const { data } = supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
   return data?.publicUrl || null;
 }
 
-/** ====== Preview ====== **/
+/** ====== Preview for create product ====== **/
 function attachImagePreview(){
   const fileInput = $("p_image_file");
   const preview = $("p_image_preview");
@@ -382,27 +464,28 @@ window.loginAdmin = async function(){
 
   $("loginToast").classList.add("hidden");
 
-  if(!email) return setToast($("loginToast"), "أدخل الإيميل", "err"), $("loginToast").classList.remove("hidden");
-  if(!password) return setToast($("loginToast"), "أدخل كلمة المرور", "err"), $("loginToast").classList.remove("hidden");
+  if(!email){
+    const t = $("loginToast"); setToast(t, "أدخل الإيميل", "err"); t.classList.remove("hidden"); return;
+  }
+  if(!password){
+    const t = $("loginToast"); setToast(t, "أدخل كلمة المرور", "err"); t.classList.remove("hidden"); return;
+  }
 
   const signInRes = await supabaseClient.auth.signInWithPassword({ email, password });
   if(signInRes.error){
-    setToast($("loginToast"), "بيانات الدخول غير صحيحة: " + signInRes.error.message, "err");
-    $("loginToast").classList.remove("hidden");
+    const t = $("loginToast"); setToast(t, "بيانات الدخول غير صحيحة: " + signInRes.error.message, "err"); t.classList.remove("hidden");
     return;
   }
 
   try{
     const ok = await isAdminByRPC();
     if(!ok){
-      setToast($("loginToast"), "غير مصرح لك بدخول لوحة الإدارة", "err");
-      $("loginToast").classList.remove("hidden");
+      const t = $("loginToast"); setToast(t, "غير مصرح لك بدخول لوحة الإدارة", "err"); t.classList.remove("hidden");
       return;
     }
   }catch(e){
     console.error(e);
-    setToast($("loginToast"), "خطأ بالصلاحيات (RPC): " + (e?.message || e), "err");
-    $("loginToast").classList.remove("hidden");
+    const t = $("loginToast"); setToast(t, "خطأ بالصلاحيات (RPC): " + (e?.message || e), "err"); t.classList.remove("hidden");
     return;
   }
 
@@ -414,8 +497,7 @@ window.loginAdmin = async function(){
   try{ await loadAllAdminData(); }
   catch(e){
     console.error(e);
-    setToast($("loginToast"), "تعذر تحميل بيانات الإدارة: " + (e?.message || e), "err");
-    $("loginToast").classList.remove("hidden");
+    const t = $("loginToast"); setToast(t, "تعذر تحميل بيانات الإدارة: " + (e?.message || e), "err"); t.classList.remove("hidden");
   }
 };
 
@@ -524,10 +606,13 @@ async function loadCategories(){
   const res = await supabaseClient.from("categories").select("*").order("created_at", { ascending:false });
   if(res.error) return alert("فشل تحميل الأقسام: " + res.error.message);
 
+  const categories = res.data || [];
+
+  // ✅ table
   const tbody = $("categoriesTbody");
   tbody.innerHTML = "";
 
-  (res.data || []).forEach(cat => {
+  categories.forEach(cat => {
     const id = cat.id;
     const name = cat.name ?? "";
     const tr = document.createElement("tr");
@@ -544,6 +629,25 @@ async function loadCategories(){
     `;
     tbody.appendChild(tr);
   });
+
+  // ✅ dropdown inside modal
+  const select = $("edit_p_category");
+  if(select){
+    select.innerHTML = "";
+    if(categories.length === 0){
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = "لا توجد أقسام";
+      select.appendChild(opt);
+    }else{
+      categories.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.name ?? "";
+        opt.textContent = c.name ?? "";
+        select.appendChild(opt);
+      });
+    }
+  }
 }
 
 window.promptEditCategory = async function(id, currentName){
@@ -565,10 +669,10 @@ window.deleteCategory = async function(id){
   await loadProducts();
 };
 
-/** ====== Products (Fix + Upload) ====== **/
+/** ====== Products (Create/Edit) ====== **/
 window.createProduct = async function(){
   const pName = $("p_name").value.trim();
-  const pCategory = $("p_category").value.trim(); // ✅ category
+  const pCategory = $("p_category").value.trim();
   const pDescription = $("p_description").value.trim();
   const pPrice = Number($("p_price").value || 0);
   const pStock = Number($("p_stock").value || 0);
@@ -578,7 +682,6 @@ window.createProduct = async function(){
 
   if(!pName || !pCategory) return alert("أدخل اسم المنتج واسم القسم");
 
-  // 1) insert
   const insertRes = await supabaseClient
     .from("products")
     .insert({
@@ -587,7 +690,7 @@ window.createProduct = async function(){
       description: pDescription,
       price: pPrice,
       stock: pStock,
-      image_url: imageUrlInput // مؤقت
+      image_url: imageUrlInput
     })
     .select()
     .maybeSingle();
@@ -595,11 +698,8 @@ window.createProduct = async function(){
   if(insertRes.error) return alert("فشل إضافة المنتج: " + insertRes.error.message);
 
   const newId = insertRes.data?.id;
-  if(!newId){
-    return alert("تمت الإضافة لكن تعذر قراءة id للمنتج");
-  }
+  if(!newId) return alert("تمت الإضافة لكن تعذر قراءة id للمنتج");
 
-  // 2) upload (إن وجد) ثم update image_url
   try{
     let finalImageUrl = imageUrlInput;
 
@@ -619,7 +719,6 @@ window.createProduct = async function(){
     alert("تمت الإضافة لكن فشل رفع/حفظ الصورة: " + (e?.message || e));
   }
 
-  // reset UI
   $("p_name").value = "";
   $("p_category").value = "";
   $("p_description").value = "";
@@ -646,7 +745,7 @@ async function loadProducts(){
   (res.data || []).forEach(p => {
     const id = p.id;
     const name = p.name ?? "";
-    const category = p.category ?? p.category_name ?? ""; // دعم لو عندك قديم
+    const category = p.category ?? p.category_name ?? "";
     const price = Number(p.price ?? 0).toFixed(2);
     const stock = Number(p.stock ?? 0);
 
@@ -659,7 +758,7 @@ async function loadProducts(){
       <td>
         <div class="row-actions" style="margin-top:0;">
           <button class="btn btn-secondary" style="padding:8px 12px;" type="button"
-            onclick="window.promptEditProduct('${id}')">تعديل</button>
+            onclick="window.openEditProductModal('${id}')">تعديل</button>
           <button class="btn" style="padding:8px 12px; background: var(--red);" type="button"
             onclick="window.deleteProduct('${id}')">حذف</button>
         </div>
@@ -669,7 +768,23 @@ async function loadProducts(){
   });
 }
 
-window.promptEditProduct = async function(id){
+window.deleteProduct = async function(id){
+  if(!confirm("تأكيد حذف المنتج؟")) return;
+  const res = await supabaseClient.from("products").delete().eq("id", id);
+  if(res.error) return alert("فشل الحذف: " + res.error.message);
+  await loadProducts();
+};
+
+/** ====== Edit Modal Logic (Dropdown + Fixed Image Picker) ====== **/
+let editState = {
+  id: null,
+  pickedFile: null
+};
+
+window.openEditProductModal = async function(id){
+  // ensure dropdown filled
+  await loadCategories();
+
   const res = await supabaseClient
     .from("products")
     .select("*")
@@ -677,77 +792,100 @@ window.promptEditProduct = async function(id){
     .maybeSingle();
 
   if(res.error || !res.data) return alert("فشل جلب بيانات المنتج");
+
   const p = res.data;
 
-  const newName = prompt("اسم المنتج:", p.name ?? "");
-  if(newName === null) return;
+  editState.id = id;
+  editState.pickedFile = null;
 
-  const newCategory = prompt("اسم القسم (category):", p.category ?? p.category_name ?? "");
-  if(newCategory === null) return;
+  $("edit_p_name").value = p.name ?? "";
+  $("edit_p_category").value = (p.category ?? p.category_name ?? "");
+  $("edit_p_description").value = p.description ?? "";
+  $("edit_p_price").value = Number(p.price ?? 0);
+  $("edit_p_stock").value = Number(p.stock ?? 0);
 
-  const newDesc = prompt("الوصف:", p.description ?? "");
-  if(newDesc === null) return;
+  $("edit_p_image_preview").innerHTML = "لم يتم اختيار صورة جديدة";
 
-  const newPrice = prompt("السعر:", String(p.price ?? 0));
-  if(newPrice === null) return;
-
-  const newStock = prompt("stock:", String(p.stock ?? 0));
-  if(newStock === null) return;
-
-  const newImgUrl = prompt("صورة (URL) (اختياري):", p.image_url ?? "");
-  if(newImgUrl === null) return;
-
-  // هل يرفع صورة؟
-  const wantUpload = confirm("هل تريد رفع صورة من جهازك؟ (OK = نعم)");
-  let file = null;
-
-  if(wantUpload){
-    file = await new Promise(resolve => {
-      const input = document.createElement("input");
-      input.type = "file";
-      input.accept = "image/*";
-      input.onchange = () => resolve(input.files?.[0] || null);
-      input.click();
-    });
-  }
-
-  // update base
-  const payload = {
-    name: newName.trim(),
-    category: newCategory.trim(), // ✅ category
-    description: newDesc.trim(),
-    price: Number(newPrice || 0),
-    stock: Number(newStock || 0),
-    image_url: newImgUrl.trim() || null
-  };
-
-  const up = await supabaseClient.from("products").update(payload).eq("id", id);
-  if(up.error) return alert("فشل التعديل: " + up.error.message);
-
-  // if uploaded, overwrite image_url
-  try{
-    if(file){
-      const finalUrl = await uploadImageFile(file, `product-${id}`);
-      const up2 = await supabaseClient.from("products")
-        .update({ image_url: finalUrl })
-        .eq("id", id);
-
-      if(up2.error) throw up2.error;
-    }
-  }catch(e){
-    console.error(e);
-    alert("تم التعديل لكن فشل رفع/حفظ الصورة: " + (e?.message || e));
-  }
-
-  await loadProducts();
-  alert("تم التعديل ✅");
+  $("editModalOverlay").classList.add("show");
 };
 
-window.deleteProduct = async function(id){
-  if(!confirm("تأكيد حذف المنتج؟")) return;
-  const res = await supabaseClient.from("products").delete().eq("id", id);
-  if(res.error) return alert("فشل الحذف: " + res.error.message);
-  await loadProducts();
+window.closeEditModal = function(){
+  $("editModalOverlay").classList.remove("show");
+  editState.id = null;
+  editState.pickedFile = null;
+};
+
+window.clearPickedEditImage = function(){
+  editState.pickedFile = null;
+  $("adminImageUpload").value = "";
+  $("edit_p_image_preview").textContent = "لم يتم اختيار صورة جديدة";
+};
+
+window.startPickImageForEdit = function(){
+  const input = $("adminImageUpload");
+  input.value = "";
+  editState.pickedFile = null;
+
+  input.onchange = () => {
+    const file = input.files?.[0] || null;
+    editState.pickedFile = file;
+
+    if(!file){
+      $("edit_p_image_preview").textContent = "لم يتم اختيار صورة جديدة";
+      return;
+    }
+    const url = URL.createObjectURL(file);
+    $("edit_p_image_preview").innerHTML = `<img src="${url}" alt="preview" /> تم اختيار: ${escapeHtml(file.name)}`;
+  };
+
+  // ✅ open chooser via direct user click
+  input.click();
+};
+
+window.saveEditProduct = async function(){
+  try{
+    const id = editState.id;
+    if(!id) return;
+
+    const newName = $("edit_p_name").value.trim();
+    const newCategory = $("edit_p_category").value.trim();
+    const newDesc = $("edit_p_description").value.trim();
+    const newPrice = Number($("edit_p_price").value || 0);
+    const newStock = Number($("edit_p_stock").value || 0);
+
+    if(!newName || !newCategory){
+      alert("أدخل اسم المنتج واختر القسم");
+      return;
+    }
+
+    // 1) update base fields
+    const payload = {
+      name: newName,
+      category: newCategory,
+      description: newDesc,
+      price: newPrice,
+      stock: newStock
+    };
+
+    const up = await supabaseClient.from("products").update(payload).eq("id", id);
+    if(up.error) throw up.error;
+
+    // 2) if picked image, upload + update image_url
+    if(editState.pickedFile){
+      const finalUrl = await uploadImageFile(editState.pickedFile, `product-${id}`);
+      if(finalUrl){
+        const up2 = await supabaseClient.from("products").update({ image_url: finalUrl }).eq("id", id);
+        if(up2.error) throw up2.error;
+      }
+    }
+
+    closeEditModal();
+    await loadProducts();
+    alert("تم التعديل ✅");
+  }catch(e){
+    console.error(e);
+    alert("حدث خطأ أثناء التعديل: " + (e?.message || e));
+  }
 };
 
 /** ====== Orders ====== **/
