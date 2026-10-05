@@ -237,14 +237,17 @@ hr.sep{
 
     <div class="grid" style="margin-top:12px;">
       <div>
+        <!-- ✅ بدل UUID نص واضح وبلا استعباط -->
         <div class="field">
-          <label>اسم المستخدم (user_id UUID)</label>
-          <input id="adminUsername" placeholder="مثال: 04ac2fb6-8750-4f29-a7c1-1d5..." autocomplete="username">
+          <label>رمز الإدارة</label>
+          <input id="adminUsername" placeholder="أدخل رمز الإدارة" autocomplete="username">
         </div>
+
         <div class="field">
-          <label>كلمة المرور (غير مستخدمة لأن الجدول لا يحتوي password)</label>
-          <input id="adminPassword" type="password" placeholder="••••••••" autocomplete="current-password">
+          <label>كلمة المرور</label>
+          <input id="adminPassword" type="password" placeholder="غير مستخدمة" disabled>
         </div>
+
         <div class="row-actions">
           <button class="btn" onclick="loginAdmin()">دخول</button>
         </div>
@@ -407,7 +410,7 @@ hr.sep{
       <h2 class="section-title">طلبات العملاء</h2>
 
       <div class="small-muted" style="margin-bottom:12px;color:#7a6658;font-size:12px;">
-        سيتم عرض آخر الطلبات فقط (حسب ترتيب created_at).
+        سيتم عرض آخر الطلبات فقط (حسب created_at).
       </div>
 
       <table class="table" aria-label="orders">
@@ -459,24 +462,32 @@ function setToast(el, msg, type="err"){
 }
 
 /** ============ LOGIN ============ **/
-async function loginAdmin(){
-  // جدول admin_users عندك يحتوي فقط user_id و created_at
-  const userId = $("adminUsername").value.trim();
-  const password = $("adminPassword").value; // لن نستخدمه
+function isValidUUID(uuid){
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid);
+}
 
-  if(!userId){
-    setToast($("loginToast"), "يرجى إدخال user_id (UUID) للإدارة", "err");
+async function loginAdmin(){
+  const userIdInput = $("adminUsername").value.trim();
+
+  $("loginToast").classList.add("hidden");
+
+  if(!userIdInput){
+    setToast($("loginToast"), "أدخل رمز الإدارة", "err");
     $("loginToast").classList.remove("hidden");
     return;
   }
 
-  $("loginToast").classList.add("hidden");
+  // ✅ يمنع ظهور خطأ invalid input syntax بسبب إدخال غير UUID
+  if(!isValidUUID(userIdInput)){
+    setToast($("loginToast"), "رمز الإدارة غير صحيح (صيغة UUID)", "err");
+    $("loginToast").classList.remove("hidden");
+    return;
+  }
 
-  // ✅ تحقق من وجود user_id في جدول admin_users
   const res = await supabaseAdminClient
     .from("admin_users")
     .select("user_id")
-    .eq("user_id", userId)
+    .eq("user_id", userIdInput)
     .maybeSingle();
 
   if(res.error){
@@ -485,27 +496,23 @@ async function loginAdmin(){
   }
 
   if(!res.data){
-    setToast($("loginToast"), "بيانات الدخول غير صحيحة (user_id غير موجود)", "err");
+    setToast($("loginToast"), "بيانات الدخول غير صحيحة", "err");
     return;
   }
 
   sessionAdmin.ok = true;
-  sessionAdmin.username = userId;
+  sessionAdmin.username = userIdInput;
 
   $("loginView").classList.add("hidden");
   $("adminView").classList.remove("hidden");
   $("logoutBtn").classList.remove("hidden");
-  $("adminWelcome").textContent = `مرحبًا ${userId} 👋`;
+  $("adminWelcome").textContent = "مرحبًا 👋";
 
   try{
     await loadAllAdminData();
   }catch(e){
     console.error(e);
-    setToast(
-      $("loginToast"),
-      "تعذر تحميل بيانات الإدارة: " + (e?.message || e),
-      "err"
-    );
+    setToast($("loginToast"), "تعذر تحميل بيانات الإدارة: " + (e?.message || e), "err");
     $("loginToast").classList.remove("hidden");
   }
 }
@@ -533,7 +540,6 @@ async function loadSiteSettings(){
     .maybeSingle();
 
   if(res.error){
-    console.warn(res.error);
     fillSettings(defaultSettings);
     return;
   }
@@ -645,7 +651,6 @@ async function loadProducts(){
     tr.innerHTML = `
       <td>
         <b>${escapeHtml(name)}</b>
-        <div class="small-muted">ID: ${escapeHtml(String(id))}</div>
       </td>
       <td>${escapeHtml(category)}</td>
       <td>${price} د.ك</td>
