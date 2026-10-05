@@ -293,6 +293,17 @@ const defaultSettings = {
   whatsapp:"96566771506"
 };
 
+/** ====== تحقق سريع من صلاحية الإدارة عبر RPC ====== **/
+async function isAdminByRPC(){
+  // هذه الدالة لازم تكون موجودة في SQL:
+  // public.admin_get_self (SECURITY DEFINER) وتعطي rows-table
+  const { data, error } = await supabaseClient.rpc("admin_get_self");
+  if(error) throw error;
+
+  // لأن RETURN TABLE في دالتك عادة يرجع array
+  return Array.isArray(data) ? data.length > 0 : !!data;
+}
+
 /** ====== UI Actions ====== **/
 window.loginAdmin = async function(){
   const email = $("adminEmail").value.trim();
@@ -317,21 +328,17 @@ window.loginAdmin = async function(){
     return;
   }
 
-  // تحقق من admin_users
-  const checkRes = await supabaseClient
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id", user.id)
-    .maybeSingle();
-
-  if(checkRes.error){
-    setToast($("loginToast"), "خطأ بالصلاحيات: " + checkRes.error.message, "err");
-    $("loginToast").classList.remove("hidden");
-    return;
-  }
-
-  if(!checkRes.data){
-    setToast($("loginToast"), "غير مصرح لك بدخول لوحة الإدارة", "err");
+  // ✅ بدل قراءة admin_users مباشرة (اللي كانت تفشل مع API DISABLED)
+  try{
+    const ok = await isAdminByRPC();
+    if(!ok){
+      setToast($("loginToast"), "غير مصرح لك بدخول لوحة الإدارة", "err");
+      $("loginToast").classList.remove("hidden");
+      return;
+    }
+  }catch(e){
+    console.error(e);
+    setToast($("loginToast"), "خطأ بالصلاحيات (RPC): " + (e?.message || e), "err");
     $("loginToast").classList.remove("hidden");
     return;
   }
@@ -381,20 +388,20 @@ async function guardOnLoad(){
   const { data: { session } } = await supabaseClient.auth.getSession();
   if(!session?.user?.id) return;
 
-  const checkRes = await supabaseClient
-    .from("admin_users")
-    .select("user_id")
-    .eq("user_id", session.user.id)
-    .maybeSingle();
+  try{
+    const ok = await isAdminByRPC();
+    if(!ok) return;
 
-  if(checkRes.error || !checkRes.data) return;
+    $("loginView").classList.add("hidden");
+    $("adminView").classList.remove("hidden");
+    $("logoutBtn").classList.remove("hidden");
+    $("adminWelcome").textContent = "مرحبًا 👋";
 
-  $("loginView").classList.add("hidden");
-  $("adminView").classList.remove("hidden");
-  $("logoutBtn").classList.remove("hidden");
-  $("adminWelcome").textContent = "مرحبًا 👋";
-
-  await loadAllAdminData();
+    await loadAllAdminData();
+  }catch(e){
+    console.error(e);
+    // لا نظهر toast هنا لأن مجرد refresh/guard
+  }
 }
 guardOnLoad();
 
