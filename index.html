@@ -69,7 +69,13 @@ button{ cursor:pointer; transition:.25s ease; }
 .topbar{
   background:linear-gradient(90deg,var(--brown-dark),var(--brown),var(--brown-dark));
   color:#f7ead7;
+
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;   /* ✅ يجعل النص بالمنتصف */
   text-align:center;
+
   padding:8px 15px;
   font-size:12px;
   letter-spacing:.3px;
@@ -1156,7 +1162,6 @@ function renderProducts(categoryName = ""){
 /* --- إظهار/إخفاء الأقسام والمنتجات حسب الأزرار --- */
 
 function showShoppingContent(){
-  // زر "تسوق الآن" يفتح الأقسام فقط، والمنتجات تظل مخفية إلا عند اختيار قسم/عرض كل المنتجات/تبويب المنتجات
   document.querySelector(".categories-section")?.classList.add("visible");
   document.getElementById("categories")?.scrollIntoView({ behavior:"smooth" });
 }
@@ -1175,7 +1180,7 @@ function showCategoriesPage(event){
 function showProductsPage(event){
   if(event) event.preventDefault();
   document.querySelector(".products-section")?.classList.add("visible");
-  renderProducts(); // جميع المنتجات
+  renderProducts();
   document.getElementById("products")?.scrollIntoView({ behavior:"smooth" });
 }
 
@@ -1186,7 +1191,7 @@ function showAboutPage(event){
 
 function showAllProducts(){
   document.querySelector(".products-section")?.classList.add("visible");
-  renderProducts(); // جميع المنتجات
+  renderProducts();
   document.getElementById("products")?.scrollIntoView({ behavior:"smooth" });
 }
 
@@ -1433,8 +1438,6 @@ async function startApp(){
   renderSettings();
   renderCategories();
 
-  // ✅ لا نعرض المنتجات ولا الأقسام عند البداية (المنتجات مخفية)
-  // السلة فقط
   renderCart();
 }
 
