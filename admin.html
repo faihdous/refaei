@@ -107,7 +107,8 @@
       background:rgba(184,149,87,.18); color:var(--brown); border:1px solid rgba(184,149,87,.35);
     }
     .badge.red{ background:rgba(184,56,56,.12); border-color:rgba(184,56,56,.25); color:#8d1f1f; }
-    .row-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+
+    .row-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; justify-content:center; }
 
     .img-preview{
       width:100%;
@@ -123,7 +124,6 @@
     }
     .img-preview img{ max-width:100%; height:auto; display:block; margin:0 auto 6px; }
 
-    /* ✅ Modal */
     .modal-overlay{
       position:fixed; inset:0; background:rgba(20,14,10,.55);
       display:none; align-items:center; justify-content:center;
@@ -159,10 +159,7 @@
       display:flex; gap:10px; justify-content:flex-start; flex-wrap:wrap; margin-top:12px;
     }
 
-    /* =========================
-       ✅ تعديل: كل صفحة الإدارة
-       تكون بالمنتصف (Center)
-       ========================= */
+    /* ✅ توسيط صفحة الإدارة */
     #adminView{ text-align:center; }
     #adminView .grid{
       display:grid;
@@ -173,14 +170,13 @@
     @media(max-width:900px){
       #adminView .grid{ grid-template-columns:1fr; }
     }
-    /* خلّي عمودين الإعدادات يكونوا بمنتصف الصفحة */
     #adminView .grid > div{
       width:100%;
-      max-width:560px;   /* يضيق العمود عشان يظهر وسط */
+      max-width:560px;
       margin:0 auto;
     }
+    #adminView .section-title{ text-align:center; width:100%; }
 
-    /* Labels والمودخلات وسط */
     #adminView .field{
       align-items:center;
     }
@@ -200,16 +196,9 @@
       width:100%;
       margin-top:18px;
     }
-    /* للعنوان داخل الكروت */
-    #adminView .section-title{
-      text-align:center;
-      width:100%;
-    }
 
-    /* ✅ تسجيل دخول: أيضًا بالمنتصف */
-    #loginView{
-      text-align:center;
-    }
+    /* تسجيل الدخول أيضًا بالمنتصف */
+    #loginView{ text-align:center; }
     #loginView .grid{
       display:flex;
       justify-content:center;
@@ -383,10 +372,26 @@
 
     <hr class="sep">
 
-    <!-- orders -->
+    <!-- orders / invoices -->
     <div class="card">
       <h2 class="section-title">طلبات العملاء</h2>
-      <table class="table" aria-label="orders">
+
+      <!-- ✅ NEW: invoice export + delete all -->
+      <div class="row-actions" style="margin-top:10px;">
+        <button class="btn btn-secondary" type="button" onclick="window.exportInvoicesCSV()">
+          تحميل الفواتير CSV
+        </button>
+
+        <button class="btn btn-secondary" type="button" onclick="window.exportInvoicesExcel()">
+          تحميل الفواتير Excel
+        </button>
+
+        <button class="btn" type="button" style="background: var(--red);" onclick="window.deleteAllInvoices()">
+          مسح شامل للفواتير
+        </button>
+      </div>
+
+      <table class="table" aria-label="orders" style="margin-top:14px;">
         <thead>
           <tr>
             <th style="width:180px;">العميل</th>
@@ -438,10 +443,12 @@
 
     <div class="field">
       <label>صورة المنتج (اختياري)</label>
+
       <div class="row-actions">
         <button class="btn btn-secondary" type="button" onclick="window.startPickImageForEdit()">اختيار صورة جديدة</button>
         <button class="btn btn-secondary" type="button" onclick="window.clearPickedEditImage()">إزالة اختيار الصورة</button>
       </div>
+
       <div id="edit_p_image_preview" class="img-preview">لم يتم اختيار صورة جديدة</div>
       <div class="small-muted" style="margin-top:6px;">
         إذا لم تختَر صورة جديدة لن يتم تعديل image_url.
@@ -577,6 +584,7 @@ window.loginAdmin = async function(){
       return;
     }
   }catch(e){
+    console.error(e);
     setToast(toast, "خطأ بالصلاحيات (RPC): " + (e?.message || e), "err");
     toast.classList.remove("hidden");
     return;
@@ -589,6 +597,7 @@ window.loginAdmin = async function(){
 
   try{ await loadAllAdminData(); }
   catch(e){
+    console.error(e);
     setToast(toast, "تعذر تحميل بيانات الإدارة: " + (e?.message || e), "err");
     toast.classList.remove("hidden");
   }
@@ -699,7 +708,6 @@ async function loadCategories(){
   if(res.error) return alert("فشل تحميل الأقسام: " + res.error.message);
 
   const categories = res.data || [];
-
   const tbody = $("categoriesTbody");
   tbody.innerHTML = "";
 
@@ -822,6 +830,7 @@ window.createProduct = async function(){
       }
     }
   }catch(e){
+    console.error(e);
     alert("تمت الإضافة لكن فشل رفع/حفظ الصورة: " + (e?.message || e));
   }
 
@@ -978,6 +987,7 @@ window.saveEditProduct = async function(){
     await loadProducts();
     alert("تم التعديل ✅");
   }catch(e){
+    console.error(e);
     alert("حدث خطأ أثناء التعديل: " + (e?.message || e));
   }
 };
@@ -1031,6 +1041,121 @@ window.deleteOrder = async function(id){
   const res = await supabaseClient.from("orders").delete().eq("id", id);
   if(res.error) return alert("فشل حذف الطلب: " + res.error.message);
   await loadOrders();
+};
+
+/* =========================================================
+   ✅ NEW: Invoice export CSV / Excel + delete all invoices
+   (table: orders)
+   ========================================================= */
+
+function downloadBlob(filename, blob){
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function csvEscape(value){
+  const str = value === null || value === undefined ? "" : String(value);
+  if(/[",\n\r]/.test(str)){
+    return `"${str.replace(/"/g, '""')}"`;
+  }
+  return str;
+}
+
+function ordersToCSV(rows){
+  const headers = [
+    "id",
+    "customer_name",
+    "phone",
+    "address",
+    "items",
+    "total",
+    "created_at"
+  ];
+
+  const lines = [];
+  lines.push(headers.map(csvEscape).join(","));
+
+  rows.forEach(r => {
+    let itemsText = "";
+    try{
+      if(Array.isArray(r.items)){
+        itemsText = r.items.map(it => {
+          const name = it?.name ?? "";
+          const qty = it?.quantity ?? "";
+          return `${name} x ${qty}`.trim();
+        }).join(" | ");
+      }else if(typeof r.items === "string"){
+        itemsText = r.items;
+      }else{
+        itemsText = "";
+      }
+    }catch(e){
+      itemsText = "";
+    }
+
+    const created = r.created_at ? new Date(r.created_at).toLocaleString("ar") : "";
+
+    const line = [
+      r.id,
+      r.customer_name ?? "",
+      r.phone ?? "",
+      r.address ?? "",
+      itemsText,
+      Number(r.total ?? 0).toFixed(2),
+      created
+    ].map(csvEscape).join(",");
+
+    lines.push(line);
+  });
+
+  return lines.join("\n");
+}
+
+window.exportInvoicesCSV = async function(){
+  const res = await supabaseClient
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if(res.error) return alert("فشل تصدير CSV: " + res.error.message);
+
+  const csv = ordersToCSV(res.data || []);
+  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+  const filename = `invoices-${new Date().toISOString().slice(0,10)}.csv`;
+  downloadBlob(filename, blob);
+};
+
+window.exportInvoicesExcel = async function(){
+  // Excel غالبًا يفتح CSV مباشرة، لكن نغير الامتداد لـ .xls لزيادة التوافق
+  const res = await supabaseClient
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if(res.error) return alert("فشل تصدير Excel: " + res.error.message);
+
+  const csv = ordersToCSV(res.data || []);
+  const blob = new Blob([csv], { type: "application/vnd.ms-excel;charset=utf-8;" });
+  const filename = `invoices-${new Date().toISOString().slice(0,10)}.xls`;
+  downloadBlob(filename, blob);
+};
+
+window.deleteAllInvoices = async function(){
+  const ok = confirm("⚠️ تأكيد مسح شامل للفواتير؟ هذا سيحذف كل سجلات orders.");
+  if(!ok) return;
+
+  // حذف شامل لكل السجلات
+  const res = await supabaseClient.from("orders").delete().neq("id", null);
+  if(res.error) return alert("فشل المسح: " + res.error.message);
+
+  await loadOrders();
+  alert("تم مسح الفواتير ✅");
 };
 </script>
 </body>
