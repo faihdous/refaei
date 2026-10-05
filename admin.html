@@ -68,7 +68,6 @@
       font-family:'Playfair Display',Georgia,serif;
       color:var(--brown); font-size:24px; font-weight:800;
     }
-
     .grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
     @media(max-width:900px){ .grid{ grid-template-columns:1fr; } }
 
@@ -158,26 +157,35 @@
       display:flex; gap:10px; justify-content:flex-start; flex-wrap:wrap; margin-top:12px;
     }
 
-    /* ✅ تحسين واجهة تسجيل الدخول: النص في منتصف الصفحة */
+    /* ✅ تسجيل دخول: كل شيء بالمنتصف (مع RTL) */
     #loginView{
       text-align:center;
     }
     #loginView .grid{
-      display:block; /* نلغي عمودين */
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      margin-top:12px;
     }
     #loginView .field{
-      align-items:center;
+      max-width:560px;
+      width:100%;
+      align-items:center;     /* وسط */
+      margin-left:auto;
+      margin-right:auto;
     }
     #loginView .field label{
       width:100%;
       text-align:center;
+      display:block;
     }
     #loginView .field input{
-      text-align:center;
+      text-align:center !important;
+      direction:rtl;
     }
     #loginView .row-actions{
       justify-content:center;
-      margin-top:18px;
+      width:100%;
     }
   </style>
 </head>
@@ -204,8 +212,8 @@
     <h2 class="section-title">تسجيل دخول الإدارة</h2>
     <div id="loginToast" class="toast err hidden"></div>
 
-    <div class="grid" style="margin-top:12px;">
-      <div>
+    <div class="grid">
+      <div style="width:100%;">
         <div class="field">
           <label>الإيميل</label>
           <input id="adminEmail" placeholder="اكتب الإيميل" autocomplete="email" />
@@ -649,9 +657,9 @@ async function loadCategories(){
 
   const categories = res.data || [];
 
-  // جدول الأقسام
   const tbody = $("categoriesTbody");
   tbody.innerHTML = "";
+
   categories.forEach(cat => {
     const id = cat.id;
     const name = cat.name ?? "";
@@ -671,7 +679,6 @@ async function loadCategories(){
     tbody.appendChild(tr);
   });
 
-  // dropdown داخل إضافة المنتج
   const addSelect = $("p_category");
   if(addSelect){
     addSelect.innerHTML = "";
@@ -690,7 +697,6 @@ async function loadCategories(){
     }
   }
 
-  // dropdown داخل مودال التعديل
   const editSelect = $("edit_p_category");
   if(editSelect){
     editSelect.innerHTML = "";
@@ -743,7 +749,6 @@ window.createProduct = async function(){
 
   if(!pName || !pCategory) return alert("أدخل اسم المنتج واختر القسم");
 
-  // image_url سيتم رفعه بعد إنشاء المنتج إن وُجد ملف
   const insertRes = await supabaseClient
     .from("products")
     .insert({
