@@ -238,11 +238,11 @@ hr.sep{
     <div class="grid" style="margin-top:12px;">
       <div>
         <div class="field">
-          <label>اسم المستخدم</label>
-          <input id="adminUsername" placeholder="مثال: admin" autocomplete="username">
+          <label>اسم المستخدم (user_id UUID)</label>
+          <input id="adminUsername" placeholder="مثال: 04ac2fb6-8750-4f29-a7c1-1d5..." autocomplete="username">
         </div>
         <div class="field">
-          <label>كلمة المرور</label>
+          <label>كلمة المرور (غير مستخدمة لأن الجدول لا يحتوي password)</label>
           <input id="adminPassword" type="password" placeholder="••••••••" autocomplete="current-password">
         </div>
         <div class="row-actions">
@@ -460,48 +460,43 @@ function setToast(el, msg, type="err"){
 
 /** ============ LOGIN ============ **/
 async function loginAdmin(){
-  const username = $("adminUsername").value.trim();
-  const password = $("adminPassword").value;
+  // جدول admin_users عندك يحتوي فقط user_id و created_at
+  const userId = $("adminUsername").value.trim();
+  const password = $("adminPassword").value; // لن نستخدمه
 
-  if(!username || !password){
-    setToast($("loginToast"), "يرجى إدخال اسم المستخدم وكلمة المرور", "err");
+  if(!userId){
+    setToast($("loginToast"), "يرجى إدخال user_id (UUID) للإدارة", "err");
     $("loginToast").classList.remove("hidden");
     return;
   }
 
   $("loginToast").classList.add("hidden");
 
+  // ✅ تحقق من وجود user_id في جدول admin_users
   const res = await supabaseAdminClient
     .from("admin_users")
-    .select("*")
-    .eq("username", username)
+    .select("user_id")
+    .eq("user_id", userId)
     .maybeSingle();
 
   if(res.error){
     setToast($("loginToast"), "خطأ في الاتصال بقاعدة البيانات: " + res.error.message, "err");
     return;
   }
+
   if(!res.data){
-    setToast($("loginToast"), "بيانات الدخول غير صحيحة", "err");
-    return;
-  }
-
-  const row = res.data;
-
-  if(String(row.password) !== String(password)){
-    setToast($("loginToast"), "بيانات الدخول غير صحيحة", "err");
+    setToast($("loginToast"), "بيانات الدخول غير صحيحة (user_id غير موجود)", "err");
     return;
   }
 
   sessionAdmin.ok = true;
-  sessionAdmin.username = username;
+  sessionAdmin.username = userId;
 
   $("loginView").classList.add("hidden");
   $("adminView").classList.remove("hidden");
   $("logoutBtn").classList.remove("hidden");
-  $("adminWelcome").textContent = `مرحبًا ${username} 👋`;
+  $("adminWelcome").textContent = `مرحبًا ${userId} 👋`;
 
-  // ✅ تعديل مهم: إذا صار خطأ في تحميل البيانات نوضح السبب بدل مربع فاضي
   try{
     await loadAllAdminData();
   }catch(e){
@@ -512,10 +507,6 @@ async function loginAdmin(){
       "err"
     );
     $("loginToast").classList.remove("hidden");
-
-    // رجّع للمشاهدة لو تحب
-    // $("adminView").classList.add("hidden");
-    // $("loginView").classList.remove("hidden");
   }
 }
 
