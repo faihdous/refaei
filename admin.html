@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#542d1b">
+<title>لوحة الإدارة - REFAEI</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
+
+:root{
+  --bg:#eee9df;
+  --brown:#4b2718;
+  --brown-dark:#2b160d;
+  --brown-light:#79543d;
+  --gold:#b89557;
+  --gold-light:#d7bd86;
+  --green:#198754;
+  --red:#b84038;
+  --border:#d9cebd;
+  --white:#fffdf9;
+  --shadow:0 20px 55px rgba(75,39,24,.12);
+  --shadow-soft:0 8px 25px rgba(75,39,24,.08);
+}
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{
+  background:
+    radial-gradient(circle at 15% 10%,rgba(184,149,87,.12),transparent 25%),
+    radial-gradient(circle at 90% 30%,rgba(75,39,24,.08),transparent 28%),
+    var(--bg);
+  color:var(--brown-dark);
+  font-family:'Cairo',Tahoma,Arial,sans-serif;
+  line-height:1.8;
+  overflow-x:hidden;
+}
+
+.container{
+  width:min(1200px,92%);
+  margin:auto;
+}
+
+.card{
+  background:rgba(255,253,249,.92);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:18px;
+  box-shadow:var(--shadow-soft);
+}
+
+.hidden{ display:none!important; }
+
+.header{
+  position:sticky; top:0; z-index:20;
+  background:rgba(248,245,239,.88);
+  border-bottom:1px solid rgba(75,39,24,.13);
+  backdrop-filter:blur(18px);
+  box-shadow:0 5px 25px rgba(75,39,24,.05);
+}
+.nav{
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:25px;
+  padding:10px 0;
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+  text-decoration:none;
+}
+.brand-mark{
+  width:44px; height:44px;
+  display:grid; place-items:center;
+  border:1px solid var(--gold);
+  border-radius:50%;
+  background:
+    radial-gradient(circle,#fff8e9 0 55%,transparent 56%),
+    var(--brown);
+  color:var(--gold-light);
+  font-size:22px;
+}
+.brand-name{
+  font-family:'Playfair Display',Georgia,serif;
+  font-weight:800;
+  font-size:22px;
+  letter-spacing:3px;
+  color:var(--brown);
+}
+
+.btn{
+  border:0;
+  background:var(--brown);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:4px;
+  cursor:pointer;
+  box-shadow:0 10px 22px rgba(75,39,24,.12);
+}
+.btn:hover{ background:var(--gold); transform:translateY(-2px); }
+
+.btn-secondary{
+  background:transparent;
+  border:1px solid var(--brown);
+  color:var(--brown);
+  box-shadow:none;
+}
+.btn-secondary:hover{
+  background:var(--brown);
+  color:#fff;
+  border-color:var(--brown);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+@media(max-width:900px){
+  .grid{ grid-template-columns:1fr; }
+}
+
+.section-title{
+  margin-bottom:10px;
+  font-family:'Playfair Display',Georgia,serif;
+  color:var(--brown);
+  font-size:24px;
+  font-weight:800;
+}
+
+.field{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  margin:10px 0;
+}
+.field label{
+  font-size:13px;
+  color:#6e5a4c;
+  font-weight:bold;
+}
+.field input, .field textarea, .field select{
+  padding:11px;
+  border-radius:6px;
+  border:1px solid var(--border);
+  background:#fffdf9;
+  outline:none;
+}
+.field textarea{ resize:vertical; min-height:90px; }
+
+.row-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:12px;
+}
+
+.table{
+  width:100%;
+  border-collapse:collapse;
+  overflow:hidden;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#fffdf9;
+}
+.table th,.table td{
+  padding:12px 10px;
+  border-bottom:1px solid rgba(75,39,24,.08);
+  font-size:13px;
+  vertical-align:top;
+}
+.table th{
+  color:var(--brown);
+  font-weight:800;
+  background:rgba(184,149,87,.10);
+}
+.table td .small-muted{
+  color:#7a6658;
+  font-size:12px;
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  padding:4px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+  background:rgba(184,149,87,.18);
+  color:var(--brown);
+  border:1px solid rgba(184,149,87,.35);
+}
+.badge.red{
+  background:rgba(184,56,56,.12);
+  border-color:rgba(184,56,56,.25);
+  color:#8d1f1f;
+}
+hr.sep{
+  border:0; height:1px; background:rgba(75,39,24,.12);
+  margin:18px 0;
+}
+
+.toast{
+  padding:12px;
+  border-radius:8px;
+  border:1px solid rgba(75,39,24,.15);
+  background:rgba(255,253,249,.9);
+  color:var(--brown);
+}
+.toast.ok{ border-color:rgba(25,135,84,.28); background:rgba(25,135,84,.08); }
+.toast.err{ border-color:rgba(184,56,56,.25); background:rgba(184,56,56,.10); }
+
+</style>
+</head>
+
+<body>
+<header class="header">
+  <div class="container nav">
+    <div class="brand">
+      <span class="brand-mark">𓅃</span>
+      <span class="brand-name">REFAEI - الإدارة</span>
+    </div>
+    <div>
+      <button id="logoutBtn" class="btn btn-secondary hidden" onclick="logout()">تسجيل خروج</button>
+    </div>
+  </div>
+</header>
+
+<main class="container" style="padding:22px 0 60px;">
+
+  <!-- LOGIN -->
+  <section id="loginView" class="card">
+    <h2 class="section-title">تسجيل دخول الإدارة</h2>
+    <div id="loginToast" class="toast err hidden"></div>
+
+    <div class="grid" style="margin-top:12px;">
+      <div>
+        <div class="field">
+          <label>اسم المستخدم</label>
+          <input id="adminUsername" placeholder="مثال: admin" autocomplete="username">
+        </div>
+        <div class="field">
+          <label>كلمة المرور</label>
+          <input id="adminPassword" type="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+        <div class="row-actions">
+          <button class="btn" onclick="loginAdmin()">دخول</button>
+        </div>
+        <p class="small-muted" style="margin-top:10px;color:#7a6658;font-size:12px;">
+          إذا ما اشتغل: تأكد أن جدول <b>admin_users</b> موجود وفيه أعمدة <b>username</b> و <b>password</b>.
+        </p>
+      </div>
+
+      <div>
+        <div class="toast" style="border-style:dashed;">
+          <b>ملاحظة:</b><br>
+          هذا الكود للتعامل مع قواعدك الحالية في Supabase.
+          تعديل أسماء الجداول/الأعمدة يتم بسرعة إذا اختلفت عن المتوقع.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DASHBOARD -->
+  <section id="adminView" class="hidden">
+    <div class="toast ok" id="adminWelcome" style="margin-bottom:14px;"></div>
+
+    <!-- SITE SETTINGS -->
+    <div class="card" style="margin-top:14px;">
+      <h2 class="section-title">إعدادات الموقع</h2>
+
+      <div class="grid">
+        <div>
+          <div class="field">
+            <label>Topbar (النص أعلى الصفحة)</label>
+            <textarea id="st_topbar"></textarea>
+          </div>
+          <div class="field">
+            <label>Brand Name</label>
+            <input id="st_brand_name">
+          </div>
+          <div class="field">
+            <label>Hero Title</label>
+            <input id="st_hero_title">
+          </div>
+          <div class="field">
+            <label>Hero Description</label>
+            <textarea id="st_hero_description"></textarea>
+          </div>
+        </div>
+        <div>
+          <div class="field">
+            <label>About Title</label>
+            <input id="st_about_title">
+          </div>
+          <div class="field">
+            <label>About Text</label>
+            <textarea id="st_about_text"></textarea>
+          </div>
+          <div class="field">
+            <label>Footer</label>
+            <textarea id="st_footer"></textarea>
+          </div>
+          <div class="field">
+            <label>WhatsApp (رقم بدون رابط)</label>
+            <input id="st_whatsapp">
+          </div>
+
+          <div class="row-actions">
+            <button class="btn" onclick="saveSiteSettings()">حفظ الإعدادات</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr class="sep">
+
+    <!-- CATEGORIES -->
+    <div class="card">
+      <h2 class="section-title">الأقسام</h2>
+
+      <div class="grid">
+        <div>
+          <div class="field">
+            <label>اسم القسم</label>
+            <input id="cat_name" placeholder="مثال: قماش / شال / مسابيح">
+          </div>
+          <div class="row-actions">
+            <button class="btn" onclick="createCategory()">إضافة قسم</button>
+          </div>
+        </div>
+
+        <div>
+          <div id="categoriesToast" class="toast err hidden"></div>
+          <table class="table" aria-label="categories">
+            <thead>
+              <tr>
+                <th>الاسم</th>
+                <th style="width:220px;">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="categoriesTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <hr class="sep">
+
+    <!-- PRODUCTS -->
+    <div class="card">
+      <h2 class="section-title">المنتجات</h2>
+
+      <div class="grid">
+        <div>
+          <div class="field">
+            <label>اسم المنتج</label>
+            <input id="p_name">
+          </div>
+
+          <div class="field">
+            <label>القسم (category_name)</label>
+            <input id="p_category">
+            <div class="small-muted" style="font-size:12px;color:#7a6658;margin-top:2px;">
+              الأفضل تطابق اسم القسم الموجود.
+            </div>
+          </div>
+
+          <div class="field">
+            <label>وصف المنتج</label>
+            <textarea id="p_description"></textarea>
+          </div>
+
+          <div class="field">
+            <label>السعر (دينار)</label>
+            <input id="p_price" type="number" step="0.01">
+          </div>
+
+          <div class="field">
+            <label>الكمية (stock)</label>
+            <input id="p_stock" type="number" step="1">
+          </div>
+
+          <div class="field">
+            <label>صورة المنتج (URL أو اتركه فارغ)</label>
+            <input id="p_image_url" placeholder="https://...">
+          </div>
+
+          <div class="row-actions">
+            <button class="btn" onclick="createProduct()">إضافة منتج</button>
+          </div>
+        </div>
+
+        <div>
+          <div id="productsToast" class="toast err hidden"></div>
+          <table class="table" aria-label="products">
+            <thead>
+              <tr>
+                <th>المنتج</th>
+                <th>القسم</th>
+                <th>السعر</th>
+                <th>Stock</th>
+                <th style="width:230px;">إجراءات</th>
+              </tr>
+            </thead>
+            <tbody id="productsTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <hr class="sep">
+
+    <!-- ORDERS -->
+    <div class="card">
+      <h2 class="section-title">طلبات العملاء</h2>
+
+      <div class="small-muted" style="margin-bottom:12px;color:#7a6658;font-size:12px;">
+        سيتم عرض آخر الطلبات فقط (حسب ترتيب created_at).
+      </div>
+
+      <table class="table" aria-label="orders">
+        <thead>
+          <tr>
+            <th style="width:180px;">العميل</th>
+            <th>الطلبات</th>
+            <th style="width:110px;">الإجمالي</th>
+            <th style="width:170px;">تاريخ</th>
+            <th style="width:120px;">حذف</th>
+          </tr>
+        </thead>
+        <tbody id="ordersTbody"></tbody>
+      </table>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+/** ============ SUPABASE ============ **/
+const SUPABASE_URL = "https://mvsdblzjzrscnfgiqxan.supabase.co";
+const SUPABASE_KEY = "sb_publishable_KWMjd7EDbWtH2Ay7TdJwZg_s2et1Hc7"; 
+// NOTE: publishable key قد لا تسمح بالـ INSERT/DELETE/UPDATE حسب Row Level Security.
+// إذا فشل الحفظ/الحذف، لازم تستخدم "service_role" على سيرفر (لا ينفع في الواجهة).
+
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/** ============ STATE ============ **/
+let sessionAdmin = {
+  ok:false,
+  username:null
+};
+
+const defaultSettings = {
+  topbar:"توصيل راقٍ واختيارات مختارة بعناية من REFAEI",
+  brandName:"REFAEI",
+  heroTitle:"REFAEI",
+  heroDescription:"أقمشة مختارة، شالات كشميرية، ومسابيح بطابع فاخر",
+  aboutTitle:"عن REFAEI",
+  aboutText:"نختار لكم المنتجات بعناية لنقدم منتجات تجمع بين الجودة والذوق والأصالة.",
+  footer:"© 2025 REFAEI — جميع الحقوق محفوظة",
+  whatsapp:"96566771506"
+};
+
+function $(id){ return document.getElementById(id); }
+
+function setToast(el, msg, type="err"){
+  el.textContent = msg;
+  el.classList.remove("hidden");
+  el.classList.toggle("ok", type==="ok");
+  el.classList.toggle("err", type==="err");
+}
+
+/** ============ LOGIN ============ **/
+async function loginAdmin(){
+  const username = $("adminUsername").value.trim();
+  const password = $("adminPassword").value;
+
+  if(!username || !password){
+    setToast($("loginToast"), "يرجى إدخال اسم المستخدم وكلمة المرور", "err");
+    $("loginToast").classList.remove("hidden");
+    return;
+  }
+
+  $("loginToast").classList.add("hidden");
+
+  // يفترض جدول admin_users: username, password
+  const res = await supabase
+    .from("admin_users")
+    .select("*")
+    .eq("username", username)
+    .maybeSingle();
+
+  if(res.error){
+    setToast($("loginToast"), "خطأ في الاتصال بقاعدة البيانات: " + res.error.message, "err");
+    return;
+  }
+  if(!res.data){
+    setToast($("loginToast"), "بيانات الدخول غير صحيحة", "err");
+    return;
+  }
+
+  const row = res.data;
+
+  if(String(row.password) !== String(password)){
+    setToast($("loginToast"), "بيانات الدخول غير صحيحة", "err");
+    return;
+  }
+
+  sessionAdmin.ok = true;
+  sessionAdmin.username = username;
+
+  // Switch views
+  $("loginView").classList.add("hidden");
+  $("adminView").classList.remove("hidden");
+  $("logoutBtn").classList.remove("hidden");
+  $("adminWelcome").textContent = `مرحبًا ${username} 👋`;
+
+  // Load admin data
+  await loadAllAdminData();
+}
+
+function logout(){
+  sessionAdmin = { ok:false, username:null };
+  $("adminView").classList.add("hidden");
+  $("loginView").classList.remove("hidden");
+  $("logoutBtn").classList.add("hidden");
+}
+
+/** ============ LOAD DATA ============ **/
+async function loadAllAdminData(){
+  await loadSiteSettings();
+  await loadCategories();
+  await loadProducts();
+  await loadOrders();
+}
+
+async function loadSiteSettings(){
+  const res = await supabase
+    .from("site_settings")
+    .select("*")
+    .eq("id", 1)
+    .maybeSingle();
+
+  if(res.error){
+    // If no settings row, just fill defaults (and allow save)
+    console.warn(res.error);
+    fillSettings(defaultSettings);
+    return;
+  }
+
+  const row = res.data || {};
+  const settings = {
+    topbar: row.topbar ?? defaultSettings.topbar,
+    brandName: row.brand_name ?? defaultSettings.brandName,
+    heroTitle: row.hero_title ?? defaultSettings.heroTitle,
+    heroDescription: row.hero_description ?? defaultSettings.heroDescription,
+    aboutTitle: row.about_title ?? defaultSettings.aboutTitle,
+    aboutText: row.about_text ?? defaultSettings.aboutText,
+    footer: row.footer ?? defaultSettings.footer,
+    whatsapp: row.whatsapp ?? defaultSettings.whatsapp
+  };
+
+  fillSettings(settings);
+}
+
+function fillSettings(s){
+  $("st_topbar").value = s.topbar ?? "";
+  $("st_brand_name").value = s.brandName ?? "";
+  $("st_hero_title").value = s.heroTitle ?? "";
+  $("st_hero_description").value = s.heroDescription ?? "";
+  $("st_about_title").value = s.aboutTitle ?? "";
+  $("st_about_text").value = s.aboutText ?? "";
+  $("st_footer").value = s.footer ?? "";
+  $("st_whatsapp").value = s.whatsapp ?? "";
+}
+
+async function saveSiteSettings(){
+  const payload = {
+    id:1,
+    topbar: $("st_topbar").value.trim(),
+    brand_name: $("st_brand_name").value.trim(),
+    hero_title: $("st_hero_title").value.trim(),
+    hero_description: $("st_hero_description").value.trim(),
+    about_title: $("st_about_title").value.trim(),
+    about_text: $("st_about_text").value.trim(),
+    footer: $("st_footer").value.trim(),
+    whatsapp: $("st_whatsapp").value.trim()
+  };
+
+  // Upsert
+  const res = await supabase
+    .from("site_settings")
+    .upsert(payload, { onConflict: "id" });
+
+  if(res.error){
+    alert("فشل حفظ الإعدادات: " + res.error.message);
+    return;
+  }
+  alert("تم حفظ الإعدادات ✅");
+}
+
+async function loadCategories(){
+  const res = await supabase
+    .from("categories")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if(res.error){
+    alert("فشل تحميل الأقسام: " + res.error.message);
+    return;
+  }
+
+  const tbody = $("categoriesTbody");
+  tbody.innerHTML = "";
+
+  (res.data || []).forEach(cat => {
+    const name = cat.name ?? cat.category ?? "";
+    const id = cat.id;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${escapeHtml(name)}</td>
+      <td>
+        <div class="row-actions" style="margin-top:0;">
+          <button class="btn btn-secondary" style="padding:8px 12px;" onclick="editCategory('${id}','${escapeAttr(name)}')">تعديل</button>
+          <button class="btn" style="padding:8px 12px; background: var(--red);" onclick="deleteCategory('${id}')">حذف</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function loadProducts(){
+  const res = await supabase
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if(res.error){
+    alert("فشل تحميل المنتجات: " + res.error.message);
+    return;
+  }
+
+  const tbody = $("productsTbody");
+  tbody.innerHTML = "";
+
+  (res.data || []).forEach(p => {
+    const id = p.id;
+    const name = p.name ?? "";
+    const category = p.category_name ?? p.category ?? "";
+    const price = Number(p.price ?? 0).toFixed(2);
+    const stock = Number(p.stock ?? 0);
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>
+        <b>${escapeHtml(name)}</b>
+        <div class="small-muted">ID: ${escapeHtml(String(id))}</div>
+      </td>
+      <td>${escapeHtml(category)}</td>
+      <td>${price} د.ك</td>
+      <td>
+        ${stock <= 0
+          ? `<span class="badge red">نفدت</span>`
+          : `<span class="badge">${stock}</span>`
+        }
+      </td>
+      <td>
+        <div class="row-actions" style="margin-top:0;">
+          <button class="btn btn-secondary" style="padding:8px 12px;" onclick="editProduct('${id}')">تعديل</button>
+          <button class="btn" style="padding:8px 12px; background: var(--red);" onclick="deleteProduct('${id}')">حذف</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function loadOrders(){
+  const res = await supabase
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending:false });
+
+  if(res.error){
+    alert("فشل تحميل الطلبات: " + res.error.message);
+    return;
+  }
+
+  const tbody = $("ordersTbody");
+  tbody.innerHTML = "";
+
+  (res.data || []).slice(0, 100).forEach(o => {
+    const id = o.id;
+    const customer = o.customer_name ?? "";
+    const phone = o.phone ?? "";
+    const address = o.address ?? "";
+    const items = o.items ?? [];
+    const total = Number(o.total ?? 0).toFixed(2);
+    const created_at = o.created_at ? new Date(o.created_at).toLocaleString("ar") : "";
+
+    let itemsText = "";
+    try{
+      if(Array.isArray(items)){
+        itemsText = items.map(it => `${it.name} × ${it.quantity}`).join("<br>");
+      }else{
+        itemsText = typeof items === "string" ? items : "";
+      }
+    }catch(e){
+      itemsText = "";
+    }
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>
+        <b>${escapeHtml(customer)}</b>
+        <div class="small-muted">${escapeHtml(phone)}</div>
+        <div class="small-muted">${escapeHtml(address)}</div>
+      </td>
+      <td style="max-width:360px;">
+        ${itemsText || "<span class='small-muted'>بدون تفاصيل</span>"}
+        ${o.note ? `<div class="small-muted" style="margin-top:6px;">ملاحظة: ${escapeHtml(o.note)}</div>` : ""}
+      </td>
+      <td>${total} د.ك</td>
+      <td>${escapeHtml(created_at)}</td>
+      <td>
+        <button class="btn" style="padding:8px 12px; background: var(--red);" onclick="deleteOrder('${id}')">حذف</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+/** ============ CRUD CATEGORIES ============ **/
+async function createCategory(){
+  const name = $("cat_name").value.trim();
+  if(!name){ alert("اكتب اسم القسم"); return; }
+
+  const res = await supabase
+    .from("categories")
+    .insert({ name });
+
+  if(res.error){
+    alert("فشل إضافة القسم: " + res.error.message);
+    return;
+  }
+  $("cat_name").value = "";
+  await loadCategories();
+  alert("تمت إضافة القسم ✅");
+}
+
+async function editCategory(id, currentName){
+  const newName = prompt("تعديل اسم القسم:", currentName);
+  if(newName === null) return;
+
+  const res = await supabase
+    .from("categories")
+    .update({ name: newName.trim() })
+    .eq("id", id);
+
+  if(res.error){
+    alert("فشل التعديل: " + res.error.message);
+    return;
+  }
+  await loadCategories();
+  alert("تم التعديل ✅");
+}
+
+async function deleteCategory(id){
+  if(!confirm("تأكيد حذف القسم؟")) return;
+
+  const res = await supabase
+    .from("categories")
+    .delete()
+    .eq("id", id);
+
+  if(res.error){
+    alert("فشل الحذف: " + res.error.message);
+    return;
+  }
+  await loadCategories();
+  await loadProducts(); // because products may show counts, but admin table just reloads
+  alert("تم الحذف ✅");
+}
+
+/** ============ CRUD PRODUCTS ============ **/
+async function createProduct(){
+  const payload = {
+    name: $("p_name").value.trim(),
+    category: null,
+    category_name: $("p_category").value.trim(), // keep compatibility with your customer code
+    description: $("p_description").value.trim(),
+    price: Number($("p_price").value || 0),
+    stock: Number($("p_stock").value || 0),
+    image_url: $("p_image_url").value.trim() || null
+  };
+
+  if(!payload.name || !payload.category_name){
+    alert("أدخل اسم المنتج واسم القسم");
+    return;
+  }
+
+  const res = await supabase.from("products").insert(payload);
+  if(res.error){
+    alert("فشل إضافة المنتج: " + res.error.message);
+    return;
+  }
+
+  $("p_name").value = "";
+  $("p_description").value = "";
+  $("p_price").value = "";
+  $("p_stock").value = "";
+  $("p_image_url").value = "";
+
+  await loadProducts();
+  alert("تمت إضافة المنتج ✅");
+}
+
+async function editProduct(id){
+  const res = await supabase.from("products").select("*").eq("id", id).maybeSingle();
+  if(res.error || !res.data){
+    alert("فشل جلب بيانات المنتج");
+    return;
+  }
+
+  const p = res.data;
+
+  const newName = prompt("اسم المنتج:", p.name ?? "");
+  if(newName === null) return;
+
+  const newCategory = prompt("اسم القسم (category_name):", p.category_name ?? p.category ?? "");
+  if(newCategory === null) return;
+
+  const newDesc = prompt("الوصف:", p.description ?? "");
+  if(newDesc === null) return;
+
+  const newPrice = prompt("السعر:", String(p.price ?? 0));
+  if(newPrice === null) return;
+
+  const newStock = prompt("stock:", String(p.stock ?? 0));
+  if(newStock === null) return;
+
+  const newImg = prompt("image_url (رابط):", p.image_url ?? "");
+  if(newImg === null) return;
+
+  const payload = {
+    name: newName.trim(),
+    category_name: newCategory.trim(),
+    description: newDesc.trim(),
+    price: Number(newPrice || 0),
+    stock: Number(newStock || 0),
+    image_url: newImg.trim() || null
+  };
+
+  const up = await supabase.from("products").update(payload).eq("id", id);
+  if(up.error){
+    alert("فشل التعديل: " + up.error.message);
+    return;
+  }
+
+  await loadProducts();
+  alert("تم التعديل ✅");
+}
+
+async function deleteProduct(id){
+  if(!confirm("تأكيد حذف المنتج؟")) return;
+
+  const res = await supabase.from("products").delete().eq("id", id);
+  if(res.error){
+    alert("فشل الحذف: " + res.error.message);
+    return;
+  }
+  await loadProducts();
+  alert("تم الحذف ✅");
+}
+
+/** ============ ORDERS DELETE ============ **/
+async function deleteOrder(id){
+  if(!confirm("حذف هذا الطلب؟")) return;
+
+  const res = await supabase.from("orders").delete().eq("id", id);
+  if(res.error){
+    alert("فشل حذف الطلب: " + res.error.message);
+    return;
+  }
+  await loadOrders();
+  alert("تم الحذف ✅");
+}
+
+/** ============ HELPERS ============ **/
+function escapeHtml(str){
+  return String(str ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function escapeAttr(str){
+  return String(str ?? "").replace(/'/g,"&#39;").replace(/"/g,'&quot;');
+}
+
+async function guard(){
+  if(!sessionAdmin.ok){
+    $("adminView").classList.add("hidden");
+    $("loginView").classList.remove("hidden");
+  }
+}
+
+guard();
+</script>
+</body>
+</html>
