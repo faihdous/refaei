@@ -251,8 +251,7 @@ hr.sep{
       </div>
 
       <div>
-        <div class="toast" style="border-style:dashed;">
-        </div>
+        <div class="toast" style="border-style:dashed;"></div>
       </div>
     </div>
   </section>
@@ -261,7 +260,6 @@ hr.sep{
   <section id="adminView" class="hidden">
     <div class="toast ok" id="adminWelcome" style="margin-bottom:14px;"></div>
 
-    <!-- SITE SETTINGS -->
     <div class="card" style="margin-top:14px;">
       <h2 class="section-title">إعدادات الموقع</h2>
 
@@ -284,7 +282,6 @@ hr.sep{
             <textarea id="st_hero_description"></textarea>
           </div>
         </div>
-
         <div>
           <div class="field">
             <label>About Title</label>
@@ -312,7 +309,6 @@ hr.sep{
 
     <hr class="sep">
 
-    <!-- CATEGORIES -->
     <div class="card">
       <h2 class="section-title">الأقسام</h2>
 
@@ -344,7 +340,6 @@ hr.sep{
 
     <hr class="sep">
 
-    <!-- PRODUCTS -->
     <div class="card">
       <h2 class="section-title">المنتجات</h2>
 
@@ -408,7 +403,6 @@ hr.sep{
 
     <hr class="sep">
 
-    <!-- ORDERS -->
     <div class="card">
       <h2 class="section-title">طلبات العملاء</h2>
 
@@ -439,14 +433,10 @@ hr.sep{
 const SUPABASE_URL = "https://mvsdblzjzrscnfgiqxan.supabase.co";
 const SUPABASE_KEY = "sb_publishable_KWMjd7EDbWtH2Ay7TdJwZg_s2et1Hc7";
 
-// ⚠️ مهم: لا نستخدم اسم "supabase" لأن ظهر عندك خطأ تكرار.
 const supabaseAdminClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /** ============ STATE ============ **/
-let sessionAdmin = {
-  ok:false,
-  username:null
-};
+let sessionAdmin = { ok:false, username:null };
 
 const defaultSettings = {
   topbar:"توصيل راقٍ واختيارات مختارة بعناية من REFAEI",
@@ -481,7 +471,6 @@ async function loginAdmin(){
 
   $("loginToast").classList.add("hidden");
 
-  // يفترض جدول admin_users: username, password
   const res = await supabaseAdminClient
     .from("admin_users")
     .select("*")
@@ -512,7 +501,22 @@ async function loginAdmin(){
   $("logoutBtn").classList.remove("hidden");
   $("adminWelcome").textContent = `مرحبًا ${username} 👋`;
 
-  await loadAllAdminData();
+  // ✅ تعديل مهم: إذا صار خطأ في تحميل البيانات نوضح السبب بدل مربع فاضي
+  try{
+    await loadAllAdminData();
+  }catch(e){
+    console.error(e);
+    setToast(
+      $("loginToast"),
+      "تعذر تحميل بيانات الإدارة: " + (e?.message || e),
+      "err"
+    );
+    $("loginToast").classList.remove("hidden");
+
+    // رجّع للمشاهدة لو تحب
+    // $("adminView").classList.add("hidden");
+    // $("loginView").classList.remove("hidden");
+  }
 }
 
 function logout(){
