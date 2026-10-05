@@ -26,6 +26,7 @@
     }
     .container{ width:min(1200px,92%); margin:auto; }
     .hidden{ display:none!important; }
+
     .header{
       position:sticky; top:0; z-index:20;
       background:rgba(248,245,239,.88);
@@ -56,6 +57,7 @@
       background:transparent; border:1px solid var(--brown); color:var(--brown); box-shadow:none;
     }
     .btn-secondary:hover{ background:var(--brown); color:#fff; border-color:var(--brown); }
+
     .card{
       background:rgba(255,253,249,.92);
       border:1px solid var(--border); border-radius:8px; padding:18px;
@@ -77,12 +79,14 @@
       color:var(--brown);
     }
     .field textarea{ resize:vertical; min-height:90px; }
+
     .toast{
       padding:12px; border-radius:8px;
       border:1px solid rgba(75,39,24,.15); background:rgba(255,253,249,.9); color:var(--brown);
     }
     .toast.ok{ border-color:rgba(25,135,84,.28); background:rgba(25,135,84,.08); }
     .toast.err{ border-color:rgba(184,56,56,.25); background:rgba(184,56,56,.10); }
+
     .table{
       width:100%; border-collapse:collapse; border-radius:8px; overflow:hidden;
       border:1px solid var(--border); background:#fffdf9;
@@ -93,11 +97,14 @@
     .table th{ color:var(--brown); font-weight:800; background:rgba(184,149,87,.10); }
     hr.sep{ border:0; height:1px; background:rgba(75,39,24,.12); margin:18px 0; }
     .small-muted{ color:#7a6658; font-size:12px; }
+
     .badge{
       display:inline-flex; align-items:center; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:800;
       background:rgba(184,149,87,.18); color:var(--brown); border:1px solid rgba(184,149,87,.35);
     }
     .badge.red{ background:rgba(184,56,56,.12); border-color:rgba(184,56,56,.25); color:#8d1f1f; }
+    .row-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+
     .img-preview{
       width:100%;
       max-width:420px;
@@ -134,12 +141,19 @@
       display:flex; justify-content:space-between; align-items:center;
       margin-bottom:10px;
     }
-    .modal-title{ font-family:'Playfair Display',Georgia,serif; color:var(--brown); font-weight:900; font-size:22px; }
+    .modal-title{
+      font-family:'Playfair Display',Georgia,serif;
+      color:var(--brown);
+      font-weight:900;
+      font-size:22px;
+    }
     .modal-close{
       border:0; background:transparent; cursor:pointer; font-size:26px; color:var(--brown);
       padding:4px 8px;
     }
-    .modal-actions{ display:flex; gap:10px; justify-content:flex-start; flex-wrap:wrap; margin-top:12px; }
+    .modal-actions{
+      display:flex; gap:10px; justify-content:flex-start; flex-wrap:wrap; margin-top:12px;
+    }
   </style>
 </head>
 
@@ -156,7 +170,7 @@
   </div>
 </header>
 
-<!-- ✅ input file ثابت (حل مشكلة File chooser activation) -->
+<!-- ✅ input file ثابت (حل مشكلة chooser) -->
 <input id="adminImageUpload" type="file" accept="image/*" class="hidden" />
 
 <main class="container" style="padding:22px 0 60px;">
@@ -192,6 +206,7 @@
   <section id="adminView" class="hidden">
     <div class="toast ok" id="adminWelcome" style="margin-bottom:14px;"></div>
 
+    <!-- settings -->
     <div class="card" style="margin-top:14px;">
       <h2 class="section-title">إعدادات الموقع</h2>
 
@@ -217,6 +232,7 @@
 
     <hr class="sep">
 
+    <!-- categories -->
     <div class="card">
       <h2 class="section-title">الأقسام</h2>
       <div class="grid">
@@ -226,6 +242,7 @@
             <button class="btn" type="button" onclick="window.createCategory()">إضافة قسم</button>
           </div>
         </div>
+
         <div>
           <table class="table" aria-label="categories">
             <thead>
@@ -242,16 +259,18 @@
 
     <hr class="sep">
 
+    <!-- products -->
     <div class="card">
       <h2 class="section-title">المنتجات</h2>
       <div class="grid">
         <div>
           <div class="field"><label>اسم المنتج</label><input id="p_name" /></div>
 
+          <!-- ✅ تحويل القسم في إضافة المنتج إلى Dropdown -->
           <div class="field">
             <label>القسم (category)</label>
-            <input id="p_category" placeholder="اكتب اسم القسم" />
-            <div class="small-muted" style="margin-top:2px;">الأفضل تطابق اسم القسم الموجود.</div>
+            <select id="p_category"></select>
+            <div class="small-muted" style="margin-top:2px;">اختر من الأقسام المتوفرة</div>
           </div>
 
           <div class="field"><label>وصف المنتج</label><textarea id="p_description"></textarea></div>
@@ -296,6 +315,7 @@
 
     <hr class="sep">
 
+    <!-- orders -->
     <div class="card">
       <h2 class="section-title">طلبات العملاء</h2>
       <table class="table" aria-label="orders">
@@ -314,12 +334,12 @@
   </section>
 </main>
 
-<!-- ✅ Edit Product Modal -->
+<!-- ✅ Edit Modal -->
 <div id="editModalOverlay" class="modal-overlay">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="editModalTitle">
     <div class="modal-head">
       <div class="modal-title" id="editModalTitle">تعديل المنتج</div>
-      <button class="modal-close" type="button" onclick="closeEditModal()">×</button>
+      <button class="modal-close" type="button" onclick="window.closeEditModal()">×</button>
     </div>
 
     <div class="field">
@@ -328,7 +348,7 @@
     </div>
 
     <div class="field">
-      <label>القسم (category) - Dropdown</label>
+      <label>القسم (category)</label>
       <select id="edit_p_category"></select>
     </div>
 
@@ -352,8 +372,8 @@
       <label>صورة المنتج (اختياري)</label>
 
       <div class="row-actions">
-        <button class="btn btn-secondary" type="button" onclick="startPickImageForEdit()">اختيار صورة جديدة</button>
-        <button class="btn btn-secondary" type="button" onclick="clearPickedEditImage()">إزالة اختيار الصورة</button>
+        <button class="btn btn-secondary" type="button" onclick="window.startPickImageForEdit()">اختيار صورة جديدة</button>
+        <button class="btn btn-secondary" type="button" onclick="window.clearPickedEditImage()">إزالة اختيار الصورة</button>
       </div>
 
       <div id="edit_p_image_preview" class="img-preview">لم يتم اختيار صورة جديدة</div>
@@ -363,8 +383,8 @@
     </div>
 
     <div class="modal-actions">
-      <button class="btn" type="button" onclick="saveEditProduct()">حفظ التعديل</button>
-      <button class="btn btn-secondary" type="button" onclick="closeEditModal()">إلغاء</button>
+      <button class="btn" type="button" onclick="window.saveEditProduct()">حفظ التعديل</button>
+      <button class="btn btn-secondary" type="button" onclick="window.closeEditModal()">إلغاء</button>
     </div>
   </div>
 </div>
@@ -438,7 +458,7 @@ function attachImagePreview(){
 }
 attachImagePreview();
 
-/** ====== Settings ====== **/
+/** ====== Default settings ====== **/
 const defaultSettings = {
   topbar:"توصيل راقٍ واختيارات مختارة بعناية من REFAEI",
   brandName:"REFAEI",
@@ -462,30 +482,38 @@ window.loginAdmin = async function(){
   const email = $("adminEmail").value.trim();
   const password = $("adminPassword").value;
 
-  $("loginToast").classList.add("hidden");
+  const toast = $("loginToast");
+  toast.classList.add("hidden");
 
   if(!email){
-    const t = $("loginToast"); setToast(t, "أدخل الإيميل", "err"); t.classList.remove("hidden"); return;
+    setToast(toast, "أدخل الإيميل", "err");
+    toast.classList.remove("hidden");
+    return;
   }
   if(!password){
-    const t = $("loginToast"); setToast(t, "أدخل كلمة المرور", "err"); t.classList.remove("hidden"); return;
+    setToast(toast, "أدخل كلمة المرور", "err");
+    toast.classList.remove("hidden");
+    return;
   }
 
   const signInRes = await supabaseClient.auth.signInWithPassword({ email, password });
   if(signInRes.error){
-    const t = $("loginToast"); setToast(t, "بيانات الدخول غير صحيحة: " + signInRes.error.message, "err"); t.classList.remove("hidden");
+    setToast(toast, "بيانات الدخول غير صحيحة: " + signInRes.error.message, "err");
+    toast.classList.remove("hidden");
     return;
   }
 
   try{
     const ok = await isAdminByRPC();
     if(!ok){
-      const t = $("loginToast"); setToast(t, "غير مصرح لك بدخول لوحة الإدارة", "err"); t.classList.remove("hidden");
+      setToast(toast, "غير مصرح لك بدخول لوحة الإدارة", "err");
+      toast.classList.remove("hidden");
       return;
     }
   }catch(e){
     console.error(e);
-    const t = $("loginToast"); setToast(t, "خطأ بالصلاحيات (RPC): " + (e?.message || e), "err"); t.classList.remove("hidden");
+    setToast(toast, "خطأ بالصلاحيات (RPC): " + (e?.message || e), "err");
+    toast.classList.remove("hidden");
     return;
   }
 
@@ -497,7 +525,8 @@ window.loginAdmin = async function(){
   try{ await loadAllAdminData(); }
   catch(e){
     console.error(e);
-    const t = $("loginToast"); setToast(t, "تعذر تحميل بيانات الإدارة: " + (e?.message || e), "err"); t.classList.remove("hidden");
+    setToast(toast, "تعذر تحميل بيانات الإدارة: " + (e?.message || e), "err");
+    toast.classList.remove("hidden");
   }
 };
 
@@ -547,12 +576,7 @@ window.saveSiteSettings = async function(){
 };
 
 async function loadSiteSettings(){
-  const res = await supabaseClient
-    .from("site_settings")
-    .select("*")
-    .eq("id", 1)
-    .maybeSingle();
-
+  const res = await supabaseClient.from("site_settings").select("*").eq("id", 1).maybeSingle();
   if(res.error || !res.data){
     fillSettings(defaultSettings);
     return;
@@ -603,18 +627,22 @@ window.createCategory = async function(){
 };
 
 async function loadCategories(){
-  const res = await supabaseClient.from("categories").select("*").order("created_at", { ascending:false });
+  const res = await supabaseClient
+    .from("categories")
+    .select("*")
+    .order("created_at", { ascending:false });
+
   if(res.error) return alert("فشل تحميل الأقسام: " + res.error.message);
 
   const categories = res.data || [];
 
-  // ✅ table
+  // جدول الأقسام
   const tbody = $("categoriesTbody");
   tbody.innerHTML = "";
-
   categories.forEach(cat => {
     const id = cat.id;
     const name = cat.name ?? "";
+
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${escapeHtml(name)}</td>
@@ -630,21 +658,40 @@ async function loadCategories(){
     tbody.appendChild(tr);
   });
 
-  // ✅ dropdown inside modal
-  const select = $("edit_p_category");
-  if(select){
-    select.innerHTML = "";
+  // ✅ dropdown داخل إضافة المنتج
+  const addSelect = $("p_category");
+  if(addSelect){
+    addSelect.innerHTML = "";
     if(categories.length === 0){
       const opt = document.createElement("option");
       opt.value = "";
       opt.textContent = "لا توجد أقسام";
-      select.appendChild(opt);
+      addSelect.appendChild(opt);
     }else{
       categories.forEach(c => {
         const opt = document.createElement("option");
         opt.value = c.name ?? "";
         opt.textContent = c.name ?? "";
-        select.appendChild(opt);
+        addSelect.appendChild(opt);
+      });
+    }
+  }
+
+  // ✅ dropdown داخل مودال التعديل
+  const editSelect = $("edit_p_category");
+  if(editSelect){
+    editSelect.innerHTML = "";
+    if(categories.length === 0){
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = "لا توجد أقسام";
+      editSelect.appendChild(opt);
+    }else{
+      categories.forEach(c => {
+        const opt = document.createElement("option");
+        opt.value = c.name ?? "";
+        opt.textContent = c.name ?? "";
+        editSelect.appendChild(opt);
       });
     }
   }
@@ -658,6 +705,7 @@ window.promptEditCategory = async function(id, currentName){
   if(res.error) return alert("فشل التعديل: " + res.error.message);
 
   await loadCategories();
+  await loadProducts();
   alert("تم التعديل ✅");
 };
 
@@ -665,6 +713,7 @@ window.deleteCategory = async function(id){
   if(!confirm("تأكيد حذف القسم؟")) return;
   const res = await supabaseClient.from("categories").delete().eq("id", id);
   if(res.error) return alert("فشل الحذف: " + res.error.message);
+
   await loadCategories();
   await loadProducts();
 };
@@ -680,7 +729,7 @@ window.createProduct = async function(){
   const file = $("p_image_file").files?.[0] || null;
   const imageUrlInput = $("p_image_url").value.trim() || null;
 
-  if(!pName || !pCategory) return alert("أدخل اسم المنتج واسم القسم");
+  if(!pName || !pCategory) return alert("أدخل اسم المنتج واختر القسم");
 
   const insertRes = await supabaseClient
     .from("products")
@@ -702,7 +751,6 @@ window.createProduct = async function(){
 
   try{
     let finalImageUrl = imageUrlInput;
-
     if(file){
       finalImageUrl = await uploadImageFile(file, `product-${newId}`);
     }
@@ -775,26 +823,17 @@ window.deleteProduct = async function(id){
   await loadProducts();
 };
 
-/** ====== Edit Modal Logic (Dropdown + Fixed Image Picker) ====== **/
-let editState = {
-  id: null,
-  pickedFile: null
-};
+/** ====== Edit Modal Logic ====== **/
+let editState = { id: null, pickedFile: null };
 
 window.openEditProductModal = async function(id){
   // ensure dropdown filled
   await loadCategories();
 
-  const res = await supabaseClient
-    .from("products")
-    .select("*")
-    .eq("id", id)
-    .maybeSingle();
-
+  const res = await supabaseClient.from("products").select("*").eq("id", id).maybeSingle();
   if(res.error || !res.data) return alert("فشل جلب بيانات المنتج");
 
   const p = res.data;
-
   editState.id = id;
   editState.pickedFile = null;
 
@@ -805,7 +844,6 @@ window.openEditProductModal = async function(id){
   $("edit_p_stock").value = Number(p.stock ?? 0);
 
   $("edit_p_image_preview").innerHTML = "لم يتم اختيار صورة جديدة";
-
   $("editModalOverlay").classList.add("show");
 };
 
@@ -835,10 +873,10 @@ window.startPickImageForEdit = function(){
       return;
     }
     const url = URL.createObjectURL(file);
-    $("edit_p_image_preview").innerHTML = `<img src="${url}" alt="preview" /> تم اختيار: ${escapeHtml(file.name)}`;
+    $("edit_p_image_preview").innerHTML =
+      `<img src="${url}" alt="preview" /> تم اختيار: ${escapeHtml(file.name)}`;
   };
 
-  // ✅ open chooser via direct user click
   input.click();
 };
 
@@ -858,7 +896,6 @@ window.saveEditProduct = async function(){
       return;
     }
 
-    // 1) update base fields
     const payload = {
       name: newName,
       category: newCategory,
@@ -870,16 +907,18 @@ window.saveEditProduct = async function(){
     const up = await supabaseClient.from("products").update(payload).eq("id", id);
     if(up.error) throw up.error;
 
-    // 2) if picked image, upload + update image_url
     if(editState.pickedFile){
       const finalUrl = await uploadImageFile(editState.pickedFile, `product-${id}`);
       if(finalUrl){
-        const up2 = await supabaseClient.from("products").update({ image_url: finalUrl }).eq("id", id);
+        const up2 = await supabaseClient.from("products")
+          .update({ image_url: finalUrl })
+          .eq("id", id);
+
         if(up2.error) throw up2.error;
       }
     }
 
-    closeEditModal();
+    window.closeEditModal();
     await loadProducts();
     alert("تم التعديل ✅");
   }catch(e){
