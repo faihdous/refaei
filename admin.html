@@ -376,14 +376,10 @@
     <div class="card">
       <h2 class="section-title">طلبات العملاء</h2>
 
-      <!-- ✅ NEW: invoice export + delete all -->
+      <!-- ✅ CSV only -->
       <div class="row-actions" style="margin-top:10px;">
         <button class="btn btn-secondary" type="button" onclick="window.exportInvoicesCSV()">
           تحميل الفواتير CSV
-        </button>
-
-        <button class="btn btn-secondary" type="button" onclick="window.exportInvoicesExcel()">
-          تحميل الفواتير Excel
         </button>
 
         <button class="btn" type="button" style="background: var(--red);" onclick="window.deleteAllInvoices()">
@@ -1044,8 +1040,9 @@ window.deleteOrder = async function(id){
 };
 
 /* =========================================================
-   ✅ NEW: Invoice export CSV / Excel + delete all invoices
-   (table: orders)
+   ✅ Export CSV only (fix: no weird symbols)
+   - إضافة BOM لـ UTF-8
+   - items(jsonb) -> نص واضح
    ========================================================= */
 
 function downloadBlob(filename, blob){
@@ -1059,6 +1056,11 @@ function downloadBlob(filename, blob){
   URL.revokeObjectURL(url);
 }
 
+// لإزالة "الرموز" في Excel: غالبًا السبب ترميز CSV
+function toUTF8BOM(){
+  return "\uFEFF"; // UTF-8 BOM
+}
+
 function csvEscape(value){
   const str = value === null || value === undefined ? "" : String(value);
   if(/[",\n\r]/.test(str)){
@@ -1067,50 +1069,77 @@ function csvEscape(value){
   return str;
 }
 
+function itemsToText(items){
+  try{
+    if(items === null || items === undefined) return "";
+    if(typeof items === "string"){
+      // إذا كانت string فيها JSON
+      try{ items = JSON.parse(items); }catch(e){ return items; }
+    }
+
+    if(Array.isArray(items)){
+      return items.map(it => {
+        const name = it?.name ?? it?.title ?? it?.product_name ?? it?.label ?? "";
+        const qty  = it?.quantity ?? it?.qty ?? it?.count ?? "";
+        const price = it?.price ?? it?.unit_price ?? it?.amount ?? "";
+
+        const parts = [];
+        if(name) parts.push(String(name));
+        if(qty !== "" && qty !== null && qty !== undefined) parts.push(`x ${qty}`);
+        if(price !== "" && price !== null && price !== undefined) parts.push(String(price));
+
+        return parts.join(" ");
+      }).filter(Boolean).join(" | ");
+    }
+
+    // لو object/شيء آخر
+    if(typeof items === "object"){
+      return JSON.stringify(items);
+    }
+
+    return String(items);
+  }catch(e){
+    return "";
+  }
+}
+
 function ordersToCSV(rows){
-  const headers = [
-    "id",
-    "customer_name",
-    "phone",
-    "address",
-    "items",
-    "total",
-    "created_at"
-  ];
+  const sample = (rows && rows[0]) ? rows[0] : null;
+  const has = (key) => sample && Object.prototype.hasOwnProperty.call(sample, key);
+
+  // أعمدة حسب اللي ظاهر عندك بالصورة + الموجود بالبيانات
+  const headers = ["id"];
+
+  if(has("customer_name")) headers.push("customer_name");
+  if(has("phone")) headers.push("phone");
+  if(has("address")) headers.push("address");
+
+  // في جدولك واضح فيه note/items/items_count/total/created_at
+  if(has("note")) headers.push("note");
+  headers.push("items");
+  if(has("items_count")) headers.push("items_count");
+  if(has("total")) headers.push("total");
+  if(has("created_at")) headers.push("created_at");
 
   const lines = [];
   lines.push(headers.map(csvEscape).join(","));
 
-  rows.forEach(r => {
-    let itemsText = "";
-    try{
-      if(Array.isArray(r.items)){
-        itemsText = r.items.map(it => {
-          const name = it?.name ?? "";
-          const qty = it?.quantity ?? "";
-          return `${name} x ${qty}`.trim();
-        }).join(" | ");
-      }else if(typeof r.items === "string"){
-        itemsText = r.items;
-      }else{
-        itemsText = "";
-      }
-    }catch(e){
-      itemsText = "";
-    }
-
+  (rows || []).forEach(r => {
     const created = r.created_at ? new Date(r.created_at).toLocaleString("ar") : "";
 
-    const line = [
-      r.id,
-      r.customer_name ?? "",
-      r.phone ?? "",
-      r.address ?? "",
-      itemsText,
-      Number(r.total ?? 0).toFixed(2),
-      created
-    ].map(csvEscape).join(",");
+    const rowMap = {
+      id: r.id ?? "",
+      customer_name: r.customer_name ?? "",
+      phone: r.phone ?? "",
+      address: r.address ?? "",
+      note: r.note ?? "",
+      items: itemsToText(r.items),
+      items_count: r.items_count ?? "",
+      total: r.total ?? "",
+      created_at: created
+    };
 
+    const line = headers.map(h => csvEscape(rowMap[h] ?? "")).join(",");
     lines.push(line);
   });
 
@@ -1126,23 +1155,11 @@ window.exportInvoicesCSV = async function(){
   if(res.error) return alert("فشل تصدير CSV: " + res.error.message);
 
   const csv = ordersToCSV(res.data || []);
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+
+  // ✅ BOM لحل مشكلة الرموز في Excel
+  const blob = new Blob([toUTF8BOM() + csv], { type: "text/csv;charset=utf-8;" });
   const filename = `invoices-${new Date().toISOString().slice(0,10)}.csv`;
-  downloadBlob(filename, blob);
-};
 
-window.exportInvoicesExcel = async function(){
-  // Excel غالبًا يفتح CSV مباشرة، لكن نغير الامتداد لـ .xls لزيادة التوافق
-  const res = await supabaseClient
-    .from("orders")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if(res.error) return alert("فشل تصدير Excel: " + res.error.message);
-
-  const csv = ordersToCSV(res.data || []);
-  const blob = new Blob([csv], { type: "application/vnd.ms-excel;charset=utf-8;" });
-  const filename = `invoices-${new Date().toISOString().slice(0,10)}.xls`;
   downloadBlob(filename, blob);
 };
 
@@ -1150,7 +1167,6 @@ window.deleteAllInvoices = async function(){
   const ok = confirm("⚠️ تأكيد مسح شامل للفواتير؟ هذا سيحذف كل سجلات orders.");
   if(!ok) return;
 
-  // حذف شامل لكل السجلات
   const res = await supabaseClient.from("orders").delete().neq("id", null);
   if(res.error) return alert("فشل المسح: " + res.error.message);
 
