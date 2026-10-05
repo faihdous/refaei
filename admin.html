@@ -48,6 +48,7 @@
       font-family:'Playfair Display',Georgia,serif;
       font-weight:800; font-size:22px; letter-spacing:3px; color:var(--brown);
     }
+
     .btn{
       border:0; background:var(--brown); color:#fff; padding:10px 14px; border-radius:4px; cursor:pointer;
       box-shadow:0 10px 22px rgba(75,39,24,.12);
@@ -97,6 +98,7 @@
       padding:12px 10px; border-bottom:1px solid rgba(75,39,24,.08); font-size:13px; vertical-align:top;
     }
     .table th{ color:var(--brown); font-weight:800; background:rgba(184,149,87,.10); }
+
     hr.sep{ border:0; height:1px; background:rgba(75,39,24,.12); margin:18px 0; }
     .small-muted{ color:#7a6658; font-size:12px; }
 
@@ -157,7 +159,54 @@
       display:flex; gap:10px; justify-content:flex-start; flex-wrap:wrap; margin-top:12px;
     }
 
-    /* ✅ تسجيل دخول: كل شيء بالمنتصف (مع RTL) */
+    /* =========================
+       ✅ تعديل: كل صفحة الإدارة
+       تكون بالمنتصف (Center)
+       ========================= */
+    #adminView{ text-align:center; }
+    #adminView .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      justify-content:center;
+      align-items:start;
+    }
+    @media(max-width:900px){
+      #adminView .grid{ grid-template-columns:1fr; }
+    }
+    /* خلّي عمودين الإعدادات يكونوا بمنتصف الصفحة */
+    #adminView .grid > div{
+      width:100%;
+      max-width:560px;   /* يضيق العمود عشان يظهر وسط */
+      margin:0 auto;
+    }
+
+    /* Labels والمودخلات وسط */
+    #adminView .field{
+      align-items:center;
+    }
+    #adminView .field label{
+      width:100%;
+      text-align:center;
+      display:block;
+    }
+    #adminView .field input,
+    #adminView .field textarea,
+    #adminView .field select{
+      text-align:center !important;
+      direction:rtl;
+    }
+    #adminView .row-actions{
+      justify-content:center;
+      width:100%;
+      margin-top:18px;
+    }
+    /* للعنوان داخل الكروت */
+    #adminView .section-title{
+      text-align:center;
+      width:100%;
+    }
+
+    /* ✅ تسجيل دخول: أيضًا بالمنتصف */
     #loginView{
       text-align:center;
     }
@@ -170,7 +219,7 @@
     #loginView .field{
       max-width:560px;
       width:100%;
-      align-items:center;     /* وسط */
+      align-items:center;
       margin-left:auto;
       margin-right:auto;
     }
@@ -203,7 +252,6 @@
   </div>
 </header>
 
-<!-- ✅ input file ثابت (حل مشكلة chooser) -->
 <input id="adminImageUpload" type="file" accept="image/*" class="hidden" />
 
 <main class="container" style="padding:22px 0 60px;">
@@ -295,7 +343,6 @@
         <div>
           <div class="field"><label>اسم المنتج</label><input id="p_name" /></div>
 
-          <!-- ✅ dropdown داخل إضافة المنتج -->
           <div class="field">
             <label>القسم (category)</label>
             <select id="p_category"></select>
@@ -391,12 +438,10 @@
 
     <div class="field">
       <label>صورة المنتج (اختياري)</label>
-
       <div class="row-actions">
         <button class="btn btn-secondary" type="button" onclick="window.startPickImageForEdit()">اختيار صورة جديدة</button>
         <button class="btn btn-secondary" type="button" onclick="window.clearPickedEditImage()">إزالة اختيار الصورة</button>
       </div>
-
       <div id="edit_p_image_preview" class="img-preview">لم يتم اختيار صورة جديدة</div>
       <div class="small-muted" style="margin-top:6px;">
         إذا لم تختَر صورة جديدة لن يتم تعديل image_url.
@@ -532,7 +577,6 @@ window.loginAdmin = async function(){
       return;
     }
   }catch(e){
-    console.error(e);
     setToast(toast, "خطأ بالصلاحيات (RPC): " + (e?.message || e), "err");
     toast.classList.remove("hidden");
     return;
@@ -545,7 +589,6 @@ window.loginAdmin = async function(){
 
   try{ await loadAllAdminData(); }
   catch(e){
-    console.error(e);
     setToast(toast, "تعذر تحميل بيانات الإدارة: " + (e?.message || e), "err");
     toast.classList.remove("hidden");
   }
@@ -668,7 +711,7 @@ async function loadCategories(){
     tr.innerHTML = `
       <td>${escapeHtml(name)}</td>
       <td>
-        <div class="row-actions" style="margin-top:0;">
+        <div class="row-actions" style="margin-top:0; justify-content:center;">
           <button class="btn btn-secondary" style="padding:8px 12px;" type="button"
             onclick="window.promptEditCategory('${id}','${escapeHtml(name)}')">تعديل</button>
           <button class="btn" style="padding:8px 12px; background: var(--red);" type="button"
@@ -779,7 +822,6 @@ window.createProduct = async function(){
       }
     }
   }catch(e){
-    console.error(e);
     alert("تمت الإضافة لكن فشل رفع/حفظ الصورة: " + (e?.message || e));
   }
 
@@ -819,7 +861,7 @@ async function loadProducts(){
       <td>${price} د.ك</td>
       <td>${stock <= 0 ? `<span class="badge red">نفدت</span>` : `<span class="badge">${stock}</span>`}</td>
       <td>
-        <div class="row-actions" style="margin-top:0;">
+        <div class="row-actions" style="margin-top:0; justify-content:center;">
           <button class="btn btn-secondary" style="padding:8px 12px;" type="button"
             onclick="window.openEditProductModal('${id}')">تعديل</button>
           <button class="btn" style="padding:8px 12px; background: var(--red);" type="button"
@@ -936,7 +978,6 @@ window.saveEditProduct = async function(){
     await loadProducts();
     alert("تم التعديل ✅");
   }catch(e){
-    console.error(e);
     alert("حدث خطأ أثناء التعديل: " + (e?.message || e));
   }
 };
