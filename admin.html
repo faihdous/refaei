@@ -259,8 +259,8 @@
 const SUPABASE_URL = "https://mvsdblzjzrscnfgiqxan.supabase.co";
 const SUPABASE_KEY = "sb_publishable_KWMjd7EDbWtH2Ay7TdJwZg_s2et1Hc7";
 
-/** ====== Supabase client (مرة واحدة فقط!) ====== **/
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+/** ====== Supabase client (تجنب اسم supabase لتفادي التعارض) ====== **/
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /** ====== Helpers ====== **/
 function $(id){ return document.getElementById(id); }
@@ -303,7 +303,7 @@ window.loginAdmin = async function(){
   if(!email) return setToast($("loginToast"), "أدخل الإيميل", "err"), $("loginToast").classList.remove("hidden");
   if(!password) return setToast($("loginToast"), "أدخل كلمة المرور", "err"), $("loginToast").classList.remove("hidden");
 
-  const signInRes = await supabase.auth.signInWithPassword({ email, password });
+  const signInRes = await supabaseClient.auth.signInWithPassword({ email, password });
   if(signInRes.error){
     setToast($("loginToast"), "بيانات الدخول غير صحيحة: " + signInRes.error.message, "err");
     $("loginToast").classList.remove("hidden");
@@ -318,7 +318,7 @@ window.loginAdmin = async function(){
   }
 
   // تحقق من admin_users
-  const checkRes = await supabase
+  const checkRes = await supabaseClient
     .from("admin_users")
     .select("user_id")
     .eq("user_id", user.id)
@@ -351,7 +351,7 @@ window.loginAdmin = async function(){
 };
 
 window.logout = async function(){
-  try{ await supabase.auth.signOut(); }catch(e){ console.error(e); }
+  try{ await supabaseClient.auth.signOut(); }catch(e){ console.error(e); }
 
   $("adminView").classList.add("hidden");
   $("loginView").classList.remove("hidden");
@@ -371,17 +371,17 @@ window.saveSiteSettings = async function(){
     whatsapp: $("st_whatsapp").value.trim()
   };
 
-  const res = await supabase.from("site_settings").upsert(payload, { onConflict: "id" });
+  const res = await supabaseClient.from("site_settings").upsert(payload, { onConflict: "id" });
   if(res.error) return alert("فشل حفظ الإعدادات: " + res.error.message);
   alert("تم حفظ الإعدادات ✅");
 };
 
 /** ====== Guard on load ====== **/
 async function guardOnLoad(){
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await supabaseClient.auth.getSession();
   if(!session?.user?.id) return;
 
-  const checkRes = await supabase
+  const checkRes = await supabaseClient
     .from("admin_users")
     .select("user_id")
     .eq("user_id", session.user.id)
@@ -407,7 +407,7 @@ async function loadAllAdminData(){
 }
 
 async function loadSiteSettings(){
-  const res = await supabase
+  const res = await supabaseClient
     .from("site_settings")
     .select("*")
     .eq("id", 1)
@@ -447,7 +447,7 @@ window.createCategory = async function(){
   const name = $("cat_name").value.trim();
   if(!name) return alert("اكتب اسم القسم");
 
-  const res = await supabase.from("categories").insert({ name });
+  const res = await supabaseClient.from("categories").insert({ name });
   if(res.error) return alert("فشل إضافة القسم: " + res.error.message);
 
   $("cat_name").value = "";
@@ -455,7 +455,7 @@ window.createCategory = async function(){
 };
 
 async function loadCategories(){
-  const res = await supabase.from("categories").select("*").order("created_at", { ascending:false });
+  const res = await supabaseClient.from("categories").select("*").order("created_at", { ascending:false });
   if(res.error) return alert("فشل تحميل الأقسام: " + res.error.message);
 
   const tbody = $("categoriesTbody");
@@ -484,7 +484,7 @@ window.promptEditCategory = async function(id, currentName){
   const newName = prompt("تعديل اسم القسم:", currentName);
   if(newName === null) return;
 
-  const res = await supabase.from("categories").update({ name: newName.trim() }).eq("id", id);
+  const res = await supabaseClient.from("categories").update({ name: newName.trim() }).eq("id", id);
   if(res.error) return alert("فشل التعديل: " + res.error.message);
 
   await loadCategories();
@@ -493,7 +493,7 @@ window.promptEditCategory = async function(id, currentName){
 
 window.deleteCategory = async function(id){
   if(!confirm("تأكيد حذف القسم؟")) return;
-  const res = await supabase.from("categories").delete().eq("id", id);
+  const res = await supabaseClient.from("categories").delete().eq("id", id);
   if(res.error) return alert("فشل الحذف: " + res.error.message);
   await loadCategories();
   await loadProducts();
@@ -513,7 +513,7 @@ window.createProduct = async function(){
 
   if(!payload.name || !payload.category_name) return alert("أدخل اسم المنتج واسم القسم");
 
-  const res = await supabase.from("products").insert(payload);
+  const res = await supabaseClient.from("products").insert(payload);
   if(res.error) return alert("فشل إضافة المنتج: " + res.error.message);
 
   $("p_name").value = "";
@@ -526,7 +526,7 @@ window.createProduct = async function(){
 };
 
 async function loadProducts(){
-  const res = await supabase.from("products").select("*").order("created_at", { ascending:false });
+  const res = await supabaseClient.from("products").select("*").order("created_at", { ascending:false });
   if(res.error) return alert("فشل تحميل المنتجات: " + res.error.message);
 
   const tbody = $("productsTbody");
@@ -559,7 +559,7 @@ async function loadProducts(){
 }
 
 window.promptEditProduct = async function(id){
-  const res = await supabase.from("products").select("*").eq("id", id).maybeSingle();
+  const res = await supabaseClient.from("products").select("*").eq("id", id).maybeSingle();
   if(res.error || !res.data) return alert("فشل جلب بيانات المنتج");
 
   const p = res.data;
@@ -591,7 +591,7 @@ window.promptEditProduct = async function(id){
     image_url: newImg.trim() || null
   };
 
-  const up = await supabase.from("products").update(payload).eq("id", id);
+  const up = await supabaseClient.from("products").update(payload).eq("id", id);
   if(up.error) return alert("فشل التعديل: " + up.error.message);
 
   await loadProducts();
@@ -600,14 +600,14 @@ window.promptEditProduct = async function(id){
 
 window.deleteProduct = async function(id){
   if(!confirm("تأكيد حذف المنتج؟")) return;
-  const res = await supabase.from("products").delete().eq("id", id);
+  const res = await supabaseClient.from("products").delete().eq("id", id);
   if(res.error) return alert("فشل الحذف: " + res.error.message);
   await loadProducts();
 };
 
 /** ====== Orders ====== **/
 async function loadOrders(){
-  const res = await supabase.from("orders").select("*").order("created_at", { ascending:false });
+  const res = await supabaseClient.from("orders").select("*").order("created_at", { ascending:false });
   if(res.error) return alert("فشل تحميل الطلبات: " + res.error.message);
 
   const tbody = $("ordersTbody");
@@ -651,7 +651,7 @@ async function loadOrders(){
 
 window.deleteOrder = async function(id){
   if(!confirm("حذف هذا الطلب؟")) return;
-  const res = await supabase.from("orders").delete().eq("id", id);
+  const res = await supabaseClient.from("orders").delete().eq("id", id);
   if(res.error) return alert("فشل حذف الطلب: " + res.error.message);
   await loadOrders();
 };
