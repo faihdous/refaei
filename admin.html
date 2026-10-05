@@ -10,16 +10,9 @@
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap');
-
     :root{
-      --bg:#eee9df;
-      --brown:#4b2718;
-      --brown-dark:#2b160d;
-      --border:#d9cebd;
-      --gold:#b89557;
-      --green:#198754;
-      --red:#b84038;
-      --shadow-soft:0 8px 25px rgba(75,39,24,.08);
+      --bg:#eee9df; --brown:#4b2718; --brown-dark:#2b160d; --border:#d9cebd; --gold:#b89557;
+      --green:#198754; --red:#b84038; --shadow-soft:0 8px 25px rgba(75,39,24,.08);
     }
     *{ box-sizing:border-box; margin:0; padding:0; }
     body{
@@ -34,7 +27,6 @@
     }
     .container{ width:min(1200px,92%); margin:auto; }
     .hidden{ display:none!important; }
-
     .header{
       position:sticky; top:0; z-index:20;
       background:rgba(248,245,239,.88);
@@ -43,135 +35,70 @@
       box-shadow:0 5px 25px rgba(75,39,24,.05);
     }
     .nav{
-      min-height:78px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:25px;
-      padding:10px 0;
+      min-height:78px; display:flex; align-items:center; justify-content:space-between; gap:25px; padding:10px 0;
     }
-    .brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .brand{ display:flex; align-items:center; gap:10px; }
     .brand-mark{
-      width:44px; height:44px;
-      display:grid; place-items:center;
-      border:1px solid var(--gold);
-      border-radius:50%;
+      width:44px; height:44px; display:grid; place-items:center;
+      border:1px solid var(--gold); border-radius:50%;
       background: radial-gradient(circle,#fff8e9 0 55%,transparent 56%), var(--brown);
-      color:#d7bd86;
-      font-size:22px;
+      color:#d7bd86; font-size:22px;
     }
     .brand-name{
       font-family:'Playfair Display',Georgia,serif;
-      font-weight:800;
-      font-size:22px;
-      letter-spacing:3px;
-      color:var(--brown);
+      font-weight:800; font-size:22px; letter-spacing:3px; color:var(--brown);
     }
-
     .btn{
-      border:0;
-      background:var(--brown);
-      color:#fff;
-      padding:10px 14px;
-      border-radius:4px;
-      cursor:pointer;
+      border:0; background:var(--brown); color:#fff; padding:10px 14px; border-radius:4px; cursor:pointer;
       box-shadow:0 10px 22px rgba(75,39,24,.12);
     }
     .btn:hover{ background:var(--gold); transform:translateY(-2px); }
     .btn-secondary{
-      background:transparent;
-      border:1px solid var(--brown);
-      color:var(--brown);
-      box-shadow:none;
+      background:transparent; border:1px solid var(--brown); color:var(--brown); box-shadow:none;
     }
-    .btn-secondary:hover{
-      background:var(--brown);
-      color:#fff;
-      border-color:var(--brown);
-    }
-
+    .btn-secondary:hover{ background:var(--brown); color:#fff; border-color:var(--brown); }
     .card{
       background:rgba(255,253,249,.92);
-      border:1px solid var(--border);
-      border-radius:8px;
-      padding:18px;
+      border:1px solid var(--border); border-radius:8px; padding:18px;
       box-shadow:var(--shadow-soft);
     }
-
     .section-title{
       margin-bottom:10px;
       font-family:'Playfair Display',Georgia,serif;
-      color:var(--brown);
-      font-size:24px;
-      font-weight:800;
+      color:var(--brown); font-size:24px; font-weight:800;
     }
-
     .grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
     @media(max-width:900px){ .grid{ grid-template-columns:1fr; } }
-
     .field{ display:flex; flex-direction:column; gap:7px; margin:10px 0; }
     .field label{ font-size:13px; color:#6e5a4c; font-weight:bold; }
     .field input, .field textarea{
-      padding:11px;
-      border-radius:6px;
-      border:1px solid var(--border);
-      background:#fffdf9;
-      outline:none;
       width:100%;
+      padding:11px; border-radius:6px; border:1px solid var(--border);
+      background:#fffdf9; outline:none;
     }
     .field textarea{ resize:vertical; min-height:90px; }
-
-    .row-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
-
     .toast{
-      padding:12px;
-      border-radius:8px;
-      border:1px solid rgba(75,39,24,.15);
-      background:rgba(255,253,249,.9);
-      color:var(--brown);
+      padding:12px; border-radius:8px;
+      border:1px solid rgba(75,39,24,.15); background:rgba(255,253,249,.9); color:var(--brown);
     }
     .toast.ok{ border-color:rgba(25,135,84,.28); background:rgba(25,135,84,.08); }
     .toast.err{ border-color:rgba(184,56,56,.25); background:rgba(184,56,56,.10); }
-
     .table{
-      width:100%;
-      border-collapse:collapse;
-      overflow:hidden;
-      border-radius:8px;
-      border:1px solid var(--border);
-      background:#fffdf9;
+      width:100%; border-collapse:collapse; border-radius:8px; overflow:hidden;
+      border:1px solid var(--border); background:#fffdf9;
     }
     .table th,.table td{
-      padding:12px 10px;
-      border-bottom:1px solid rgba(75,39,24,.08);
-      font-size:13px;
-      vertical-align:top;
+      padding:12px 10px; border-bottom:1px solid rgba(75,39,24,.08); font-size:13px; vertical-align:top;
     }
-    .table th{
-      color:var(--brown);
-      font-weight:800;
-      background:rgba(184,149,87,.10);
-    }
-
+    .table th{ color:var(--brown); font-weight:800; background:rgba(184,149,87,.10); }
     hr.sep{ border:0; height:1px; background:rgba(75,39,24,.12); margin:18px 0; }
     .small-muted{ color:#7a6658; font-size:12px; }
-
     .badge{
-      display:inline-flex;
-      align-items:center;
-      padding:4px 10px;
-      border-radius:999px;
-      font-size:12px;
-      font-weight:800;
-      background:rgba(184,149,87,.18);
-      color:var(--brown);
-      border:1px solid rgba(184,149,87,.35);
+      display:inline-flex; align-items:center; padding:4px 10px; border-radius:999px; font-size:12px; font-weight:800;
+      background:rgba(184,149,87,.18); color:var(--brown); border:1px solid rgba(184,149,87,.35);
     }
-    .badge.red{
-      background:rgba(184,56,56,.12);
-      border-color:rgba(184,56,56,.25);
-      color:#8d1f1f;
-    }
+    .badge.red{ background:rgba(184,56,56,.12); border-color:rgba(184,56,56,.25); color:#8d1f1f; }
+    .row-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
   </style>
 </head>
 
@@ -182,7 +109,6 @@
       <span class="brand-mark">𓅃</span>
       <span class="brand-name">REFAEI - الإدارة</span>
     </div>
-
     <div>
       <button id="logoutBtn" class="btn btn-secondary hidden" type="button" onclick="window.logout()">تسجيل خروج</button>
     </div>
@@ -227,42 +153,17 @@
 
       <div class="grid">
         <div>
-          <div class="field">
-            <label>Topbar</label>
-            <textarea id="st_topbar"></textarea>
-          </div>
-          <div class="field">
-            <label>Brand Name</label>
-            <input id="st_brand_name" />
-          </div>
-          <div class="field">
-            <label>Hero Title</label>
-            <input id="st_hero_title" />
-          </div>
-          <div class="field">
-            <label>Hero Description</label>
-            <textarea id="st_hero_description"></textarea>
-          </div>
+          <div class="field"><label>Topbar</label><textarea id="st_topbar"></textarea></div>
+          <div class="field"><label>Brand Name</label><input id="st_brand_name" /></div>
+          <div class="field"><label>Hero Title</label><input id="st_hero_title" /></div>
+          <div class="field"><label>Hero Description</label><textarea id="st_hero_description"></textarea></div>
         </div>
 
         <div>
-          <div class="field">
-            <label>About Title</label>
-            <input id="st_about_title" />
-          </div>
-          <div class="field">
-            <label>About Text</label>
-            <textarea id="st_about_text"></textarea>
-          </div>
-          <div class="field">
-            <label>Footer</label>
-            <textarea id="st_footer"></textarea>
-          </div>
-          <div class="field">
-            <label>WhatsApp (رقم بدون رابط)</label>
-            <input id="st_whatsapp" />
-          </div>
-
+          <div class="field"><label>About Title</label><input id="st_about_title" /></div>
+          <div class="field"><label>About Text</label><textarea id="st_about_text"></textarea></div>
+          <div class="field"><label>Footer</label><textarea id="st_footer"></textarea></div>
+          <div class="field"><label>WhatsApp (رقم بدون رابط)</label><input id="st_whatsapp" /></div>
           <div class="row-actions">
             <button class="btn" type="button" onclick="window.saveSiteSettings()">حفظ الإعدادات</button>
           </div>
@@ -276,15 +177,11 @@
       <h2 class="section-title">الأقسام</h2>
       <div class="grid">
         <div>
-          <div class="field">
-            <label>اسم القسم</label>
-            <input id="cat_name" placeholder="مثال: قماش / شال / مسابيح" />
-          </div>
+          <div class="field"><label>اسم القسم</label><input id="cat_name" placeholder="مثال: قماش / شال / مسابيح" /></div>
           <div class="row-actions">
             <button class="btn" type="button" onclick="window.createCategory()">إضافة قسم</button>
           </div>
         </div>
-
         <div>
           <table class="table" aria-label="categories">
             <thead>
@@ -315,7 +212,6 @@
           <div class="field"><label>السعر (دينار)</label><input id="p_price" type="number" step="0.01" /></div>
           <div class="field"><label>الكمية (stock)</label><input id="p_stock" type="number" step="1" /></div>
           <div class="field"><label>صورة المنتج (URL أو اتركه فارغ)</label><input id="p_image_url" placeholder="https://..." /></div>
-
           <div class="row-actions">
             <button class="btn" type="button" onclick="window.createProduct()">إضافة منتج</button>
           </div>
@@ -359,14 +255,14 @@
 </main>
 
 <script>
-/** ============ SUPABASE (مرة واحدة فقط) ============ **/
+/** ====== CONFIG (غير هذه القيم ببياناتك) ====== **/
 const SUPABASE_URL = "https://mvsdblzjzrscnfgiqxan.supabase.co";
 const SUPABASE_KEY = "sb_publishable_KWMjd7EDbWtH2Ay7TdJwZg_s2et1Hc7";
 
-// IMPORTANT: لا تكرر تعريف supabase هنا ولا في أي مكان آخر
+/** ====== Supabase client (مرة واحدة فقط!) ====== **/
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-/** ============ Helpers ============ **/
+/** ====== Helpers ====== **/
 function $(id){ return document.getElementById(id); }
 
 function setToast(el, msg, type="err"){
@@ -385,9 +281,7 @@ function escapeHtml(str){
     .replace(/'/g, "&#039;");
 }
 
-/** ============ State ============ **/
-let sessionAdmin = { ok:false, username:null };
-
+/** ====== State ====== **/
 const defaultSettings = {
   topbar:"توصيل راقٍ واختيارات مختارة بعناية من REFAEI",
   brandName:"REFAEI",
@@ -399,36 +293,31 @@ const defaultSettings = {
   whatsapp:"96566771506"
 };
 
-/** ============ LOGIN (window.loginAdmin) ============ **/
-window.loginAdmin = async function loginAdmin(){
+/** ====== UI Actions ====== **/
+window.loginAdmin = async function(){
   const email = $("adminEmail").value.trim();
   const password = $("adminPassword").value;
 
   $("loginToast").classList.add("hidden");
 
-  if(!email){
-    setToast($("loginToast"), "أدخل الإيميل", "err");
-    return $("loginToast").classList.remove("hidden");
-  }
-  if(!password){
-    setToast($("loginToast"), "أدخل كلمة المرور", "err");
-    return $("loginToast").classList.remove("hidden");
-  }
+  if(!email) return setToast($("loginToast"), "أدخل الإيميل", "err"), $("loginToast").classList.remove("hidden");
+  if(!password) return setToast($("loginToast"), "أدخل كلمة المرور", "err"), $("loginToast").classList.remove("hidden");
 
   const signInRes = await supabase.auth.signInWithPassword({ email, password });
-
   if(signInRes.error){
     setToast($("loginToast"), "بيانات الدخول غير صحيحة: " + signInRes.error.message, "err");
+    $("loginToast").classList.remove("hidden");
     return;
   }
 
   const user = signInRes.data?.user;
   if(!user?.id){
     setToast($("loginToast"), "تعذر الحصول على المستخدم بعد تسجيل الدخول", "err");
+    $("loginToast").classList.remove("hidden");
     return;
   }
 
-  // check admin table
+  // تحقق من admin_users
   const checkRes = await supabase
     .from("admin_users")
     .select("user_id")
@@ -436,17 +325,16 @@ window.loginAdmin = async function loginAdmin(){
     .maybeSingle();
 
   if(checkRes.error){
-    // غالبًا مشكلة صلاحيات RLS لقراءة admin_users
-    setToast($("loginToast"), "خطأ بالصلاحيات عند التحقق من الأدمن: " + checkRes.error.message, "err");
+    setToast($("loginToast"), "خطأ بالصلاحيات: " + checkRes.error.message, "err");
+    $("loginToast").classList.remove("hidden");
     return;
   }
 
   if(!checkRes.data){
     setToast($("loginToast"), "غير مصرح لك بدخول لوحة الإدارة", "err");
+    $("loginToast").classList.remove("hidden");
     return;
   }
-
-  sessionAdmin = { ok:true, username: email };
 
   $("loginView").classList.add("hidden");
   $("adminView").classList.remove("hidden");
@@ -458,52 +346,59 @@ window.loginAdmin = async function loginAdmin(){
   }catch(e){
     console.error(e);
     setToast($("loginToast"), "تعذر تحميل بيانات الإدارة: " + (e?.message || e), "err");
+    $("loginToast").classList.remove("hidden");
   }
 };
 
-/** ============ LOGOUT (window.logout) ============ **/
-window.logout = async function logout(){
-  try{
-    await supabase.auth.signOut();
-  }catch(e){
-    console.error(e);
-  }
-
-  sessionAdmin = { ok:false, username:null };
+window.logout = async function(){
+  try{ await supabase.auth.signOut(); }catch(e){ console.error(e); }
 
   $("adminView").classList.add("hidden");
   $("loginView").classList.remove("hidden");
   $("logoutBtn").classList.add("hidden");
 };
 
-/** ============ Guard on load ============ **/
+window.saveSiteSettings = async function(){
+  const payload = {
+    id: 1,
+    topbar: $("st_topbar").value.trim(),
+    brand_name: $("st_brand_name").value.trim(),
+    hero_title: $("st_hero_title").value.trim(),
+    hero_description: $("st_hero_description").value.trim(),
+    about_title: $("st_about_title").value.trim(),
+    about_text: $("st_about_text").value.trim(),
+    footer: $("st_footer").value.trim(),
+    whatsapp: $("st_whatsapp").value.trim()
+  };
+
+  const res = await supabase.from("site_settings").upsert(payload, { onConflict: "id" });
+  if(res.error) return alert("فشل حفظ الإعدادات: " + res.error.message);
+  alert("تم حفظ الإعدادات ✅");
+};
+
+/** ====== Guard on load ====== **/
 async function guardOnLoad(){
   const { data: { session } } = await supabase.auth.getSession();
   if(!session?.user?.id) return;
 
-  const user = session.user;
-
   const checkRes = await supabase
     .from("admin_users")
     .select("user_id")
-    .eq("user_id", user.id)
+    .eq("user_id", session.user.id)
     .maybeSingle();
 
-  if(checkRes.error || !checkRes.data){
-    return;
-  }
-
-  sessionAdmin = { ok:true, username: user.email || user.id };
+  if(checkRes.error || !checkRes.data) return;
 
   $("loginView").classList.add("hidden");
   $("adminView").classList.remove("hidden");
   $("logoutBtn").classList.remove("hidden");
   $("adminWelcome").textContent = "مرحبًا 👋";
 
-  try{ await loadAllAdminData(); }catch(e){ console.error(e); }
+  await loadAllAdminData();
 }
+guardOnLoad();
 
-/** ============ Load / Save ============ **/
+/** ====== Data Load ====== **/
 async function loadAllAdminData(){
   await loadSiteSettings();
   await loadCategories();
@@ -524,7 +419,7 @@ async function loadSiteSettings(){
   }
 
   const row = res.data;
-  const settings = {
+  fillSettings({
     topbar: row.topbar ?? defaultSettings.topbar,
     brandName: row.brand_name ?? defaultSettings.brandName,
     heroTitle: row.hero_title ?? defaultSettings.heroTitle,
@@ -533,8 +428,7 @@ async function loadSiteSettings(){
     aboutText: row.about_text ?? defaultSettings.aboutText,
     footer: row.footer ?? defaultSettings.footer,
     whatsapp: row.whatsapp ?? defaultSettings.whatsapp
-  };
-  fillSettings(settings);
+  });
 }
 
 function fillSettings(s){
@@ -548,100 +442,35 @@ function fillSettings(s){
   $("st_whatsapp").value = s.whatsapp ?? "";
 }
 
-window.saveSiteSettings = async function saveSiteSettings(){
-  const payload = {
-    id: 1,
-    topbar: $("st_topbar").value.trim(),
-    brand_name: $("st_brand_name").value.trim(),
-    hero_title: $("st_hero_title").value.trim(),
-    hero_description: $("st_hero_description").value.trim(),
-    about_title: $("st_about_title").value.trim(),
-    about_text: $("st_about_text").value.trim(),
-    footer: $("st_footer").value.trim(),
-    whatsapp: $("st_whatsapp").value.trim()
-  };
-
-  const res = await supabase
-    .from("site_settings")
-    .upsert(payload, { onConflict: "id" });
-
-  if(res.error){
-    alert("فشل حفظ الإعدادات: " + res.error.message);
-    return;
-  }
-  alert("تم حفظ الإعدادات ✅");
-};
-
-/** ============ Categories CRUD ============ **/
-window.createCategory = async function createCategory(){
+/** ====== Categories ====== **/
+window.createCategory = async function(){
   const name = $("cat_name").value.trim();
-  if(!name){ alert("اكتب اسم القسم"); return; }
+  if(!name) return alert("اكتب اسم القسم");
 
   const res = await supabase.from("categories").insert({ name });
-  if(res.error){
-    alert("فشل إضافة القسم: " + res.error.message);
-    return;
-  }
+  if(res.error) return alert("فشل إضافة القسم: " + res.error.message);
+
   $("cat_name").value = "";
   await loadCategories();
-  alert("تمت إضافة القسم ✅");
-};
-
-window.editCategory = async function editCategory(id, currentName){
-  const newName = prompt("تعديل اسم القسم:", currentName);
-  if(newName === null) return;
-
-  const res = await supabase
-    .from("categories")
-    .update({ name: newName.trim() })
-    .eq("id", id);
-
-  if(res.error){
-    alert("فشل التعديل: " + res.error.message);
-    return;
-  }
-  await loadCategories();
-  alert("تم التعديل ✅");
-};
-
-window.deleteCategory = async function deleteCategory(id){
-  if(!confirm("تأكيد حذف القسم؟")) return;
-
-  const res = await supabase.from("categories").delete().eq("id", id);
-  if(res.error){
-    alert("فشل الحذف: " + res.error.message);
-    return;
-  }
-  await loadCategories();
-  await loadProducts();
-  alert("تم الحذف ✅");
 };
 
 async function loadCategories(){
-  const res = await supabase
-    .from("categories")
-    .select("*")
-    .order("created_at", { ascending: false });
-
-  if(res.error){
-    alert("فشل تحميل الأقسام: " + res.error.message);
-    return;
-  }
+  const res = await supabase.from("categories").select("*").order("created_at", { ascending:false });
+  if(res.error) return alert("فشل تحميل الأقسام: " + res.error.message);
 
   const tbody = $("categoriesTbody");
   tbody.innerHTML = "";
 
   (res.data || []).forEach(cat => {
-    const name = cat.name ?? "";
     const id = cat.id;
-
+    const name = cat.name ?? "";
     const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${escapeHtml(name)}</td>
       <td>
         <div class="row-actions" style="margin-top:0;">
           <button class="btn btn-secondary" style="padding:8px 12px;" type="button"
-            onclick="window.editCategory('${id}','${escapeHtml(name)}')">تعديل</button>
+            onclick="window.promptEditCategory('${id}','${escapeHtml(name)}')">تعديل</button>
           <button class="btn" style="padding:8px 12px; background: var(--red);" type="button"
             onclick="window.deleteCategory('${id}')">حذف</button>
         </div>
@@ -651,8 +480,27 @@ async function loadCategories(){
   });
 }
 
-/** ============ Products CRUD ============ **/
-window.createProduct = async function createProduct(){
+window.promptEditCategory = async function(id, currentName){
+  const newName = prompt("تعديل اسم القسم:", currentName);
+  if(newName === null) return;
+
+  const res = await supabase.from("categories").update({ name: newName.trim() }).eq("id", id);
+  if(res.error) return alert("فشل التعديل: " + res.error.message);
+
+  await loadCategories();
+  alert("تم التعديل ✅");
+};
+
+window.deleteCategory = async function(id){
+  if(!confirm("تأكيد حذف القسم؟")) return;
+  const res = await supabase.from("categories").delete().eq("id", id);
+  if(res.error) return alert("فشل الحذف: " + res.error.message);
+  await loadCategories();
+  await loadProducts();
+};
+
+/** ====== Products ====== **/
+window.createProduct = async function(){
   const payload = {
     name: $("p_name").value.trim(),
     category: null,
@@ -663,16 +511,10 @@ window.createProduct = async function createProduct(){
     image_url: $("p_image_url").value.trim() || null
   };
 
-  if(!payload.name || !payload.category_name){
-    alert("أدخل اسم المنتج واسم القسم");
-    return;
-  }
+  if(!payload.name || !payload.category_name) return alert("أدخل اسم المنتج واسم القسم");
 
   const res = await supabase.from("products").insert(payload);
-  if(res.error){
-    alert("فشل إضافة المنتج: " + res.error.message);
-    return;
-  }
+  if(res.error) return alert("فشل إضافة المنتج: " + res.error.message);
 
   $("p_name").value = "";
   $("p_description").value = "";
@@ -681,15 +523,44 @@ window.createProduct = async function createProduct(){
   $("p_image_url").value = "";
 
   await loadProducts();
-  alert("تمت إضافة المنتج ✅");
 };
 
-window.editProduct = async function editProduct(id){
+async function loadProducts(){
+  const res = await supabase.from("products").select("*").order("created_at", { ascending:false });
+  if(res.error) return alert("فشل تحميل المنتجات: " + res.error.message);
+
+  const tbody = $("productsTbody");
+  tbody.innerHTML = "";
+
+  (res.data || []).forEach(p => {
+    const id = p.id;
+    const name = p.name ?? "";
+    const category = p.category_name ?? p.category ?? "";
+    const price = Number(p.price ?? 0).toFixed(2);
+    const stock = Number(p.stock ?? 0);
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><b>${escapeHtml(name)}</b></td>
+      <td>${escapeHtml(category)}</td>
+      <td>${price} د.ك</td>
+      <td>${stock <= 0 ? `<span class="badge red">نفدت</span>` : `<span class="badge">${stock}</span>`}</td>
+      <td>
+        <div class="row-actions" style="margin-top:0;">
+          <button class="btn btn-secondary" style="padding:8px 12px;" type="button"
+            onclick="window.promptEditProduct('${id}')">تعديل</button>
+          <button class="btn" style="padding:8px 12px; background: var(--red);" type="button"
+            onclick="window.deleteProduct('${id}')">حذف</button>
+        </div>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+window.promptEditProduct = async function(id){
   const res = await supabase.from("products").select("*").eq("id", id).maybeSingle();
-  if(res.error || !res.data){
-    alert("فشل جلب بيانات المنتج");
-    return;
-  }
+  if(res.error || !res.data) return alert("فشل جلب بيانات المنتج");
 
   const p = res.data;
 
@@ -721,68 +592,23 @@ window.editProduct = async function editProduct(id){
   };
 
   const up = await supabase.from("products").update(payload).eq("id", id);
-  if(up.error){
-    alert("فشل التعديل: " + up.error.message);
-    return;
-  }
+  if(up.error) return alert("فشل التعديل: " + up.error.message);
 
   await loadProducts();
   alert("تم التعديل ✅");
 };
 
-window.deleteProduct = async function deleteProduct(id){
+window.deleteProduct = async function(id){
   if(!confirm("تأكيد حذف المنتج؟")) return;
-
   const res = await supabase.from("products").delete().eq("id", id);
-  if(res.error){
-    alert("فشل الحذف: " + res.error.message);
-    return;
-  }
+  if(res.error) return alert("فشل الحذف: " + res.error.message);
   await loadProducts();
-  alert("تم الحذف ✅");
 };
 
-async function loadProducts(){
-  const res = await supabase.from("products").select("*").order("created_at", { ascending: false });
-  if(res.error){
-    alert("فشل تحميل المنتجات: " + res.error.message);
-    return;
-  }
-
-  const tbody = $("productsTbody");
-  tbody.innerHTML = "";
-
-  (res.data || []).forEach(p => {
-    const id = p.id;
-    const name = p.name ?? "";
-    const category = p.category_name ?? p.category ?? "";
-    const price = Number(p.price ?? 0).toFixed(2);
-    const stock = Number(p.stock ?? 0);
-
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td><b>${escapeHtml(name)}</b></td>
-      <td>${escapeHtml(category)}</td>
-      <td>${price} د.ك</td>
-      <td>${stock <= 0 ? `<span class="badge red">نفدت</span>` : `<span class="badge">${stock}</span>`}</td>
-      <td>
-        <div class="row-actions" style="margin-top:0;">
-          <button class="btn btn-secondary" style="padding:8px 12px;" type="button" onclick="window.editProduct('${id}')">تعديل</button>
-          <button class="btn" style="padding:8px 12px; background: var(--red);" type="button" onclick="window.deleteProduct('${id}')">حذف</button>
-        </div>
-      </td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-/** ============ Orders ============ **/
+/** ====== Orders ====== **/
 async function loadOrders(){
   const res = await supabase.from("orders").select("*").order("created_at", { ascending:false });
-  if(res.error){
-    alert("فشل تحميل الطلبات: " + res.error.message);
-    return;
-  }
+  if(res.error) return alert("فشل تحميل الطلبات: " + res.error.message);
 
   const tbody = $("ordersTbody");
   tbody.innerHTML = "";
@@ -803,9 +629,7 @@ async function loadOrders(){
       }else{
         itemsText = typeof items === "string" ? items : "";
       }
-    }catch(e){
-      itemsText = "";
-    }
+    }catch(e){ itemsText = ""; }
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -814,34 +638,23 @@ async function loadOrders(){
         <div class="small-muted">${escapeHtml(phone)}</div>
         <div class="small-muted">${escapeHtml(address)}</div>
       </td>
-      <td style="max-width:360px;">
-        ${itemsText || "<span class='small-muted'>بدون تفاصيل</span>"}
-      </td>
+      <td style="max-width:360px;">${itemsText || "<span class='small-muted'>بدون تفاصيل</span>"}</td>
       <td>${total} د.ك</td>
       <td>${escapeHtml(created_at)}</td>
       <td>
-        <button class="btn" style="padding:8px 12px; background: var(--red);" type="button"
-          onclick="window.deleteOrder('${id}')">حذف</button>
+        <button class="btn" type="button" style="padding:8px 12px; background: var(--red);" onclick="window.deleteOrder('${id}')">حذف</button>
       </td>
     `;
     tbody.appendChild(tr);
   });
 }
 
-window.deleteOrder = async function deleteOrder(id){
+window.deleteOrder = async function(id){
   if(!confirm("حذف هذا الطلب؟")) return;
-
   const res = await supabase.from("orders").delete().eq("id", id);
-  if(res.error){
-    alert("فشل حذف الطلب: " + res.error.message);
-    return;
-  }
+  if(res.error) return alert("فشل حذف الطلب: " + res.error.message);
   await loadOrders();
-  alert("تم الحذف ✅");
-}
-
-/** ============ Run ============ **/
-guardOnLoad();
+};
 </script>
 </body>
 </html>
