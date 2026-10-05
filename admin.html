@@ -21,7 +21,6 @@
   --green:#198754;
   --red:#b84038;
   --border:#d9cebd;
-  --white:#fffdf9;
   --shadow:0 20px 55px rgba(75,39,24,.12);
   --shadow-soft:0 8px 25px rgba(75,39,24,.08);
 }
@@ -39,10 +38,7 @@ body{
   overflow-x:hidden;
 }
 
-.container{
-  width:min(1200px,92%);
-  margin:auto;
-}
+.container{ width:min(1200px,92%); margin:auto; }
 
 .card{
   background:rgba(255,253,249,.92);
@@ -61,6 +57,7 @@ body{
   backdrop-filter:blur(18px);
   box-shadow:0 5px 25px rgba(75,39,24,.05);
 }
+
 .nav{
   min-height:78px;
   display:flex;
@@ -69,10 +66,7 @@ body{
   gap:25px;
   padding:10px 0;
 }
-.brand{
-  display:flex; align-items:center; gap:10px;
-  text-decoration:none;
-}
+.brand{ display:flex; align-items:center; gap:10px; text-decoration:none; }
 .brand-mark{
   width:44px; height:44px;
   display:grid; place-items:center;
@@ -115,14 +109,8 @@ body{
   border-color:var(--brown);
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:16px;
-}
-@media(max-width:900px){
-  .grid{ grid-template-columns:1fr; }
-}
+.grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media(max-width:900px){ .grid{ grid-template-columns:1fr; } }
 
 .section-title{
   margin-bottom:10px;
@@ -143,7 +131,7 @@ body{
   color:#6e5a4c;
   font-weight:bold;
 }
-.field input, .field textarea, .field select{
+.field input, .field textarea{
   padding:11px;
   border-radius:6px;
   border:1px solid var(--border);
@@ -182,6 +170,7 @@ body{
   color:#7a6658;
   font-size:12px;
 }
+
 .badge{
   display:inline-flex;
   align-items:center;
@@ -198,6 +187,7 @@ body{
   border-color:rgba(184,56,56,.25);
   color:#8d1f1f;
 }
+
 hr.sep{
   border:0; height:1px; background:rgba(75,39,24,.12);
   margin:18px 0;
@@ -223,13 +213,13 @@ hr.sep{
       <span class="brand-name">REFAEI - الإدارة</span>
     </div>
     <div>
+      <!-- يظهر بعد تسجيل الدخول -->
       <button id="logoutBtn" class="btn btn-secondary hidden" onclick="logout()">تسجيل خروج</button>
     </div>
   </div>
 </header>
 
 <main class="container" style="padding:22px 0 60px;">
-
   <!-- LOGIN -->
   <section id="loginView" class="card">
     <h2 class="section-title">تسجيل دخول الإدارة</h2>
@@ -237,15 +227,14 @@ hr.sep{
 
     <div class="grid" style="margin-top:12px;">
       <div>
-        <!-- ✅ بدل UUID نص واضح وبلا استعباط -->
         <div class="field">
-          <label>رمز الإدارة</label>
-          <input id="adminUsername" placeholder="أدخل رمز الإدارة" autocomplete="username">
+          <label>الإيميل</label>
+          <input id="adminEmail" placeholder="اكتب الإيميل" autocomplete="email">
         </div>
 
         <div class="field">
           <label>كلمة المرور</label>
-          <input id="adminPassword" type="password" placeholder="غير مستخدمة" disabled>
+          <input id="adminPassword" type="password" placeholder="اكتب كلمة المرور" autocomplete="current-password">
         </div>
 
         <div class="row-actions">
@@ -285,6 +274,7 @@ hr.sep{
             <textarea id="st_hero_description"></textarea>
           </div>
         </div>
+
         <div>
           <div class="field">
             <label>About Title</label>
@@ -426,9 +416,7 @@ hr.sep{
         <tbody id="ordersTbody"></tbody>
       </table>
     </div>
-
   </section>
-
 </main>
 
 <script>
@@ -436,7 +424,8 @@ hr.sep{
 const SUPABASE_URL = "https://mvsdblzjzrscnfgiqxan.supabase.co";
 const SUPABASE_KEY = "sb_publishable_KWMjd7EDbWtH2Ay7TdJwZg_s2et1Hc7";
 
-const supabaseAdminClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// Auth + DB بنفس الـ client (مع تخزين التوكن تلقائيًا بالمتصفح)
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /** ============ STATE ============ **/
 let sessionAdmin = { ok:false, username:null };
@@ -462,46 +451,65 @@ function setToast(el, msg, type="err"){
 }
 
 /** ============ LOGIN ============ **/
-function isValidUUID(uuid){
-  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(uuid);
-}
-
 async function loginAdmin(){
-  const userIdInput = $("adminUsername").value.trim();
+  const email = $("adminEmail").value.trim();
+  const password = $("adminPassword").value;
 
   $("loginToast").classList.add("hidden");
 
-  if(!userIdInput){
-    setToast($("loginToast"), "أدخل رمز الإدارة", "err");
+  if(!email){
+    setToast($("loginToast"), "أدخل الإيميل", "err");
+    $("loginToast").classList.remove("hidden");
+    return;
+  }
+  if(!password){
+    setToast($("loginToast"), "أدخل كلمة المرور", "err");
     $("loginToast").classList.remove("hidden");
     return;
   }
 
-  // ✅ يمنع ظهور خطأ invalid input syntax بسبب إدخال غير UUID
-  if(!isValidUUID(userIdInput)){
-    setToast($("loginToast"), "رمز الإدارة غير صحيح (صيغة UUID)", "err");
+  // 1) sign in with password (Auth)
+  const signInRes = await supabase.auth.signInWithPassword({ email, password });
+
+  if(signInRes.error){
+    setToast($("loginToast"), "بيانات الدخول غير صحيحة: " + signInRes.error.message, "err");
     $("loginToast").classList.remove("hidden");
     return;
   }
 
-  const res = await supabaseAdminClient
+  const user = signInRes.data?.user;
+  if(!user?.id){
+    setToast($("loginToast"), "تعذر الحصول على المستخدم بعد تسجيل الدخول", "err");
+    $("loginToast").classList.remove("hidden");
+    return;
+  }
+
+  // 2) check admin_users
+  const checkRes = await supabase
     .from("admin_users")
     .select("user_id")
-    .eq("user_id", userIdInput)
+    .eq("user_id", user.id)
     .maybeSingle();
 
-  if(res.error){
-    setToast($("loginToast"), "خطأ في الاتصال بقاعدة البيانات: " + res.error.message, "err");
+  if(checkRes.error){
+    // غالبًا RLS / policies
+    setToast(
+      $("loginToast"),
+      "خطأ بالصلاحيات عند التحقق من الأدمن: " + checkRes.error.message,
+      "err"
+    );
+    $("loginToast").classList.remove("hidden");
     return;
   }
 
-  if(!res.data){
-    setToast($("loginToast"), "بيانات الدخول غير صحيحة", "err");
+  if(!checkRes.data){
+    setToast($("loginToast"), "غير مصرح لك بدخول لوحة الإدارة", "err");
+    $("loginToast").classList.remove("hidden");
     return;
   }
 
   sessionAdmin.ok = true;
-  sessionAdmin.username = userIdInput;
+  sessionAdmin.username = email;
 
   $("loginView").classList.add("hidden");
   $("adminView").classList.remove("hidden");
@@ -517,7 +525,14 @@ async function loginAdmin(){
   }
 }
 
-function logout(){
+/** ============ LOGOUT (Inside Admin Page) ============ **/
+async function logout(){
+  try{
+    await supabase.auth.signOut();
+  }catch(e){
+    console.error(e);
+    // حتى لو فشل signOut نرجع للواجهة
+  }
   sessionAdmin = { ok:false, username:null };
   $("adminView").classList.add("hidden");
   $("loginView").classList.remove("hidden");
@@ -533,7 +548,7 @@ async function loadAllAdminData(){
 }
 
 async function loadSiteSettings(){
-  const res = await supabaseAdminClient
+  const res = await supabase
     .from("site_settings")
     .select("*")
     .eq("id", 1)
@@ -583,7 +598,7 @@ async function saveSiteSettings(){
     whatsapp: $("st_whatsapp").value.trim()
   };
 
-  const res = await supabaseAdminClient
+  const res = await supabase
     .from("site_settings")
     .upsert(payload, { onConflict: "id" });
 
@@ -595,7 +610,7 @@ async function saveSiteSettings(){
 }
 
 async function loadCategories(){
-  const res = await supabaseAdminClient
+  const res = await supabase
     .from("categories")
     .select("*")
     .order("created_at", { ascending: false });
@@ -627,7 +642,7 @@ async function loadCategories(){
 }
 
 async function loadProducts(){
-  const res = await supabaseAdminClient
+  const res = await supabase
     .from("products")
     .select("*")
     .order("created_at", { ascending: false });
@@ -649,9 +664,7 @@ async function loadProducts(){
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>
-        <b>${escapeHtml(name)}</b>
-      </td>
+      <td><b>${escapeHtml(name)}</b></td>
       <td>${escapeHtml(category)}</td>
       <td>${price} د.ك</td>
       <td>
@@ -672,7 +685,7 @@ async function loadProducts(){
 }
 
 async function loadOrders(){
-  const res = await supabaseAdminClient
+  const res = await supabase
     .from("orders")
     .select("*")
     .order("created_at", { ascending:false });
@@ -731,7 +744,7 @@ async function createCategory(){
   const name = $("cat_name").value.trim();
   if(!name){ alert("اكتب اسم القسم"); return; }
 
-  const res = await supabaseAdminClient
+  const res = await supabase
     .from("categories")
     .insert({ name });
 
@@ -748,7 +761,7 @@ async function editCategory(id, currentName){
   const newName = prompt("تعديل اسم القسم:", currentName);
   if(newName === null) return;
 
-  const res = await supabaseAdminClient
+  const res = await supabase
     .from("categories")
     .update({ name: newName.trim() })
     .eq("id", id);
@@ -764,7 +777,7 @@ async function editCategory(id, currentName){
 async function deleteCategory(id){
   if(!confirm("تأكيد حذف القسم؟")) return;
 
-  const res = await supabaseAdminClient
+  const res = await supabase
     .from("categories")
     .delete()
     .eq("id", id);
@@ -795,7 +808,7 @@ async function createProduct(){
     return;
   }
 
-  const res = await supabaseAdminClient.from("products").insert(payload);
+  const res = await supabase.from("products").insert(payload);
   if(res.error){
     alert("فشل إضافة المنتج: " + res.error.message);
     return;
@@ -812,7 +825,7 @@ async function createProduct(){
 }
 
 async function editProduct(id){
-  const res = await supabaseAdminClient
+  const res = await supabase
     .from("products")
     .select("*")
     .eq("id", id)
@@ -852,7 +865,7 @@ async function editProduct(id){
     image_url: newImg.trim() || null
   };
 
-  const up = await supabaseAdminClient
+  const up = await supabase
     .from("products")
     .update(payload)
     .eq("id", id);
@@ -869,7 +882,7 @@ async function editProduct(id){
 async function deleteProduct(id){
   if(!confirm("تأكيد حذف المنتج؟")) return;
 
-  const res = await supabaseAdminClient
+  const res = await supabase
     .from("products")
     .delete()
     .eq("id", id);
@@ -886,7 +899,7 @@ async function deleteProduct(id){
 async function deleteOrder(id){
   if(!confirm("حذف هذا الطلب؟")) return;
 
-  const res = await supabaseAdminClient
+  const res = await supabase
     .from("orders")
     .delete()
     .eq("id", id);
@@ -913,13 +926,36 @@ function escapeAttr(str){
   return String(str ?? "").replace(/'/g,"&#39;").replace(/"/g,'&quot;');
 }
 
-async function guard(){
-  if(!sessionAdmin.ok){
-    $("adminView").classList.add("hidden");
-    $("loginView").classList.remove("hidden");
+// إذا كان المستخدم مسجل دخوله مسبقًا (جلسة محفوظة بالمتصفح) نفعّل الواجهة تلقائيًا
+async function guardOnLoad(){
+  const { data: { session } } = await supabase.auth.getSession();
+  if(!session?.user?.id) return;
+
+  // نتحقق هل هو أدمن
+  const user = session.user;
+  const checkRes = await supabase
+    .from("admin_users")
+    .select("user_id")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if(checkRes.error || !checkRes.data){
+    // لا نعرض لوحة الإدارة
+    return;
   }
+
+  sessionAdmin.ok = true;
+  sessionAdmin.username = user.email || user.id;
+
+  $("loginView").classList.add("hidden");
+  $("adminView").classList.remove("hidden");
+  $("logoutBtn").classList.remove("hidden");
+  $("adminWelcome").textContent = "مرحبًا 👋";
+
+  try{ await loadAllAdminData(); }catch(e){ console.error(e); }
 }
-guard();
+
+guardOnLoad();
 </script>
 </body>
 </html>
