@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>لوحة الإدارة - REFAEI</title>
 
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -101,7 +100,7 @@
     .row-actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
     .img-preview{
       width:100%;
-      max-width:220px;
+      max-width:420px;
       border:1px dashed rgba(75,39,24,.25);
       border-radius:8px;
       padding:10px;
@@ -216,28 +215,28 @@
       <div class="grid">
         <div>
           <div class="field"><label>اسم المنتج</label><input id="p_name" /></div>
+
           <div class="field">
             <label>القسم (category)</label>
             <input id="p_category" placeholder="اكتب اسم القسم" />
             <div class="small-muted" style="margin-top:2px;">الأفضل تطابق اسم القسم الموجود.</div>
           </div>
+
           <div class="field"><label>وصف المنتج</label><textarea id="p_description"></textarea></div>
           <div class="field"><label>السعر (دينار)</label><input id="p_price" type="number" step="0.01" /></div>
           <div class="field"><label>الكمية (stock)</label><input id="p_stock" type="number" step="1" /></div>
 
-          <!-- رفع صورة -->
           <div class="field">
             <label>صورة المنتج (Upload)</label>
             <input id="p_image_file" type="file" accept="image/*" />
             <div id="p_image_preview" class="img-preview">لم يتم اختيار صورة</div>
           </div>
 
-          <!-- خيار URL (اختياري) -->
           <div class="field">
             <label>صورة المنتج (URL) (اختياري)</label>
             <input id="p_image_url" placeholder="https://..." />
             <div class="small-muted" style="margin-top:2px;">
-              إذا رفعت صورة من جهازك، سنستخدمها تلقائيًا.
+              إذا رفعت صورة، سنستخدمها تلقائيًا. وإلا نستخدم هذا الرابط.
             </div>
           </div>
 
@@ -284,15 +283,14 @@
 </main>
 
 <script>
-/** ====== CONFIG (غير هذه القيم ببياناتك) ====== **/
+/** ====== CONFIG ====== **/
 const SUPABASE_URL = "https://mvsdblzjzrscnfgiqxan.supabase.co";
 const SUPABASE_KEY = "sb_publishable_KWMjd7EDbWtH2Ay7TdJwZg_s2et1Hc7";
 
-// ✅ غيّر اسم الدبليو لو عندك bucket مختلف:
+/** ✅ bucket عندك من الصورة: product-images */
 const STORAGE_BUCKET = "product-images";
 const STORAGE_FOLDER = "products";
 
-/** ====== Supabase client (تجنب اسم supabase لتفادي التعارض) ====== **/
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /** ====== Helpers ====== **/
@@ -319,11 +317,12 @@ function getExt(fileName){
   return idx >= 0 ? fileName.slice(idx+1).toLowerCase() : "jpg";
 }
 
-/** ====== Storage Upload Helper ====== **/
-async function uploadImageFile(file, objectName){
+/** ====== Storage Upload ====== **/
+async function uploadImageFile(file, objectBaseName){
   if(!file) return null;
+
   const ext = getExt(file.name);
-  const filePath = `${STORAGE_FOLDER}/${objectName}.${ext}`;
+  const filePath = `${STORAGE_FOLDER}/${objectBaseName}.${ext}`;
 
   const res = await supabaseClient.storage
     .from(STORAGE_BUCKET)
@@ -334,22 +333,21 @@ async function uploadImageFile(file, objectName){
 
   if(res.error) throw res.error;
 
-  // رابط عام (إذا bucket public أو عندك سياسة public)
+  // لأن bucket عندك Public حسب الصورة
   const { data } = supabaseClient.storage.from(STORAGE_BUCKET).getPublicUrl(filePath);
   return data?.publicUrl || null;
 }
 
-/** ====== Preview selected file ====== **/
+/** ====== Preview ====== **/
 function attachImagePreview(){
   const fileInput = $("p_image_file");
   const preview = $("p_image_preview");
-
   if(!fileInput || !preview) return;
 
   fileInput.addEventListener("change", () => {
     const file = fileInput.files?.[0];
     if(!file){
-      preview.innerHTML = "لم يتم اختيار صورة";
+      preview.textContent = "لم يتم اختيار صورة";
       return;
     }
     const url = URL.createObjectURL(file);
@@ -358,7 +356,7 @@ function attachImagePreview(){
 }
 attachImagePreview();
 
-/** ====== State ====== **/
+/** ====== Settings ====== **/
 const defaultSettings = {
   topbar:"توصيل راقٍ واختيارات مختارة بعناية من REFAEI",
   brandName:"REFAEI",
@@ -370,14 +368,14 @@ const defaultSettings = {
   whatsapp:"96566771506"
 };
 
-/** ====== تحقق سريع من صلاحية الإدارة عبر RPC ====== **/
+/** ====== RPC Admin ====== **/
 async function isAdminByRPC(){
   const { data, error } = await supabaseClient.rpc("admin_get_self");
   if(error) throw error;
   return Array.isArray(data) ? data.length > 0 : !!data;
 }
 
-/** ====== UI Actions ====== **/
+/** ====== Login/Guard ====== **/
 window.loginAdmin = async function(){
   const email = $("adminEmail").value.trim();
   const password = $("adminPassword").value;
@@ -390,13 +388,6 @@ window.loginAdmin = async function(){
   const signInRes = await supabaseClient.auth.signInWithPassword({ email, password });
   if(signInRes.error){
     setToast($("loginToast"), "بيانات الدخول غير صحيحة: " + signInRes.error.message, "err");
-    $("loginToast").classList.remove("hidden");
-    return;
-  }
-
-  const user = signInRes.data?.user;
-  if(!user?.id){
-    setToast($("loginToast"), "تعذر الحصول على المستخدم بعد تسجيل الدخول", "err");
     $("loginToast").classList.remove("hidden");
     return;
   }
@@ -420,9 +411,8 @@ window.loginAdmin = async function(){
   $("logoutBtn").classList.remove("hidden");
   $("adminWelcome").textContent = "مرحبًا 👋";
 
-  try{
-    await loadAllAdminData();
-  }catch(e){
+  try{ await loadAllAdminData(); }
+  catch(e){
     console.error(e);
     setToast($("loginToast"), "تعذر تحميل بيانات الإدارة: " + (e?.message || e), "err");
     $("loginToast").classList.remove("hidden");
@@ -436,7 +426,6 @@ window.logout = async function(){
   $("logoutBtn").classList.add("hidden");
 };
 
-/** ====== Guard on load ====== **/
 async function guardOnLoad(){
   const { data: { session } } = await supabaseClient.auth.getSession();
   if(!session?.user?.id) return;
@@ -449,7 +438,6 @@ async function guardOnLoad(){
     $("adminView").classList.remove("hidden");
     $("logoutBtn").classList.remove("hidden");
     $("adminWelcome").textContent = "مرحبًا 👋";
-
     await loadAllAdminData();
   }catch(e){
     console.error(e);
@@ -457,13 +445,24 @@ async function guardOnLoad(){
 }
 guardOnLoad();
 
-/** ====== Data Load ====== **/
-async function loadAllAdminData(){
-  await loadSiteSettings();
-  await loadCategories();
-  await loadProducts();
-  await loadOrders();
-}
+/** ====== Site settings ====== **/
+window.saveSiteSettings = async function(){
+  const payload = {
+    id: 1,
+    topbar: $("st_topbar").value.trim(),
+    brand_name: $("st_brand_name").value.trim(),
+    hero_title: $("st_hero_title").value.trim(),
+    hero_description: $("st_hero_description").value.trim(),
+    about_title: $("st_about_title").value.trim(),
+    about_text: $("st_about_text").value.trim(),
+    footer: $("st_footer").value.trim(),
+    whatsapp: $("st_whatsapp").value.trim()
+  };
+
+  const res = await supabaseClient.from("site_settings").upsert(payload, { onConflict: "id" });
+  if(res.error) return alert("فشل حفظ الإعدادات: " + res.error.message);
+  alert("تم حفظ الإعدادات ✅");
+};
 
 async function loadSiteSettings(){
   const res = await supabaseClient
@@ -499,6 +498,14 @@ function fillSettings(s){
   $("st_about_text").value = s.aboutText ?? "";
   $("st_footer").value = s.footer ?? "";
   $("st_whatsapp").value = s.whatsapp ?? "";
+}
+
+/** ====== Load All ====== **/
+async function loadAllAdminData(){
+  await loadSiteSettings();
+  await loadCategories();
+  await loadProducts();
+  await loadOrders();
 }
 
 /** ====== Categories ====== **/
@@ -558,10 +565,10 @@ window.deleteCategory = async function(id){
   await loadProducts();
 };
 
-/** ====== Products ====== **/
+/** ====== Products (Fix + Upload) ====== **/
 window.createProduct = async function(){
   const pName = $("p_name").value.trim();
-  const pCategory = $("p_category").value.trim();
+  const pCategory = $("p_category").value.trim(); // ✅ category
   const pDescription = $("p_description").value.trim();
   const pPrice = Number($("p_price").value || 0);
   const pStock = Number($("p_stock").value || 0);
@@ -571,26 +578,28 @@ window.createProduct = async function(){
 
   if(!pName || !pCategory) return alert("أدخل اسم المنتج واسم القسم");
 
-  // 1) insert بدون صورة أولاً (عشان نعرف id)
-  const insertRes = await supabaseClient.from("products").insert({
-    name: pName,
-    category: pCategory,
-    description: pDescription,
-    price: pPrice,
-    stock: pStock,
-    image_url: imageUrlInput // مؤقتًا لو تريد URL مباشرة
-  }).select().maybeSingle();
+  // 1) insert
+  const insertRes = await supabaseClient
+    .from("products")
+    .insert({
+      name: pName,
+      category: pCategory,
+      description: pDescription,
+      price: pPrice,
+      stock: pStock,
+      image_url: imageUrlInput // مؤقت
+    })
+    .select()
+    .maybeSingle();
 
   if(insertRes.error) return alert("فشل إضافة المنتج: " + insertRes.error.message);
 
   const newId = insertRes.data?.id;
-  if(!newId) {
-    // لو الرجوع ما كان يحتوي id، نعمل query بسيط
-    // لكن غالبًا select().maybeSingle يعطينا id.
+  if(!newId){
     return alert("تمت الإضافة لكن تعذر قراءة id للمنتج");
   }
 
-  // 2) إذا في رفع صورة: ارفعها واحفظ image_url
+  // 2) upload (إن وجد) ثم update image_url
   try{
     let finalImageUrl = imageUrlInput;
 
@@ -607,10 +616,10 @@ window.createProduct = async function(){
     }
   }catch(e){
     console.error(e);
-    alert("تم إنشاء المنتج لكن فشل رفع/حفظ الصورة: " + (e?.message || e));
+    alert("تمت الإضافة لكن فشل رفع/حفظ الصورة: " + (e?.message || e));
   }
 
-  // Clear inputs
+  // reset UI
   $("p_name").value = "";
   $("p_category").value = "";
   $("p_description").value = "";
@@ -618,7 +627,7 @@ window.createProduct = async function(){
   $("p_stock").value = "";
   $("p_image_url").value = "";
   $("p_image_file").value = "";
-  $("p_image_preview").innerHTML = "لم يتم اختيار صورة";
+  $("p_image_preview").textContent = "لم يتم اختيار صورة";
 
   await loadProducts();
 };
@@ -637,7 +646,7 @@ async function loadProducts(){
   (res.data || []).forEach(p => {
     const id = p.id;
     const name = p.name ?? "";
-    const category = p.category_name ?? p.category ?? ""; // لو عندك category أو category_name
+    const category = p.category ?? p.category_name ?? ""; // دعم لو عندك قديم
     const price = Number(p.price ?? 0).toFixed(2);
     const stock = Number(p.stock ?? 0);
 
@@ -660,11 +669,14 @@ async function loadProducts(){
   });
 }
 
-// تعديل المنتج + رفع صورة داخل نافذة prompt (بـ input file hidden)
 window.promptEditProduct = async function(id){
-  const res = await supabaseClient.from("products").select("*").eq("id", id).maybeSingle();
-  if(res.error || !res.data) return alert("فشل جلب بيانات المنتج");
+  const res = await supabaseClient
+    .from("products")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
 
+  if(res.error || !res.data) return alert("فشل جلب بيانات المنتج");
   const p = res.data;
 
   const newName = prompt("اسم المنتج:", p.name ?? "");
@@ -685,9 +697,10 @@ window.promptEditProduct = async function(id){
   const newImgUrl = prompt("صورة (URL) (اختياري):", p.image_url ?? "");
   if(newImgUrl === null) return;
 
-  // سؤال اختيار رفع صورة
+  // هل يرفع صورة؟
   const wantUpload = confirm("هل تريد رفع صورة من جهازك؟ (OK = نعم)");
   let file = null;
+
   if(wantUpload){
     file = await new Promise(resolve => {
       const input = document.createElement("input");
@@ -698,24 +711,27 @@ window.promptEditProduct = async function(id){
     });
   }
 
+  // update base
   const payload = {
     name: newName.trim(),
-    category: newCategory.trim(), // ✅ حسب المشكلة عندك
+    category: newCategory.trim(), // ✅ category
     description: newDesc.trim(),
     price: Number(newPrice || 0),
     stock: Number(newStock || 0),
     image_url: newImgUrl.trim() || null
   };
 
-  // update base data
   const up = await supabaseClient.from("products").update(payload).eq("id", id);
   if(up.error) return alert("فشل التعديل: " + up.error.message);
 
-  // if uploaded file, overwrite image_url
+  // if uploaded, overwrite image_url
   try{
     if(file){
       const finalUrl = await uploadImageFile(file, `product-${id}`);
-      const up2 = await supabaseClient.from("products").update({ image_url: finalUrl }).eq("id", id);
+      const up2 = await supabaseClient.from("products")
+        .update({ image_url: finalUrl })
+        .eq("id", id);
+
       if(up2.error) throw up2.error;
     }
   }catch(e){
