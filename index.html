@@ -380,21 +380,6 @@ nav a:hover::after{ width:100%; }
   margin-bottom:12px;
 }
 
-.category-card button{
-  border:0;
-  background:transparent;
-  color:var(--brown);
-  font-weight:bold;
-  font-size:16px;
-}
-
-.category-card small{
-  display:block;
-  color:#a38b75;
-  font-size:11px;
-  margin-top:3px;
-}
-
 .center{ text-align:center; margin-top:28px; }
 
 .all-btn{
@@ -403,11 +388,6 @@ nav a:hover::after{ width:100%; }
   color:var(--brown);
   border-radius:4px;
   padding:9px 18px;
-}
-.all-btn:hover{
-  color:#fff;
-  background:var(--brown);
-  transform:translateY(-2px);
 }
 
 /* المنتجات */
@@ -531,15 +511,6 @@ nav a:hover::after{ width:100%; }
   font-size:12px;
 }
 
-.add-btn:hover{ background:var(--gold); transform:translateY(-2px); }
-
-.add-btn:disabled{
-  background:#aaa;
-  cursor:not-allowed;
-  transform:none;
-}
-
-/* عن المتجر */
 .about{
   position:relative;
   background:
@@ -549,42 +520,6 @@ nav a:hover::after{ width:100%; }
   text-align:center;
   overflow:hidden;
 }
-
-.about::before{
-  content:"𓅃";
-  position:absolute;
-  left:5%;
-  top:-55px;
-  color:rgba(255,255,255,.05);
-  font-size:280px;
-}
-
-.about::after{
-  content:"𓅃";
-  position:absolute;
-  right:5%;
-  top:-55px;
-  color:rgba(255,255,255,.05);
-  font-size:280px;
-  transform:scaleX(-1);
-  pointer-events:none;
-}
-
-.about .container{ position:relative; z-index:1; }
-
-.about h2{
-  font-family:'Playfair Display',Georgia,serif;
-  font-size:38px;
-}
-
-.about p{
-  max-width:680px;
-  margin:13px auto;
-  color:#eaded0;
-  font-size:14px;
-}
-
-/* الفوتر */
 footer{
   background:#24130c;
   color:#eaded0;
@@ -619,7 +554,6 @@ footer{
   transition:.4s cubic-bezier(.77,0,.18,1);
   box-shadow:15px 0 45px rgba(0,0,0,.18);
 }
-
 .cart-panel.open{ left:0; }
 
 .cart-head{
@@ -631,19 +565,12 @@ footer{
   margin-bottom:18px;
 }
 
-.cart-head h2{
-  color:var(--brown);
-  font-family:'Playfair Display',Georgia,serif;
-}
-
 .close{
   border:0;
   background:transparent;
   color:var(--brown);
   font-size:29px;
 }
-
-.close:hover{ color:var(--red); transform:rotate(90deg); }
 
 .cart-item{
   display:grid;
@@ -657,9 +584,6 @@ footer{
   border-radius:3px;
   box-shadow:var(--shadow-soft);
 }
-
-.cart-item h4{ color:var(--brown); font-size:14px; }
-.cart-item p{ color:#927c6a; font-size:12px; }
 
 .qty{
   display:flex;
@@ -675,8 +599,6 @@ footer{
   background:#fff;
   color:var(--brown);
 }
-
-.qty button:hover{ background:var(--brown); color:#fff; }
 
 .remove{
   border:0;
@@ -697,7 +619,6 @@ footer{
   font-size:18px;
 }
 
-/* الزر (تم تغييره نصًا فقط إن رغبت) */
 .whatsapp{
   width:100%;
   border:0;
@@ -708,7 +629,6 @@ footer{
   margin-top:16px;
   box-shadow:0 7px 15px rgba(25,135,84,.18);
 }
-.whatsapp:hover{ background:#126d43; transform:translateY(-2px); }
 
 .customer-form{ display:none; margin-top:14px; }
 .customer-form.show{ display:block; animation:fadeUp .35s ease both; }
@@ -723,78 +643,16 @@ footer{
   outline:none;
 }
 
-.customer-form input:focus,.customer-form textarea:focus{
-  border-color:var(--gold);
-  box-shadow:0 0 0 3px rgba(184,149,87,.14);
-}
-
 /* متجاوب */
 @media(max-width:900px){
-  nav{ gap:15px; }
   .products{ grid-template-columns:repeat(2,1fr); }
-  .product-img{ height:280px; }
-
-  .nav{
-    min-height:auto;
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    padding:12px 0;
-    gap:10px;
-  }
-  .brand{ width:100%; justify-content:center; }
-  .nav-actions{ width:100%; justify-content:center; }
 }
-
 @media(max-width:600px){
-  .about::before{ left:8px; top:-35px; font-size:170px; }
-  .about::after{ right:8px; top:-35px; font-size:170px; }
-  header{ position:relative; }
-
-  nav{
-    width:100%;
-    gap:17px;
-    overflow-x:auto;
-    white-space:nowrap;
-    padding:2px 4px 7px;
-    justify-content:center;
-  }
-
-  nav a{ font-size:12px; }
-
-  .hero{ min-height:560px; padding:35px 0 65px; }
-  .hero::before{ width:330px; height:330px; right:-160px; top:-70px; }
-  .hero h1{ font-size:38px; letter-spacing:4px; }
-  .hero p{ font-size:13px; padding:0 15px; }
-
-  .section{ padding:60px 0; }
-  .heading h2{ font-size:30px; }
-
-  .category-card{ width:calc(50% - 8px); padding:9px; }
-  .category-placeholder{ height:92px; font-size:33px; }
-
   .products{ grid-template-columns:repeat(2,1fr); gap:10px; }
-  .product-img{ height:220px; }
-
-  .product-info{ min-height:250px; padding:11px; }
-  .product-info h3{ font-size:14px; }
-  .product-info p{ font-size:11px; line-height:1.65; }
-
-  .product-bottom{ display:block; }
-  .price{ display:block; margin-bottom:8px; font-size:16px; }
-  .add-btn{ width:100%; font-size:11px; }
-
-  .about h2{ font-size:30px; }
-  .about p{ font-size:13px; }
-
-  .cart-panel{ padding:18px; }
+  nav{ justify-content:center; overflow-x:auto; white-space:nowrap; }
 }
-
 @media(max-width:380px){
   .products{ grid-template-columns:1fr; }
-  .product-img{ height:270px; }
-  .category-card{ width:100%; }
-  .hero h1{ font-size:32px; }
 }
 </style>
 </head>
@@ -892,7 +750,7 @@ footer{
 
 </main>
 
-<section id="adminPage" class="hidden"></section>
+<div id="adminPage" class="hidden"></div>
 
 <div id="overlay" class="overlay" onclick="closeCart()"></div>
 
@@ -1004,11 +862,6 @@ async function loadAllData(){
     .from("products")
     .select("*")
     .order("created_at",{ascending:false});
-
-  const ordersResult = await supabaseClient
-    .from("orders")
-    .select("*")
-    .order("created_at",{ascending:false}); // موجود عندك بس غير مستخدم
 
   const settingsResult = await supabaseClient
     .from("site_settings")
@@ -1325,7 +1178,6 @@ function showCustomerForm(){
   document.getElementById("customerForm").classList.add("show");
 }
 
-/* ========= ✅ تم الاستبدال هنا: واتساب -> دفع عربكس ========= */
 async function sendOrder(){
   if(!cart.length){
     alert("السلة فارغة");
@@ -1337,7 +1189,6 @@ async function sendOrder(){
   const address = document.getElementById("customerAddress").value.trim();
   const note = document.getElementById("customerNote").value.trim();
 
-  // بدون إيميل لأن عربكس يطلبه لاحقًا
   if(!name || !phone || !address){
     alert("يرجى تعبئة الاسم ورقم الهاتف والعنوان");
     return;
@@ -1374,24 +1225,23 @@ async function sendOrder(){
     return;
   }
 
-  // (اختياري) نص للملاحظات داخل عربكس إن كان يدعم notes
   let notesText = "";
   if(note) notesText += note;
-  // أضف سلة سريعة لو تحب
+
   if(cart.length){
     const brief = cart.map(i => `${i.name} × ${i.quantity}`).join("، ");
     notesText = (notesText ? (notesText + "\n") : "") + `المنتجات: ${brief}`;
   }
 
-  // ✅ رابط الدفع الحر - كي نت / بطاقات / آبل باي
+  // ✅ رابط الدفع عربكس
   const PAYMENT_URL = "https://arabexkw.com/axpay.php?open=1&acc=96566771506";
 
-  // مبني على الأسماء الشائعة. إذا لم يتم تعبئة الحقول عند عربكس قلّي وسأعدلها وفق مفاتيحهم الدقيقة.
+  // ✅ مفاتيح بديلة لتعبئة الاسم/الهاتف/العنوان
   const paymentQuery =
     `&amount=${encodeURIComponent(total.toFixed(2))}` +
-    `&name=${encodeURIComponent(name)}` +
-    `&phone=${encodeURIComponent(phone)}` +
-    `&address=${encodeURIComponent(address)}` +
+    `&cust_name=${encodeURIComponent(name)}` +
+    `&cust_phone=${encodeURIComponent(phone)}` +
+    `&cust_address=${encodeURIComponent(address)}` +
     `&notes=${encodeURIComponent(notesText || "")}`;
 
   const paymentUrl = PAYMENT_URL + paymentQuery;
@@ -1421,7 +1271,6 @@ async function startApp(){
 
   renderCart();
 }
-
 startApp();
 </script>
 
