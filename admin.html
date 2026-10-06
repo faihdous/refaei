@@ -298,9 +298,12 @@
 
           <!-- ✅ عربكس -->
           <div class="field">
-            <label>عربكس: حساب الدفع (رقم)</label>
+            <label>عربكس: رابط الدفع الكامل</label>
             <input id="st_payment_acc" />
-            <div class="small-muted" style="margin-top:2px;">مثال: 96566771506</div>
+            <div class="small-muted" style="margin-top:2px;">
+              مثال:
+              https://arabexkw.com/axpay.php?open=1&acc=96566771506
+            </div>
           </div>
 
           <div class="row-actions">
@@ -651,7 +654,7 @@ window.saveSiteSettings = async function(){
     about_text: $("st_about_text").value.trim(),
     footer: $("st_footer").value.trim(),
     whatsapp: $("st_whatsapp").value.trim(),
-    payment_acc: $("st_payment_acc").value.trim() // ✅ حفظ حساب عربكس
+    payment_acc: $("st_payment_acc").value.trim() // ✅ حفظ قيمة الحقل كما هي (رابط كامل)
   };
 
   const res = await supabaseClient
