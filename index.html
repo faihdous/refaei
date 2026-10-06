@@ -884,7 +884,7 @@ footer{
   </div>
 </aside>
 
-<!-- ✅ واتساب ثابت (الرابط يتغير من Settings) -->
+<!-- ✅ واتساب ثابت -->
 <div class="whatsapp-consult" id="whatsappConsult">
   <div class="whatsapp-consult-inner">
     <div class="whatsapp-consult-text">
@@ -928,7 +928,7 @@ const defaultSettings = {
   aboutText:"نختار لكم المنتجات بعناية لنقدم منتجات تجمع بين الجودة والذوق والأصالة.",
   footer:"© 2025 REFAEI — جميع الحقوق محفوظة",
   whatsapp:"96566771506",
-  payment_acc:"96566771506" // ✅ حساب عربكس (بدل hard-code)
+  payment_acc:"96566771506"
 };
 
 let settings = {...defaultSettings};
@@ -1027,23 +1027,10 @@ function renderSettings(){
   document.getElementById("aboutTitle").textContent = settings.aboutTitle;
   document.getElementById("aboutText").textContent = settings.aboutText;
   document.getElementById("footerText").textContent = settings.footer;
-
-  // ✅ حدث رابط واتساب من settings
   updateWhatsAppLink();
 }
 
-function getCategoryEmoji(name){
-  const text = String(name || "").toLowerCase();
-
-  if(text.includes("قماش") || text.includes("أقمشة") || text.includes("اقمشه")) return "🧵";
-  if(text.includes("شال") || text.includes("شالات") || text.includes("كشمير")) return "🧣";
-  if(text.includes("مسباح") || text.includes("مسابيح")) return "📿";
-  if(text.includes("بخور")) return "🌫️";
-  if(text.includes("ذهب") || text.includes("مجوهرات")) return "💎";
-  if(text.includes("هدايا") || text.includes("هدية")) return "🎁";
-
-  return "🛍️";
-}
+/* ... بقية الكود بدون تغيير ... */
 
 function renderCategories(){
   const list = document.getElementById("categoriesList");
@@ -1074,6 +1061,19 @@ function renderCategories(){
       </div>
     `;
   }).join("");
+}
+
+function getCategoryEmoji(name){
+  const text = String(name || "").toLowerCase();
+
+  if(text.includes("قماش") || text.includes("أقمشة") || text.includes("اقمشه")) return "🧵";
+  if(text.includes("شال") || text.includes("شالات") || text.includes("كشمير")) return "🧣";
+  if(text.includes("مسباح") || text.includes("مسابيح")) return "📿";
+  if(text.includes("بخور")) return "🌫️";
+  if(text.includes("ذهب") || text.includes("مجوهرات")) return "💎";
+  if(text.includes("هدايا") || text.includes("هدية")) return "🎁";
+
+  return "🛍️";
 }
 
 function renderProducts(categoryName = ""){
@@ -1359,16 +1359,29 @@ async function sendOrder(){
     return;
   }
 
-  // ✅ رابط عربكس من settings.payment_acc
-  const acc = digitsOnly(settings.payment_acc);
-  if(!acc){
+  // ✅ التعديل هنا: payment_acc ممكن يكون رابط كامل أو رقم فقط
+  const paymentValue = String(settings.payment_acc ?? "").trim();
+  if(!paymentValue){
     alert("حساب عربكس غير مضبوط في الإعدادات (الإدارة).");
     return;
   }
 
-  const PAYMENT_URL = `https://arabexkw.com/axpay.php?open=1&acc=${acc}`;
-  const paymentQuery = `&amount=${encodeURIComponent(total.toFixed(2))}`;
-  const paymentUrl = PAYMENT_URL + paymentQuery;
+  let paymentUrl = "";
+
+  // إذا كان رابط كامل (يبدأ بـ http/https) نخليه كما هو ونضيف amount
+  if(/^https?:\/\//i.test(paymentValue)){
+    const hasQuery = paymentValue.includes("?");
+    const joiner = hasQuery ? "&" : "?";
+    paymentUrl = `${paymentValue}${joiner}amount=${encodeURIComponent(total.toFixed(2))}`;
+  }else{
+    // إذا كان رقم فقط، نبني الرابط من جديد (احتياطي)
+    const acc = digitsOnly(paymentValue);
+    if(!acc){
+      alert("حساب عربكس غير مضبوط في الإعدادات (الإدارة).");
+      return;
+    }
+    paymentUrl = `https://arabexkw.com/axpay.php?open=1&acc=${acc}&amount=${encodeURIComponent(total.toFixed(2))}`;
+  }
 
   window.open(paymentUrl, "_blank");
 
@@ -1394,7 +1407,6 @@ async function startApp(){
   renderCategories();
   renderCart();
 
-  // ✅ واتساب يظهر فقط عند قرب/ظهور الفوتر
   const consult = document.getElementById('whatsappConsult');
   const footer = document.getElementById('footerText');
 
