@@ -288,7 +288,21 @@
           <div class="field"><label>About Title</label><input id="st_about_title" /></div>
           <div class="field"><label>About Text</label><textarea id="st_about_text"></textarea></div>
           <div class="field"><label>Footer</label><textarea id="st_footer"></textarea></div>
-          <div class="field"><label>WhatsApp (رقم بدون رابط)</label><input id="st_whatsapp" /></div>
+
+          <!-- ✅ واتساب -->
+          <div class="field">
+            <label>WhatsApp (رقم بدون رابط)</label>
+            <input id="st_whatsapp" />
+            <div class="small-muted" style="margin-top:2px;">مثال: 96566771506</div>
+          </div>
+
+          <!-- ✅ عربكس -->
+          <div class="field">
+            <label>عربكس: حساب الدفع (رقم)</label>
+            <input id="st_payment_acc" />
+            <div class="small-muted" style="margin-top:2px;">مثال: 96566771506</div>
+          </div>
+
           <div class="row-actions">
             <button class="btn" type="button" onclick="window.saveSiteSettings()">حفظ الإعدادات</button>
           </div>
@@ -376,7 +390,6 @@
     <div class="card">
       <h2 class="section-title">طلبات العملاء</h2>
 
-      <!-- ✅ CSV only -->
       <div class="row-actions" style="margin-top:10px;">
         <button class="btn btn-secondary" type="button" onclick="window.exportInvoicesCSV()">
           تحميل الفواتير CSV
@@ -536,7 +549,8 @@ const defaultSettings = {
   aboutTitle:"عن REFAEI",
   aboutText:"نختار لكم المنتجات بعناية لنقدم منتجات تجمع بين الجودة والذوق والأصالة.",
   footer:"© 2025 REFAEI — جميع الحقوق محفوظة",
-  whatsapp:"96566771506"
+  whatsapp:"96566771506",
+  payment_acc:"96566771506"
 };
 
 /** ====== RPC Admin ====== **/
@@ -625,7 +639,7 @@ async function guardOnLoad(){
 }
 guardOnLoad();
 
-/** ====== Site settings ====== **/
+/** ====== Site settings (✅ واتساب + عربكس قابلين للتعديل) ====== **/
 window.saveSiteSettings = async function(){
   const payload = {
     id: 1,
@@ -636,16 +650,25 @@ window.saveSiteSettings = async function(){
     about_title: $("st_about_title").value.trim(),
     about_text: $("st_about_text").value.trim(),
     footer: $("st_footer").value.trim(),
-    whatsapp: $("st_whatsapp").value.trim()
+    whatsapp: $("st_whatsapp").value.trim(),
+    payment_acc: $("st_payment_acc").value.trim() // ✅ حفظ حساب عربكس
   };
 
-  const res = await supabaseClient.from("site_settings").upsert(payload, { onConflict: "id" });
+  const res = await supabaseClient
+    .from("site_settings")
+    .upsert(payload, { onConflict: "id" });
+
   if(res.error) return alert("فشل حفظ الإعدادات: " + res.error.message);
   alert("تم حفظ الإعدادات ✅");
 };
 
 async function loadSiteSettings(){
-  const res = await supabaseClient.from("site_settings").select("*").eq("id", 1).maybeSingle();
+  const res = await supabaseClient
+    .from("site_settings")
+    .select("*")
+    .eq("id", 1)
+    .maybeSingle();
+
   if(res.error || !res.data){
     fillSettings(defaultSettings);
     return;
@@ -660,7 +683,8 @@ async function loadSiteSettings(){
     aboutTitle: row.about_title ?? defaultSettings.aboutTitle,
     aboutText: row.about_text ?? defaultSettings.aboutText,
     footer: row.footer ?? defaultSettings.footer,
-    whatsapp: row.whatsapp ?? defaultSettings.whatsapp
+    whatsapp: row.whatsapp ?? defaultSettings.whatsapp,
+    payment_acc: row.payment_acc ?? (row.payment_acc_number ?? defaultSettings.payment_acc)
   });
 }
 
@@ -673,6 +697,7 @@ function fillSettings(s){
   $("st_about_text").value = s.aboutText ?? "";
   $("st_footer").value = s.footer ?? "";
   $("st_whatsapp").value = s.whatsapp ?? "";
+  $("st_payment_acc").value = s.payment_acc ?? "";
 }
 
 /** ====== Load All ====== **/
@@ -1039,12 +1064,7 @@ window.deleteOrder = async function(id){
   await loadOrders();
 };
 
-/* =========================================================
-   ✅ Export CSV only (fix: no weird symbols)
-   - إضافة BOM لـ UTF-8
-   - items(jsonb) -> نص واضح
-   ========================================================= */
-
+/* ===== CSV ===== */
 function downloadBlob(filename, blob){
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -1056,9 +1076,8 @@ function downloadBlob(filename, blob){
   URL.revokeObjectURL(url);
 }
 
-// لإزالة "الرموز" في Excel: غالبًا السبب ترميز CSV
 function toUTF8BOM(){
-  return "\uFEFF"; // UTF-8 BOM
+  return "\uFEFF";
 }
 
 function csvEscape(value){
@@ -1073,7 +1092,6 @@ function itemsToText(items){
   try{
     if(items === null || items === undefined) return "";
     if(typeof items === "string"){
-      // إذا كانت string فيها JSON
       try{ items = JSON.parse(items); }catch(e){ return items; }
     }
 
@@ -1087,12 +1105,10 @@ function itemsToText(items){
         if(name) parts.push(String(name));
         if(qty !== "" && qty !== null && qty !== undefined) parts.push(`x ${qty}`);
         if(price !== "" && price !== null && price !== undefined) parts.push(String(price));
-
         return parts.join(" ");
       }).filter(Boolean).join(" | ");
     }
 
-    // لو object/شيء آخر
     if(typeof items === "object"){
       return JSON.stringify(items);
     }
@@ -1107,14 +1123,12 @@ function ordersToCSV(rows){
   const sample = (rows && rows[0]) ? rows[0] : null;
   const has = (key) => sample && Object.prototype.hasOwnProperty.call(sample, key);
 
-  // أعمدة حسب اللي ظاهر عندك بالصورة + الموجود بالبيانات
   const headers = ["id"];
 
   if(has("customer_name")) headers.push("customer_name");
   if(has("phone")) headers.push("phone");
   if(has("address")) headers.push("address");
 
-  // في جدولك واضح فيه note/items/items_count/total/created_at
   if(has("note")) headers.push("note");
   headers.push("items");
   if(has("items_count")) headers.push("items_count");
@@ -1126,7 +1140,6 @@ function ordersToCSV(rows){
 
   (rows || []).forEach(r => {
     const created = r.created_at ? new Date(r.created_at).toLocaleString("ar") : "";
-
     const rowMap = {
       id: r.id ?? "",
       customer_name: r.customer_name ?? "",
@@ -1138,7 +1151,6 @@ function ordersToCSV(rows){
       total: r.total ?? "",
       created_at: created
     };
-
     const line = headers.map(h => csvEscape(rowMap[h] ?? "")).join(",");
     lines.push(line);
   });
@@ -1155,8 +1167,6 @@ window.exportInvoicesCSV = async function(){
   if(res.error) return alert("فشل تصدير CSV: " + res.error.message);
 
   const csv = ordersToCSV(res.data || []);
-
-  // ✅ BOM لحل مشكلة الرموز في Excel
   const blob = new Blob([toUTF8BOM() + csv], { type: "text/csv;charset=utf-8;" });
   const filename = `invoices-${new Date().toISOString().slice(0,10)}.csv`;
 
