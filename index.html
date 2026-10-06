@@ -65,9 +65,9 @@ button{ cursor:pointer; transition:.25s ease; }
   position:fixed;
   left:0;
   right:0;
-  /* فوق واتساب الثابت (عدّل الرقم لو واتساب عندك أكبر/أصغر) */
+  /* فوق واتساب الثابت */
   bottom:70px;
-  z-index:10;                 /* أقل من واتساب (9999) وأعلى من الخلفية */
+  z-index:10;
   pointer-events:none;
   display:flex;
   justify-content:space-between;
@@ -98,7 +98,6 @@ button{ cursor:pointer; transition:.25s ease; }
   0%,100% { transform: translateY(0) scaleX(1); }
   50%     { transform: translateY(-3px) rotate(-2deg) scaleX(1); }
 }
-/* لأننا قلبنا scaleX في كل واحد، لازم نضمن استمرار الاتجاه */
 .emoji-eagles .eagle-left{ animation-name:eagleLookLeft; }
 .emoji-eagles .eagle-right{ animation-name:eagleLookRight; }
 
@@ -596,12 +595,16 @@ footer{
   width:min(450px,94%);
   height:100vh;
   overflow:auto;
+
   background:
     linear-gradient(rgba(248,245,239,.96),rgba(238,233,223,.98)),
     var(--bg);
   padding:24px;
   transition:.4s cubic-bezier(.77,0,.18,1);
   box-shadow:15px 0 45px rgba(0,0,0,.18);
+
+  /* ✅ تعديل مهم: مساحة إضافية تحت زر واتساب حتى زر الدفع ما ينغطى */
+  padding-bottom: 140px; /* عدّل الرقم لو احتجت (مثلاً 120 أو 160) */
 }
 .cart-panel.open{ left:0; }
 
@@ -681,6 +684,11 @@ footer{
 
 .customer-form{ display:none; margin-top:14px; }
 .customer-form.show{ display:block; animation:fadeUp .35s ease both; }
+
+/* ✅ (اختياري) مساحة داخل الفورم إذا كان زر الإرسال قريب من الأسفل */
+.customer-form{
+  padding-bottom: 10px;
+}
 
 .customer-form input,.customer-form textarea{
   width:100%;
@@ -1042,7 +1050,6 @@ async function loadAllData(){
 }
 
 async function loadSettingsOnce(){
-  // نفس منطق الكود القديم: id = 1
   const settingsResult = await supabaseClient
     .from("site_settings")
     .select("*")
@@ -1416,7 +1423,6 @@ async function sendOrder(){
     return;
   }
 
-  // ✅ هنا نستخدم settings المحدثة عبر polling
   const paymentValue = String(settings.payment_acc ?? "").trim();
   if(!paymentValue){
     alert("حساب عربكس غير مضبوط في الإعدادات (الإدارة).");
@@ -1455,7 +1461,7 @@ async function sendOrder(){
 
 // ======= Polling settings =======
 let settingsPollingTimer = null;
-const SETTINGS_POLL_MS = 10000; // ✅ كل 10 ثواني
+const SETTINGS_POLL_MS = 10000;
 
 async function startSettingsPolling(){
   if(settingsPollingTimer) clearInterval(settingsPollingTimer);
@@ -1466,7 +1472,6 @@ async function startSettingsPolling(){
       renderSettings();
     }catch(err){
       console.warn("Polling settings error:", err);
-      // لا نوقف التطبيق بسبب خطأ مؤقت
     }
   }, SETTINGS_POLL_MS);
 }
@@ -1481,11 +1486,9 @@ async function startApp(){
   renderCategories();
   renderCart();
 
-  // ✅ واتساب يظهر دائم
   const consult = document.getElementById('whatsappConsult');
   if(consult) consult.classList.add('show');
 
-  // ✅ بدء polling
   startSettingsPolling();
 }
 startApp();
