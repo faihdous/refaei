@@ -85,16 +85,14 @@ header{
   box-shadow:0 5px 25px rgba(75,39,24,.05);
 }
 
-/* ✅ تعديل: خلّي روابط المتجر في المنتصف مع بقاء السلة بمكانها */
 .nav{
   min-height:82px;
   display:grid;
-  grid-template-columns: auto 1fr auto; /* brand | nav | cart */
+  grid-template-columns: auto 1fr auto;
   align-items:center;
   gap:25px;
 }
 
-/* left/right placement في RTL: العنصر الأول (brand) يمين، والعنصر الأخير (السلة) يسار */
 .brand{
   display:flex;
   align-items:center;
@@ -736,7 +734,6 @@ footer{
 @media(max-width:600px){
   .products{ grid-template-columns:repeat(2,1fr); gap:10px; }
   nav{ justify-content:center; overflow-x:auto; white-space:nowrap; }
-
   .whatsapp-consult-text{ min-width:120px; }
 }
 @media(max-width:380px){
@@ -912,7 +909,6 @@ footer{
 <script>
 const SUPABASE_URL = "https://mvsdblzjzrscnfgiqxan.supabase.co";
 const SUPABASE_KEY = "sb_publishable_KWMjd7EDbWtH2Ay7TdJwZg_s2et1Hc7";
-
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let categories = [];
@@ -1027,10 +1023,9 @@ function renderSettings(){
   document.getElementById("aboutTitle").textContent = settings.aboutTitle;
   document.getElementById("aboutText").textContent = settings.aboutText;
   document.getElementById("footerText").textContent = settings.footer;
-  updateWhatsAppLink();
-}
 
-/* ... بقية الكود بدون تغيير ... */
+  updateWhatsAppLink(); // ✅ رابط واتساب للإستفسار
+}
 
 function renderCategories(){
   const list = document.getElementById("categoriesList");
@@ -1359,7 +1354,6 @@ async function sendOrder(){
     return;
   }
 
-  // ✅ التعديل هنا: payment_acc ممكن يكون رابط كامل أو رقم فقط
   const paymentValue = String(settings.payment_acc ?? "").trim();
   if(!paymentValue){
     alert("حساب عربكس غير مضبوط في الإعدادات (الإدارة).");
@@ -1368,13 +1362,11 @@ async function sendOrder(){
 
   let paymentUrl = "";
 
-  // إذا كان رابط كامل (يبدأ بـ http/https) نخليه كما هو ونضيف amount
   if(/^https?:\/\//i.test(paymentValue)){
     const hasQuery = paymentValue.includes("?");
     const joiner = hasQuery ? "&" : "?";
     paymentUrl = `${paymentValue}${joiner}amount=${encodeURIComponent(total.toFixed(2))}`;
   }else{
-    // إذا كان رقم فقط، نبني الرابط من جديد (احتياطي)
     const acc = digitsOnly(paymentValue);
     if(!acc){
       alert("حساب عربكس غير مضبوط في الإعدادات (الإدارة).");
@@ -1407,6 +1399,7 @@ async function startApp(){
   renderCategories();
   renderCart();
 
+  // ✅ إظهار واتساب قرب الفوتر
   const consult = document.getElementById('whatsappConsult');
   const footer = document.getElementById('footerText');
 
