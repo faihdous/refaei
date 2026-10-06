@@ -641,19 +641,29 @@ footer{
   outline:none;
 }
 
-/* =========================
-   ✅ واتساب ثابت أسفل الصفحة
-   ========================= */
+/* ✅ واتساب ثابت أسفل الصفحة لكن يظهر قرب الفوتر */
 .whatsapp-consult{
   position:fixed;
   left:0;
   right:0;
   bottom:0;
   z-index:60;
+
   display:flex;
   justify-content:center;
   padding:12px 14px;
   background:linear-gradient(to top, rgba(238,233,223,1), rgba(238,233,223,.0));
+
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .25s ease, visibility .25s ease;
+}
+
+.whatsapp-consult.show{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
 }
 
 .whatsapp-consult-inner{
@@ -874,8 +884,8 @@ footer{
   </div>
 </aside>
 
-<!-- ✅ زر واتساب ثابت أسفل الصفحة -->
-<div class="whatsapp-consult">
+<!-- ✅ واتساب ثابت (الرابط يتغير من Settings) -->
+<div class="whatsapp-consult" id="whatsappConsult">
   <div class="whatsapp-consult-inner">
     <div class="whatsapp-consult-text">
       <div class="title">للإستفسار</div>
@@ -883,7 +893,8 @@ footer{
     </div>
 
     <a class="wa-btn"
-       href="https://wa.me/96566771506"
+       id="waConsultLink"
+       href="#"
        target="_blank"
        rel="noopener noreferrer"
        aria-label="مراسلة واتساب">
@@ -893,7 +904,6 @@ footer{
           <path d="M19.97 18.7c-.22-.11-1.32-.65-1.52-.72-.2-.07-.35-.11-.5.11-.15.22-.58.72-.71.87-.13.15-.26.17-.48.06-.22-.11-.95-.35-1.81-1.11-.67-.6-1.12-1.34-1.25-1.56-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.39.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.06-.11-.5-1.21-.68-1.66-.18-.45-.36-.39-.5-.4-.13-.01-.28-.01-.43-.01-.15 0-.39.06-.6.28-.22.22-.81.79-.81 1.93 0 1.14.83 2.24.94 2.39.11.15 1.62 2.46 3.91 3.45.55.24 1 .38 1.34.49.56.18 1.07.16 1.48.1.45-.07 1.32-.54 1.5-1.06.18-.52.18-.96.13-1.06-.05-.11-.2-.17-.42-.28Z" fill="#25D366"/>
         </svg>
       </span>
-
       <span>واتساب</span>
     </a>
   </div>
@@ -917,7 +927,8 @@ const defaultSettings = {
   aboutTitle:"عن REFAEI",
   aboutText:"نختار لكم المنتجات بعناية لنقدم منتجات تجمع بين الجودة والذوق والأصالة.",
   footer:"© 2025 REFAEI — جميع الحقوق محفوظة",
-  whatsapp:"96566771506"
+  whatsapp:"96566771506",
+  payment_acc:"96566771506" // ✅ حساب عربكس (بدل hard-code)
 };
 
 let settings = {...defaultSettings};
@@ -986,9 +997,39 @@ async function loadAllData(){
       aboutTitle:row.about_title ?? defaultSettings.aboutTitle,
       aboutText:row.about_text ?? defaultSettings.aboutText,
       footer:row.footer ?? defaultSettings.footer,
-      whatsapp:row.whatsapp ?? defaultSettings.whatsapp
+      whatsapp:row.whatsapp ?? defaultSettings.whatsapp,
+      payment_acc:row.payment_acc ?? (row.payment_acc_number ?? defaultSettings.payment_acc)
     };
   }
+}
+
+function digitsOnly(x){
+  return String(x ?? "").replace(/\D/g,'');
+}
+
+function updateWhatsAppLink(){
+  const link = document.getElementById("waConsultLink");
+  if(!link) return;
+
+  const phone = digitsOnly(settings.whatsapp);
+  if(!phone){
+    link.href = "#";
+    return;
+  }
+  link.href = `https://wa.me/${phone}`;
+}
+
+function renderSettings(){
+  document.getElementById("topbarText").textContent = settings.topbar;
+  document.getElementById("brandName").textContent = settings.brandName;
+  document.getElementById("heroTitle").textContent = settings.heroTitle;
+  document.getElementById("heroDescription").textContent = settings.heroDescription;
+  document.getElementById("aboutTitle").textContent = settings.aboutTitle;
+  document.getElementById("aboutText").textContent = settings.aboutText;
+  document.getElementById("footerText").textContent = settings.footer;
+
+  // ✅ حدث رابط واتساب من settings
+  updateWhatsAppLink();
 }
 
 function getCategoryEmoji(name){
@@ -1002,16 +1043,6 @@ function getCategoryEmoji(name){
   if(text.includes("هدايا") || text.includes("هدية")) return "🎁";
 
   return "🛍️";
-}
-
-function renderSettings(){
-  document.getElementById("topbarText").textContent = settings.topbar;
-  document.getElementById("brandName").textContent = settings.brandName;
-  document.getElementById("heroTitle").textContent = settings.heroTitle;
-  document.getElementById("heroDescription").textContent = settings.heroDescription;
-  document.getElementById("aboutTitle").textContent = settings.aboutTitle;
-  document.getElementById("aboutText").textContent = settings.aboutText;
-  document.getElementById("footerText").textContent = settings.footer;
 }
 
 function renderCategories(){
@@ -1106,7 +1137,6 @@ function renderProducts(categoryName = ""){
   }).join("");
 }
 
-/* --- إظهار/إخفاء الأقسام والمنتجات حسب الأزرار --- */
 function showShoppingContent(){
   document.querySelector(".categories-section")?.classList.add("visible");
   document.getElementById("categories")?.scrollIntoView({ behavior:"smooth" });
@@ -1329,16 +1359,14 @@ async function sendOrder(){
     return;
   }
 
-  let notesText = "";
-  if(note) notesText += note;
-
-  if(cart.length){
-    const brief = cart.map(i => `${i.name} × ${i.quantity}`).join("، ");
-    notesText = (notesText ? (notesText + "\n") : "") + `المنتجات: ${brief}`;
+  // ✅ رابط عربكس من settings.payment_acc
+  const acc = digitsOnly(settings.payment_acc);
+  if(!acc){
+    alert("حساب عربكس غير مضبوط في الإعدادات (الإدارة).");
+    return;
   }
 
-  // ✅ رابط الدفع عربكس (مبلغ فقط)
-  const PAYMENT_URL = "https://arabexkw.com/axpay.php?open=1&acc=96566771506";
+  const PAYMENT_URL = `https://arabexkw.com/axpay.php?open=1&acc=${acc}`;
   const paymentQuery = `&amount=${encodeURIComponent(total.toFixed(2))}`;
   const paymentUrl = PAYMENT_URL + paymentQuery;
 
@@ -1365,6 +1393,24 @@ async function startApp(){
   renderSettings();
   renderCategories();
   renderCart();
+
+  // ✅ واتساب يظهر فقط عند قرب/ظهور الفوتر
+  const consult = document.getElementById('whatsappConsult');
+  const footer = document.getElementById('footerText');
+
+  if(consult && footer){
+    const io = new IntersectionObserver((entries) => {
+      if(entries[0]?.isIntersecting){
+        consult.classList.add('show');
+      }else{
+        consult.classList.remove('show');
+      }
+    },{
+      threshold: 0.08,
+      rootMargin: '0px 0px -12% 0px'
+    });
+    io.observe(footer);
+  }
 }
 startApp();
 </script>
