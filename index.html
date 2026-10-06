@@ -68,7 +68,7 @@ button{ cursor:pointer; transition:.25s ease; }
   width:100%;
   display:flex;
   align-items:center;
-  justify-content:center; /* ✅ بالمنتصف */
+  justify-content:center;
   text-align:center;
 
   padding:8px 15px;
@@ -129,7 +129,7 @@ header{
 nav{
   display:flex;
   align-items:center;
-  justify-content:center; /* ✅ الروابط بالمنتصف */
+  justify-content:center;
   gap:28px;
 }
 
@@ -1236,12 +1236,29 @@ async function sendOrder(){
   // ✅ رابط الدفع عربكس
   const PAYMENT_URL = "https://arabexkw.com/axpay.php?open=1&acc=96566771506";
 
-  // ✅ مفاتيح بديلة لتعبئة الاسم/الهاتف/العنوان
+  // ✅ بدون إيميل: نجرب عدة مفاتيح محتملة للاسم/الهاتف/العنوان
   const paymentQuery =
     `&amount=${encodeURIComponent(total.toFixed(2))}` +
+
+    // الاسم (جرّب أكثر من مفتاح محتمل)
+    `&name=${encodeURIComponent(name)}` +
     `&cust_name=${encodeURIComponent(name)}` +
+    `&customer_name=${encodeURIComponent(name)}` +
+    `&full_name=${encodeURIComponent(name)}` +
+
+    // الهاتف
+    `&phone=${encodeURIComponent(phone)}` +
     `&cust_phone=${encodeURIComponent(phone)}` +
+    `&customer_phone=${encodeURIComponent(phone)}` +
+    `&mobile=${encodeURIComponent(phone)}` +
+
+    // العنوان
+    `&address=${encodeURIComponent(address)}` +
     `&cust_address=${encodeURIComponent(address)}` +
+    `&customer_address=${encodeURIComponent(address)}` +
+    `&addr=${encodeURIComponent(address)}` +
+
+    // الملاحظات (اختياري)
     `&notes=${encodeURIComponent(notesText || "")}`;
 
   const paymentUrl = PAYMENT_URL + paymentQuery;
@@ -1268,7 +1285,6 @@ async function startApp(){
 
   renderSettings();
   renderCategories();
-
   renderCart();
 }
 startApp();
