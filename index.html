@@ -60,6 +60,57 @@ button{ cursor:pointer; transition:.25s ease; }
 .container{ width:min(1180px,92%); margin:auto; }
 .hidden{ display:none!important; }
 
+/* ✅ صقرين إيموجي أسفل الشاشة */
+.emoji-eagles{
+  position:fixed;
+  left:0;
+  right:0;
+  /* فوق واتساب الثابت (عدّل الرقم لو واتساب عندك أكبر/أصغر) */
+  bottom:70px;
+  z-index:10;                 /* أقل من واتساب (9999) وأعلى من الخلفية */
+  pointer-events:none;
+  display:flex;
+  justify-content:space-between;
+  padding:0 14px;
+  align-items:flex-end;
+}
+
+.emoji-eagles .eagle{
+  font-size:44px;
+  line-height:1;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.25));
+  opacity:1;
+  transform-origin:bottom center;
+  animation:eagleLook 3.2s ease-in-out infinite;
+}
+
+/* صقر يطالع لليسار */
+.emoji-eagles .eagle-left{
+  transform: scaleX(-1);
+}
+
+/* صقر يطالع لليمين */
+.emoji-eagles .eagle-right{
+  transform: scaleX(1);
+}
+
+@keyframes eagleLook{
+  0%,100% { transform: translateY(0) scaleX(1); }
+  50%     { transform: translateY(-3px) rotate(-2deg) scaleX(1); }
+}
+/* لأننا قلبنا scaleX في كل واحد، لازم نضمن استمرار الاتجاه */
+.emoji-eagles .eagle-left{ animation-name:eagleLookLeft; }
+.emoji-eagles .eagle-right{ animation-name:eagleLookRight; }
+
+@keyframes eagleLookLeft{
+  0%,100% { transform: translateY(0) scaleX(-1); }
+  50%     { transform: translateY(-3px) rotate(-2deg) scaleX(-1); }
+}
+@keyframes eagleLookRight{
+  0%,100% { transform: translateY(0) scaleX(1); }
+  50%     { transform: translateY(-3px) rotate(2deg) scaleX(1); }
+}
+
 /* الشريط العلوي */
 .topbar{
   background:linear-gradient(90deg,var(--brown-dark),var(--brown),var(--brown-dark));
@@ -730,10 +781,16 @@ footer{
   .products{ grid-template-columns:repeat(2,1fr); gap:10px; }
   nav{ justify-content:center; overflow-x:auto; white-space:nowrap; }
   .whatsapp-consult-text{ min-width:120px; }
+
+  .emoji-eagles{ bottom:78px; }
+  .emoji-eagles .eagle{ font-size:38px; }
 }
 @media(max-width:380px){
   .products{ grid-template-columns:1fr; }
   .whatsapp-consult-text{ min-width:100px; }
+
+  .emoji-eagles{ bottom:82px; }
+  .emoji-eagles .eagle{ font-size:34px; }
 }
 </style>
 </head>
@@ -741,6 +798,12 @@ footer{
 <body>
 
 <div class="topbar" id="topbarText"></div>
+
+<!-- ✅ الصقرين (الإيموجي) -->
+<div class="emoji-eagles" aria-hidden="true">
+  <span class="eagle eagle-left">🦅</span>
+  <span class="eagle eagle-right">🦅</span>
+</div>
 
 <header>
   <div class="container nav">
