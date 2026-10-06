@@ -85,10 +85,11 @@ header{
   box-shadow:0 5px 25px rgba(75,39,24,.05);
 }
 
+/* ✅ تعديل: خلّي روابط المتجر في المنتصف مع بقاء السلة بمكانها */
 .nav{
   min-height:82px;
   display:grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto; /* brand | nav | cart */
   align-items:center;
   gap:25px;
 }
@@ -516,6 +517,7 @@ nav a:hover::after{ width:100%; }
   text-align:center;
   overflow:hidden;
 }
+
 footer{
   background:#24130c;
   color:#eaded0;
@@ -639,29 +641,22 @@ footer{
   outline:none;
 }
 
-/* ✅ واتساب ثابت أسفل الصفحة لكن يظهر قرب الفوتر */
+/* ✅ واتساب ثابت يظهر دائمًا */
 .whatsapp-consult{
   position:fixed;
   left:0;
   right:0;
   bottom:0;
-  z-index:60;
 
+  z-index:9999; /* ✅ أعلى من أي عناصر عندك */
   display:flex;
   justify-content:center;
   padding:12px 14px;
   background:linear-gradient(to top, rgba(238,233,223,1), rgba(238,233,223,.0));
 
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transition:opacity .25s ease, visibility .25s ease;
-}
-
-.whatsapp-consult.show{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
+  opacity:1 !important;
+  visibility:visible !important;
+  pointer-events:auto !important;
 }
 
 .whatsapp-consult-inner{
@@ -881,7 +876,7 @@ footer{
   </div>
 </aside>
 
-<!-- ✅ واتساب ثابت -->
+<!-- ✅ واتساب ثابت دائم -->
 <div class="whatsapp-consult" id="whatsappConsult">
   <div class="whatsapp-consult-inner">
     <div class="whatsapp-consult-text">
@@ -1024,7 +1019,7 @@ function renderSettings(){
   document.getElementById("aboutText").textContent = settings.aboutText;
   document.getElementById("footerText").textContent = settings.footer;
 
-  updateWhatsAppLink(); // ✅ رابط واتساب للإستفسار
+  updateWhatsAppLink();
 }
 
 function renderCategories(){
@@ -1049,9 +1044,7 @@ function renderCategories(){
            data-category="${safe(categoryName)}">
 
         <div class="category-placeholder">${getCategoryEmoji(categoryName)}</div>
-
         <div class="category-name">${safe(categoryName)}</div>
-
         <small>${count} منتج</small>
       </div>
     `;
@@ -1060,14 +1053,12 @@ function renderCategories(){
 
 function getCategoryEmoji(name){
   const text = String(name || "").toLowerCase();
-
   if(text.includes("قماش") || text.includes("أقمشة") || text.includes("اقمشه")) return "🧵";
   if(text.includes("شال") || text.includes("شالات") || text.includes("كشمير")) return "🧣";
   if(text.includes("مسباح") || text.includes("مسابيح")) return "📿";
   if(text.includes("بخور")) return "🌫️";
   if(text.includes("ذهب") || text.includes("مجوهرات")) return "💎";
   if(text.includes("هدايا") || text.includes("هدية")) return "🎁";
-
   return "🛍️";
 }
 
@@ -1399,23 +1390,9 @@ async function startApp(){
   renderCategories();
   renderCart();
 
-  // ✅ إظهار واتساب قرب الفوتر
+  // ✅ واتساب يظهر دائم (بدون IntersectionObserver)
   const consult = document.getElementById('whatsappConsult');
-  const footer = document.getElementById('footerText');
-
-  if(consult && footer){
-    const io = new IntersectionObserver((entries) => {
-      if(entries[0]?.isIntersecting){
-        consult.classList.add('show');
-      }else{
-        consult.classList.remove('show');
-      }
-    },{
-      threshold: 0.08,
-      rootMargin: '0px 0px -12% 0px'
-    });
-    io.observe(footer);
-  }
+  if(consult) consult.classList.add('show');
 }
 startApp();
 </script>
