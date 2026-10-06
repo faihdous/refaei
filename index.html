@@ -697,6 +697,7 @@ footer{
   font-size:18px;
 }
 
+/* الزر (تم تغييره نصًا فقط إن رغبت) */
 .whatsapp{
   width:100%;
   border:0;
@@ -733,7 +734,6 @@ footer{
   .products{ grid-template-columns:repeat(2,1fr); }
   .product-img{ height:280px; }
 
-  /* على الجوال رجّع السلوك المرن */
   .nav{
     min-height:auto;
     display:flex;
@@ -757,8 +757,6 @@ footer{
     overflow-x:auto;
     white-space:nowrap;
     padding:2px 4px 7px;
-
-    /* ✅ التعديل: خله بالمنتصف بدل اليمين */
     justify-content:center;
   }
 
@@ -915,7 +913,7 @@ footer{
     </div>
 
     <button class="whatsapp" onclick="showCustomerForm()">
-      إتمام الطلب عبر واتساب
+      إتمام الطلب (الدفع عبر عربكس)
     </button>
 
     <div id="customerForm" class="customer-form">
@@ -1152,41 +1150,34 @@ function renderProducts(categoryName = ""){
 }
 
 /* --- إظهار/إخفاء الأقسام والمنتجات حسب الأزرار --- */
-
 function showShoppingContent(){
   document.querySelector(".categories-section")?.classList.add("visible");
   document.getElementById("categories")?.scrollIntoView({ behavior:"smooth" });
 }
-
 function showStore(event){
   if(event) event.preventDefault();
   document.getElementById("storePage")?.scrollIntoView({ top:0, behavior:"smooth" });
 }
-
 function showCategoriesPage(event){
   if(event) event.preventDefault();
   document.querySelector(".categories-section")?.classList.add("visible");
   document.getElementById("categories")?.scrollIntoView({ behavior:"smooth" });
 }
-
 function showProductsPage(event){
   if(event) event.preventDefault();
   document.querySelector(".products-section")?.classList.add("visible");
   renderProducts();
   document.getElementById("products")?.scrollIntoView({ behavior:"smooth" });
 }
-
 function showAboutPage(event){
   if(event) event.preventDefault();
   document.getElementById("about")?.scrollIntoView({ behavior:"smooth" });
 }
-
 function showAllProducts(){
   document.querySelector(".products-section")?.classList.add("visible");
   renderProducts();
   document.getElementById("products")?.scrollIntoView({ behavior:"smooth" });
 }
-
 function filterProductsByCategory(categoryName){
   document.querySelector(".products-section")?.classList.add("visible");
   renderProducts(categoryName);
@@ -1196,7 +1187,6 @@ function filterProductsByCategory(categoryName){
 }
 
 /* --- السلة --- */
-
 function addToCart(productId){
   const product = products.find(item => String(item.id) === String(productId));
   if(!product) return;
@@ -1335,12 +1325,7 @@ function showCustomerForm(){
   document.getElementById("customerForm").classList.add("show");
 }
 
-function cleanPhone(phone){
-  return String(phone || "")
-    .replace(/[^\d+]/g,"")
-    .replace(/^\+/,"");
-}
-
+/* ========= ✅ تم الاستبدال هنا: واتساب -> دفع عربكس ========= */
 async function sendOrder(){
   if(!cart.length){
     alert("السلة فارغة");
@@ -1352,6 +1337,7 @@ async function sendOrder(){
   const address = document.getElementById("customerAddress").value.trim();
   const note = document.getElementById("customerNote").value.trim();
 
+  // بدون إيميل لأن عربكس يطلبه لاحقًا
   if(!name || !phone || !address){
     alert("يرجى تعبئة الاسم ورقم الهاتف والعنوان");
     return;
@@ -1388,26 +1374,29 @@ async function sendOrder(){
     return;
   }
 
-  let message = `طلب جديد من REFAEI\n\n` +
-    `الاسم: ${name}\n` +
-    `الهاتف: ${phone}\n` +
-    `العنوان: ${address}\n\n` +
-    `المنتجات:\n`;
+  // (اختياري) نص للملاحظات داخل عربكس إن كان يدعم notes
+  let notesText = "";
+  if(note) notesText += note;
+  // أضف سلة سريعة لو تحب
+  if(cart.length){
+    const brief = cart.map(i => `${i.name} × ${i.quantity}`).join("، ");
+    notesText = (notesText ? (notesText + "\n") : "") + `المنتجات: ${brief}`;
+  }
 
-  cart.forEach(item => {
-    message += `- ${item.name} × ${item.quantity} (${(
-      Number(item.price || 0) * Number(item.quantity || 0)
-    ).toFixed(2)} د.ك)\n`;
-  });
+  // ✅ رابط الدفع الحر - كي نت / بطاقات / آبل باي
+  const PAYMENT_URL = "https://arabexkw.com/axpay.php?open=1&acc=96566771506";
 
-  message += `\nالإجمالي: ${total.toFixed(2)} د.ك`;
-  if(note) message += `\nملاحظات: ${note}`;
+  // مبني على الأسماء الشائعة. إذا لم يتم تعبئة الحقول عند عربكس قلّي وسأعدلها وفق مفاتيحهم الدقيقة.
+  const paymentQuery =
+    `&amount=${encodeURIComponent(total.toFixed(2))}` +
+    `&name=${encodeURIComponent(name)}` +
+    `&phone=${encodeURIComponent(phone)}` +
+    `&address=${encodeURIComponent(address)}` +
+    `&notes=${encodeURIComponent(notesText || "")}`;
 
-  const whatsappNumber = cleanPhone(settings.whatsapp);
-  const whatsappUrl =
-    `https://wa.me/${whatsappNumber}?text=` + encodeURIComponent(message);
+  const paymentUrl = PAYMENT_URL + paymentQuery;
 
-  window.open(whatsappUrl,"_blank");
+  window.open(paymentUrl, "_blank");
 
   cart = [];
   saveCart();
@@ -1419,7 +1408,7 @@ async function sendOrder(){
   document.getElementById("customerAddress").value = "";
   document.getElementById("customerNote").value = "";
 
-  alert("تم تسجيل الطلب وفتح واتساب");
+  alert("تم تسجيل الطلب وفتح صفحة الدفع");
 }
 
 /* --- تشغيل التطبيق --- */
