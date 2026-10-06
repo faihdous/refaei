@@ -642,7 +642,8 @@ footer{
 }
 
 /* =========================
-   ✅ واتساب ثابت أسفل الصفحة
+   ✅ واتساب ثابت (لكن مخفي)
+   يظهر فقط عند الوصول للفوتر
    ========================= */
 .whatsapp-consult{
   position:fixed;
@@ -650,10 +651,24 @@ footer{
   right:0;
   bottom:0;
   z-index:60;
+
   display:flex;
   justify-content:center;
   padding:12px 14px;
+
+  /* مخفي بالبداية */
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+
+  transition:opacity .25s ease, visibility .25s ease;
   background:linear-gradient(to top, rgba(238,233,223,1), rgba(238,233,223,.0));
+}
+
+.whatsapp-consult.show{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
 }
 
 .whatsapp-consult-inner{
@@ -874,8 +889,8 @@ footer{
   </div>
 </aside>
 
-<!-- ✅ زر واتساب ثابت أسفل الصفحة -->
-<div class="whatsapp-consult">
+<!-- ✅ زر واتساب ثابت أسفل الصفحة (مخفي/يظهر حسب الفوتر) -->
+<div class="whatsapp-consult" id="whatsappConsult">
   <div class="whatsapp-consult-inner">
     <div class="whatsapp-consult-text">
       <div class="title">للإستفسار</div>
@@ -1012,6 +1027,15 @@ function renderSettings(){
   document.getElementById("aboutTitle").textContent = settings.aboutTitle;
   document.getElementById("aboutText").textContent = settings.aboutText;
   document.getElementById("footerText").textContent = settings.footer;
+
+  // (اختياري) تحديث رقم واتساب من الداتابيس
+  const waLink = document.querySelector('.wa-btn');
+  if(waLink){
+    const phone = String(settings.whatsapp || "").trim();
+    if(phone){
+      waLink.href = `https://wa.me/${phone}`;
+    }
+  }
 }
 
 function renderCategories(){
@@ -1365,6 +1389,27 @@ async function startApp(){
   renderSettings();
   renderCategories();
   renderCart();
+
+  // ✅ واتساب يظهر فقط عند الاقتراب/الوصول للفوتر
+  const consult = document.getElementById('whatsappConsult');
+  const footer = document.getElementById('footerText');
+
+  if(consult && footer){
+    const io = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if(entry && entry.isIntersecting){
+        consult.classList.add('show');
+      }else{
+        consult.classList.remove('show');
+      }
+    },{
+      threshold: 0.08,
+      // كل ما زادت قيمة -20% تطلع أبكر/تأخر أكثر حسب رغبتك
+      rootMargin: '0px 0px -12% 0px'
+    });
+
+    io.observe(footer);
+  }
 }
 startApp();
 </script>
