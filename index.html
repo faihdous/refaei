@@ -641,14 +641,14 @@ footer{
   outline:none;
 }
 
-/* ✅ واتساب ثابت يظهر دائمًا */
+/* ✅ واتساب ثابت دائم */
 .whatsapp-consult{
   position:fixed;
   left:0;
   right:0;
   bottom:0;
 
-  z-index:9999; /* ✅ أعلى من أي عناصر عندك */
+  z-index:9999;
   display:flex;
   justify-content:center;
   padding:12px 14px;
@@ -876,7 +876,6 @@ footer{
   </div>
 </aside>
 
-<!-- ✅ واتساب ثابت دائم -->
 <div class="whatsapp-consult" id="whatsappConsult">
   <div class="whatsapp-consult-inner">
     <div class="whatsapp-consult-text">
@@ -924,6 +923,7 @@ const defaultSettings = {
 
 let settings = {...defaultSettings};
 
+// ======= Helpers =======
 function safe(text){
   return String(text ?? "")
     .replace(/&/g,"&amp;")
@@ -958,6 +958,11 @@ function sameCategory(first,second){
   return (aliases[a] || a) === (aliases[b] || b);
 }
 
+function digitsOnly(x){
+  return String(x ?? "").replace(/\D/g,'');
+}
+
+// ======= Load Data =======
 async function loadAllData(){
   const categoriesResult = await supabaseClient
     .from("categories")
@@ -969,35 +974,35 @@ async function loadAllData(){
     .select("*")
     .order("created_at",{ascending:false});
 
+  categories = categoriesResult.error ? [] : (categoriesResult.data || []);
+  products = productsResult.error ? [] : (productsResult.data || []);
+}
+
+async function loadSettingsOnce(){
+  // نفس منطق الكود القديم: id = 1
   const settingsResult = await supabaseClient
     .from("site_settings")
     .select("*")
     .eq("id",1)
     .maybeSingle();
 
-  categories = categoriesResult.error ? [] : (categoriesResult.data || []);
-  products = productsResult.error ? [] : (productsResult.data || []);
-
   if(!settingsResult.error && settingsResult.data){
     const row = settingsResult.data;
     settings = {
-      topbar:row.topbar ?? defaultSettings.topbar,
-      brandName:row.brand_name ?? defaultSettings.brandName,
-      heroTitle:row.hero_title ?? defaultSettings.heroTitle,
-      heroDescription:row.hero_description ?? defaultSettings.heroDescription,
-      aboutTitle:row.about_title ?? defaultSettings.aboutTitle,
-      aboutText:row.about_text ?? defaultSettings.aboutText,
-      footer:row.footer ?? defaultSettings.footer,
-      whatsapp:row.whatsapp ?? defaultSettings.whatsapp,
-      payment_acc:row.payment_acc ?? (row.payment_acc_number ?? defaultSettings.payment_acc)
+      topbar: row.topbar ?? defaultSettings.topbar,
+      brandName: row.brand_name ?? defaultSettings.brandName,
+      heroTitle: row.hero_title ?? defaultSettings.heroTitle,
+      heroDescription: row.hero_description ?? defaultSettings.heroDescription,
+      aboutTitle: row.about_title ?? defaultSettings.aboutTitle,
+      aboutText: row.about_text ?? defaultSettings.aboutText,
+      footer: row.footer ?? defaultSettings.footer,
+      whatsapp: row.whatsapp ?? defaultSettings.whatsapp,
+      payment_acc: row.payment_acc ?? (row.payment_acc_number ?? defaultSettings.payment_acc)
     };
   }
 }
 
-function digitsOnly(x){
-  return String(x ?? "").replace(/\D/g,'');
-}
-
+// ======= Render =======
 function updateWhatsAppLink(){
   const link = document.getElementById("waConsultLink");
   if(!link) return;
@@ -1011,15 +1016,27 @@ function updateWhatsAppLink(){
 }
 
 function renderSettings(){
-  document.getElementById("topbarText").textContent = settings.topbar;
-  document.getElementById("brandName").textContent = settings.brandName;
-  document.getElementById("heroTitle").textContent = settings.heroTitle;
-  document.getElementById("heroDescription").textContent = settings.heroDescription;
-  document.getElementById("aboutTitle").textContent = settings.aboutTitle;
-  document.getElementById("aboutText").textContent = settings.aboutText;
-  document.getElementById("footerText").textContent = settings.footer;
+  const el = (id)=>document.getElementById(id);
+  if(el("topbarText")) el("topbarText").textContent = settings.topbar;
+  if(el("brandName")) el("brandName").textContent = settings.brandName;
+  if(el("heroTitle")) el("heroTitle").textContent = settings.heroTitle;
+  if(el("heroDescription")) el("heroDescription").textContent = settings.heroDescription;
+  if(el("aboutTitle")) el("aboutTitle").textContent = settings.aboutTitle;
+  if(el("aboutText")) el("aboutText").textContent = settings.aboutText;
+  if(el("footerText")) el("footerText").textContent = settings.footer;
 
   updateWhatsAppLink();
+}
+
+function getCategoryEmoji(name){
+  const text = String(name || "").toLowerCase();
+  if(text.includes("قماش") || text.includes("أقمشة") || text.includes("اقمشه")) return "🧵";
+  if(text.includes("شال") || text.includes("شالات") || text.includes("كشمير")) return "🧣";
+  if(text.includes("مسباح") || text.includes("مسابيح")) return "📿";
+  if(text.includes("بخور")) return "🌫️";
+  if(text.includes("ذهب") || text.includes("مجوهرات")) return "💎";
+  if(text.includes("هدايا") || text.includes("هدية")) return "🎁";
+  return "🛍️";
 }
 
 function renderCategories(){
@@ -1049,17 +1066,6 @@ function renderCategories(){
       </div>
     `;
   }).join("");
-}
-
-function getCategoryEmoji(name){
-  const text = String(name || "").toLowerCase();
-  if(text.includes("قماش") || text.includes("أقمشة") || text.includes("اقمشه")) return "🧵";
-  if(text.includes("شال") || text.includes("شالات") || text.includes("كشمير")) return "🧣";
-  if(text.includes("مسباح") || text.includes("مسابيح")) return "📿";
-  if(text.includes("بخور")) return "🌫️";
-  if(text.includes("ذهب") || text.includes("مجوهرات")) return "💎";
-  if(text.includes("هدايا") || text.includes("هدية")) return "🎁";
-  return "🛍️";
 }
 
 function renderProducts(categoryName = ""){
@@ -1123,6 +1129,7 @@ function renderProducts(categoryName = ""){
   }).join("");
 }
 
+// ======= Navigation =======
 function showShoppingContent(){
   document.querySelector(".categories-section")?.classList.add("visible");
   document.getElementById("categories")?.scrollIntoView({ behavior:"smooth" });
@@ -1159,7 +1166,7 @@ function filterProductsByCategory(categoryName){
   }, 100);
 }
 
-/* --- السلة --- */
+// ======= Cart =======
 function addToCart(productId){
   const product = products.find(item => String(item.id) === String(productId));
   if(!product) return;
@@ -1298,6 +1305,7 @@ function showCustomerForm(){
   document.getElementById("customerForm").classList.add("show");
 }
 
+// ======= Order / Payment =======
 async function sendOrder(){
   if(!cart.length){
     alert("السلة فارغة");
@@ -1345,6 +1353,7 @@ async function sendOrder(){
     return;
   }
 
+  // ✅ هنا نستخدم settings المحدثة عبر polling
   const paymentValue = String(settings.payment_acc ?? "").trim();
   if(!paymentValue){
     alert("حساب عربكس غير مضبوط في الإعدادات (الإدارة).");
@@ -1381,18 +1390,40 @@ async function sendOrder(){
   alert("تم تسجيل الطلب وفتح صفحة الدفع");
 }
 
-/* --- تشغيل التطبيق --- */
+// ======= Polling settings =======
+let settingsPollingTimer = null;
+const SETTINGS_POLL_MS = 10000; // ✅ كل 10 ثواني
+
+async function startSettingsPolling(){
+  if(settingsPollingTimer) clearInterval(settingsPollingTimer);
+
+  settingsPollingTimer = setInterval(async () => {
+    try{
+      await loadSettingsOnce();
+      renderSettings();
+    }catch(err){
+      console.warn("Polling settings error:", err);
+      // لا نوقف التطبيق بسبب خطأ مؤقت
+    }
+  }, SETTINGS_POLL_MS);
+}
+
+// ======= Start App =======
 async function startApp(){
   loadCart();
   await loadAllData();
+  await loadSettingsOnce();
 
   renderSettings();
   renderCategories();
   renderCart();
 
-  // ✅ واتساب يظهر دائم (بدون IntersectionObserver)
+  // ✅ واتساب يظهر دائم
   const consult = document.getElementById('whatsappConsult');
   if(consult) consult.classList.add('show');
+
+  // ✅ بدء polling
+  startSettingsPolling();
 }
 startApp();
 </script>
