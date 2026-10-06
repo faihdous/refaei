@@ -64,13 +64,11 @@ button{ cursor:pointer; transition:.25s ease; }
 .topbar{
   background:linear-gradient(90deg,var(--brown-dark),var(--brown),var(--brown-dark));
   color:#f7ead7;
-
   width:100%;
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
-
   padding:8px 15px;
   font-size:12px;
   letter-spacing:.3px;
@@ -1233,38 +1231,11 @@ async function sendOrder(){
     notesText = (notesText ? (notesText + "\n") : "") + `المنتجات: ${brief}`;
   }
 
-  // ✅ رابط الدفع عربكس
+  // ✅ رابط الدفع عربكس (تم التعديل: مبلغ فقط)
   const PAYMENT_URL = "https://arabexkw.com/axpay.php?open=1&acc=96566771506";
 
-  /**
-   * ✅ مهم:
-   * بما أنك تؤكد أن عربكس تتعبّى المبلغ فقط،
-   * جرّبنا إرسال مفاتيح متعددة شائعة للاسم/الهاتف/العنوان.
-   * (عربكس عنده حقل معيّن واحد يأخذ منه—نحاول نخمنه بأكثر من اسم باراميتر)
-   */
   const paymentQuery =
-    `&amount=${encodeURIComponent(total.toFixed(2))}` +
-
-    // الاسم (جرّب مفاتيح مختلفة)
-    `&name=${encodeURIComponent(name)}` +
-    `&customer_name=${encodeURIComponent(name)}` +
-    `&full_name=${encodeURIComponent(name)}` +
-    `&cust_name=${encodeURIComponent(name)}` +
-
-    // الهاتف
-    `&phone=${encodeURIComponent(phone)}` +
-    `&mobile=${encodeURIComponent(phone)}` +
-    `&customer_phone=${encodeURIComponent(phone)}` +
-    `&cust_phone=${encodeURIComponent(phone)}` +
-
-    // العنوان
-    `&address=${encodeURIComponent(address)}` +
-    `&addr=${encodeURIComponent(address)}` +
-    `&customer_address=${encodeURIComponent(address)}` +
-    `&cust_address=${encodeURIComponent(address)}` +
-
-    // ملاحظات
-    `&notes=${encodeURIComponent(notesText || "")}`;
+    `&amount=${encodeURIComponent(total.toFixed(2))}`;
 
   const paymentUrl = PAYMENT_URL + paymentQuery;
 
